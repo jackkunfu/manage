@@ -5,13 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>manage</title>
+    <link rel="stylesheet" href="css/element.css">
+    <title>crm-manage</title>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but manage doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong>请开启 JavaScript 使用服务</strong>
     </noscript>
+    
+    <!-- vue.min.js vue-router.min.js vuex.min.js axios.js element.js gulpfile.js  gulp 合并得到 生产环境使用-->
+    <!-- <script src="js/all.min.js"></script> -->
+
+    <!-- 开发环境引入这里使用 vue-devltools -->
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vuex/3.1.1/vuex.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/3.0.7/vue-router.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/2.10.1/index.js"></script>
+
     <div id="app"></div>
-    <!-- built files will be auto injected -->
   </body>
 </html>

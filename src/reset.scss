@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -moz-appearance: none !important;
+  scrollbar-width: thin; /* 设置firfox下scrollbar的宽度样式：auto/thin/none */
+  scrollbar-color: #d4d4d4 transparent; /* 设置firfox下scrollbar的滚动指示器颜色和背景色：auto/rgbcolor/hexcolor */
+}
+html, body, .el-container {
+  height: 100%;
+}
+ul, li {
+  list-style: none;
+}
+input:focus {
+  outline: none;
+}
+a {
+  text-decoration: none;
+}
+.clear {
+  clear: both;
+  &::after {
+    visibility: hidden;
+    height: 0;
+    display: block;
+    content: '';
+    clear: both;
+  }
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+s, i, em {
+  font-style: normal;
+  text-decoration: none;
+}
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  cursor: pointer;
+  border-radius: 4px;
+}
+  
+    
