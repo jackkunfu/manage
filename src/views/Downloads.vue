@@ -1,7 +1,7 @@
 <template lang="pug">
   .downloads
     .fr
-      Upload(:name="上传")
+      Upload(:name="上传" @upSus="upSus" :otherData="{}")
     TableCp(:config="config")
 </template>
 
@@ -32,6 +32,9 @@ export default {
   created () {
   },
   methods: {
+    upSus (res, file, fileList) {
+      console.log(res)
+    }
   }
 }
 </script>
