@@ -18,7 +18,12 @@ export default new Router({
       },
       children: [
         { path: '/list', name: 'list', component: () => import('./views/List.vue') },
-        { path: '/jiaoxue', name: 'jiaoxue', component: () => import('./views/Jiaoxue.vue') }
+        { path: '/jiaoxue', name: 'jiaoxue', component: () => import('./views/Jiaoxue.vue') },
+        { path: '/testmanage', name: 'jiaoxue', component: () => import('./views/TestManage.vue') },
+        { path: '/platdesc', name: 'jiaoxue', component: () => import('./views/PlatDesc.vue') },
+        { path: '/downloads', name: 'jiaoxue', component: () => import('./views/Downloads.vue') },
+        { path: '/notices', name: 'notices', component: () => import('./views/Notices.vue') },
+        { path: '/adminManage', name: 'adminManage', component: () => import('./views/AdminManage.vue') }
       ]
     }
   ]

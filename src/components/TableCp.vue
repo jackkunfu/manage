@@ -32,6 +32,7 @@
         template(slot-scope="{row}")
           el-button(
             v-for="(op, idx) in operates" :key="idx"
+            v-if="!op.ishow || op.ishow(row)"
             @click="handleOperate(op, row)"
           ) {{op.name}}
           slot(:data="row" :list="tableData" name="operate")
@@ -68,19 +69,19 @@
 
 <script>
 /*
- *列表增删改查操作组件
+ *列表增删改查操作组件：
  *组件使用指南：
- *------------
+ *实例配置------------
  *config: {
  *  apis: {
  *     lis: '', add: '', del: '', edit: ''
  *  },
  *  tableItems: [
- *    { name: '小区名称', prop: 'nghdAddress', handle: (row, list) => row.succCount + '/' + row.allCount, img: '', video: '' },
+ *    { name: '小区名称', prop: 'nghdAddress', handle: (row, list) => row.succCount + '/' + row.allCount, img: true/video: true }, // 如果是展示 img/video时 img/video设置为true
  *  ],
  *  isChoose: false
  *  operates: [
- *    { name: '编辑', handleFn: 'edit' }
+ *    { name: '编辑', handleFn: 'edit', isShow: data => data.xxx, handleSelf: true } // isShow 需要判断展示的时候使用，可以不设置, handleSelf配置为true时 不使用组件内部的处理方法处理
  *  ]
  *}
  *------------
@@ -111,7 +112,6 @@ export default {
     }
   },
   created () {
-    console.log(this)
     this.getList()
   },
   methods: {
@@ -127,7 +127,7 @@ export default {
       }
     },
     handleOperate (op, row) {
-      if (this[op.fn] && typeof this[op.fn] === 'function') {
+      if (!op.handleSelf && this[op.fn] && typeof this[op.fn] === 'function') {
         this[op.fn](row, this.tableData)
       } else {
         this.$emit(op.fn, row, this.tableData)
@@ -156,4 +156,3 @@ export default {
   }
 }
 </style>
-

@@ -2,31 +2,69 @@
   .list
     el-tabs(v-model="activeName" type="card" @tab-click="handleTabClick")
       el-tab-pane(label="实验指导书管理" name="1")
-        TableCp(:config="config")
+        TableCp(:config="configZhidaoshu")
       el-tab-pane(label="实验配置标准答案管理" name="2")
-        TableCp(:config="config")
+        TableCp(:config="configAnwswer")
       el-tab-pane(label="实验配置采分点设置" name="3")
-        TableCp(:config="config")
+        TableCp(:config="configScoer")
 </template>
 
 <script>
 import TableCp from '@/components/TableCp'
 export default {
-  name: 'List',
+  name: 'Jiaoxue',
   components: { TableCp },
   data () {
     return {
       activeName: '1',
-      config: {
+      configZhidaoshu: {
         apis: {
           list: '/boss/message/v2/getMessagePage'
         },
         operates: [
-          { name: '编辑', fn: 'edit' }
+          { name: '上传', fn: 'upload', isShow: data => data.aa },
+          { name: '编辑', fn: 'edit' },
+          { name: '删除', fn: 'del' }
         ],
         tableItems: [
-          { name: '小区名称', prop: 'nghdAddress' },
-          { name: '下发进度', handle: (row, list) => row.succCount + '/' + row.allCount }
+          { name: '实验名称', prop: 'nghdAddress' },
+          { name: '实验指导书', handle: (row, list) => row.succCount + '/' + row.allCount },
+          { name: '作者', prop: 'nghdAddress' },
+          { name: '上传时间', prop: 'nghdAddress' },
+          { name: '实验名称', prop: 'nghdAddress' }
+        ]
+      },
+      configAnwswer: {
+        apis: {
+          list: '/boss/message/v2/getMessagePage'
+        },
+        operates: [
+          { name: '上传', fn: 'upload', isShow: data => data.aa },
+          { name: '删除', fn: 'del' }
+        ],
+        tableItems: [
+          { name: '实验名称', prop: 'nghdAddress' },
+          { name: '实验配置标准答案', handle: (row, list) => row.succCount + '/' + row.allCount },
+          { name: '作者', prop: 'nghdAddress' },
+          { name: '上传时间', prop: 'nghdAddress' },
+          { name: '实验名称', prop: 'nghdAddress' }
+        ]
+      },
+      configScoer: {
+        apis: {
+          list: '/boss/message/v2/getMessagePage'
+        },
+        operates: [
+          { name: '上传', fn: 'upload', isShow: data => data.aa },
+          { name: '编辑', fn: 'edit' },
+          { name: '删除', fn: 'del' }
+        ],
+        tableItems: [
+          { name: '实验名称', prop: 'nghdAddress' },
+          { name: '实验采分点', handle: (row, list) => row.succCount + '/' + row.allCount },
+          { name: '作者', prop: 'nghdAddress' },
+          { name: '上传时间', prop: 'nghdAddress' },
+          { name: '实验名称', prop: 'nghdAddress' }
         ]
       }
     }

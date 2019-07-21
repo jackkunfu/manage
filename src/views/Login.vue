@@ -1,6 +1,12 @@
 <template lang="pug">
   .login
     .top crm 管理系统
+    .form
+      el-form(:model="formData")
+        el-form-item(label="账号")
+          el-input(v-model="formData.phone")
+        el-form-item(label="密码")
+          el-input(v-model="formData.pwd")
 
 </template>
 
@@ -11,6 +17,7 @@ export default {
   },
   data () {
     return {
+      formData: { phone: '', pwd: '' }
     }
   },
   methods: {
@@ -22,3 +29,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.login {
+  text-align: center;
+}
+</style>

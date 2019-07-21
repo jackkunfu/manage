@@ -1,0 +1,50 @@
+<template lang="pug">
+  .list
+    el-tabs(v-model="activeName" type="card" @tab-click="handleTabClick")
+      el-tab-pane(label="作业管理" name="1")
+        el-input(placeholder="请输入实验名称搜索" v-model="searchStr")
+          el-button(slot="append" @click="searchTest") 搜索
+        TableCp(:config="config")
+      el-tab-pane(label="数据统计" name="2")
+        TableCp(:config="config")
+</template>
+
+<script>
+import TableCp from '@/components/TableCp'
+export default {
+  name: 'TestManage',
+  components: { TableCp },
+  data () {
+    return {
+      activeName: '1',
+      config: {
+        apis: {
+          list: '/boss/message/v2/getMessagePage'
+        },
+        operates: [
+        ],
+        tableItems: [
+          { name: '实验名称', prop: 'nghdAddress' },
+          { name: '作业管理', handle: (row, list) => row.succCount + '/' + row.allCount }
+        ],
+        seachOpt: { name: '' }
+      },
+      searchStr: ''
+    }
+  },
+  created () {
+  },
+  methods: {
+    searchTest () {
+      this.config.seachOpt.name = this.searchStr.trim()
+    },
+    handleTabClick (tabVm) {
+      console.log(tabVm)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
