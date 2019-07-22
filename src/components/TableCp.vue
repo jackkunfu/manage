@@ -28,7 +28,7 @@
         template(v-else)
           el-table-column(:label="item.name" :prop="item.prop" :key="i")
       //- 操作区域
-      el-table-column(label="操作" v-if="operates.length > 0")
+      el-table-column(label="操作" v-if="operates.length > 0" :width="operates.length*100")
         template(slot-scope="{row}")
           el-button(
             v-for="(op, idx) in operates" :key="idx"
@@ -45,6 +45,7 @@
       )
     //- 编辑弹窗
     el-dialog(
+      :visible.sync="editVisible" :before-close="handleEditClose"
       v-if="editKeys && editKeys.length"
     )
       el-form(v-model="curOperateRow")
@@ -65,6 +66,9 @@
               :label="each.label" :value="each.value"
             )
           el-input(v-else v-model="curOperateRow[item.key]")
+      div
+        el-button(@click="editSure") 确定
+        el-button(@click="handleEditClose") 取消
 </template>
 
 <script>
@@ -108,7 +112,8 @@ export default {
       // 内部数据
       tableData: [],
       pageInfo: { cur: 1, size: 10, total: 0 },
-      curOperateRow: null
+      curOperateRow: {},
+      editVisible: false
     }
   },
   created () {
@@ -116,7 +121,7 @@ export default {
   },
   methods: {
     async getList () {
-      let res = await this.fetch(this.apis.list, {
+      let res = await this._fetch(this.apis.list, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,
         ...this.searchOpts
@@ -135,6 +140,21 @@ export default {
     },
     edit (row, list) {
       this.curOperateRow = JSON.parse(JSON.stringify(row))
+      this.editVisible = true
+    },
+    handleEditClose () {
+      this.curOperateRow = {}
+      this.editVisible = false
+    },
+    async editSure () {
+      let hadleEditItemFn = this.hadleEditItemFn
+      let res = await this._fetch(this.apis.edit, hadleEditItemFn && typeof hadleEditItemFn === 'function' ? hadleEditItemFn(this.curOperateRow) : this.curOperateRow)
+      if (res && res.code === 0) {
+        this.handleEditClose()
+        this.getList()
+      } else {
+        this._messageFn((res && res.msg) || '请求失败')
+      }
     },
     handleSizeChange (v) {
       this.pageInfo.cur = 1

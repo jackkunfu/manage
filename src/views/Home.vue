@@ -6,7 +6,7 @@
         el-menu(:default-openeds="[0]")
           //- el-submenu(v-for="(menu, i) in menus" :index="i")
           //-   el-menu-item(v-for="(item, j) in menu.children" :key="j") {{item.name}}
-          el-menu-item(v-for="(item, j) in menus" :key="j") {{item.name}}
+          el-menu-item(v-for="(item, j) in menus" :key="j" @click="clickItem(item)") {{item.name}}
       el-main
         router-view
 </template>
@@ -42,6 +42,9 @@ export default {
     }
   },
   methods: {
+    clickItem (item) {
+      this._goUrl(item.path)
+    }
   },
   mounted () {
   }

@@ -27,11 +27,14 @@ export default {
           { name: '删除', fn: 'del' }
         ],
         tableItems: [
-          { name: '实验名称', prop: 'nghdAddress' },
+          { name: '实验名称', prop: 'name' },
           { name: '实验指导书', handle: (row, list) => row.succCount + '/' + row.allCount },
           { name: '作者', prop: 'nghdAddress' },
           { name: '上传时间', prop: 'nghdAddress' },
           { name: '实验名称', prop: 'nghdAddress' }
+        ],
+        editKeys: [
+          { label: '', key: '' }
         ]
       },
       configAnwswer: {
