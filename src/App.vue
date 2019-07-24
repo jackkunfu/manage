@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import '@/css/element.scss'
 export default {
   name: 'App',
   computed: {

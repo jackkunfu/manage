@@ -8,7 +8,8 @@
           //-   el-menu-item(v-for="(item, j) in menu.children" :key="j") {{item.name}}
           el-menu-item(v-for="(item, j) in menus" :key="j" @click="clickItem(item)") {{item.name}}
       el-main
-        router-view
+        .main-ctn
+          router-view
 </template>
 
 <script>
@@ -57,8 +58,15 @@ export default {
     border-bottom: 1px solid #e6e6e6;
   }
   .el-main {
-    padding: 20px;
-    overflow: auto;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    .main-ctn {
+      padding: 20px;
+      height: 100%;
+      position: relative;
+      overflow: auto;
+    }
   }
   .el-menu {
     height: 100%;

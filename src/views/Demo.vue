@@ -18,8 +18,9 @@ export default {
           { name: '编辑', fn: 'edit' }
         ],
         tableItems: [
-          { name: '小区名称', prop: 'nghdAddress' },
-          { name: '下发进度', handle: (row, list) => row.succCount + '/' + row.allCount }
+          { name: '消息内容', prop: 'contentDetaile' },
+          { name: '下发进度', handle: (row, list) => row.contentType + ':' + row.contentType },
+          { name: '备注', prop: 'extra' }
         ]
       }
     }
