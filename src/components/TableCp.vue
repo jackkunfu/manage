@@ -48,7 +48,7 @@
       :visible.sync="editVisible" :before-close="handleEditClose"
       v-if="editKeys && editKeys.length"
     )
-      el-form(v-model="curOperateRow")
+      el-form(v-model="curOperateRow" label-width="80px")
         el-form-item(v-for="(item, i) in editKeys" :label="item.label" :key="i")
           el-select(v-model="curOperateRow[item.key]" v-if="item.select")
             el-option(
@@ -65,8 +65,9 @@
               v-for="(each, idx) in item.list" :key="idx"
               :label="each.label" :value="each.value"
             )
-          el-input(v-else v-model="curOperateRow[item.key]")
-      div
+          el-input-number(v-else-if="item.number" v-model="curOperateRow[item.key]")
+          el-input(v-else v-model="curOperateRow[item.key]" placeholder="请输入")
+      .op-btns
         el-button(@click="editSure") 确定
         el-button(@click="handleEditClose") 取消
 </template>
@@ -99,7 +100,9 @@ export default {
       isChoose: false,
       searchOpts: {},
       editKeys: []
-    }
+    },
+    hadleEditItemFn: Function,
+    selfEdit: Function
   },
   data () {
     let config = this._props.config || {}
@@ -113,7 +116,8 @@ export default {
       tableData: [],
       pageInfo: { cur: 1, size: 10, total: 0 },
       curOperateRow: {},
-      editVisible: false
+      editVisible: false,
+      isAdd: false // 是否是新增， 新增和编辑走同一个逻辑， 以此区分
     }
   },
   created () {
@@ -139,16 +143,30 @@ export default {
       }
     },
     edit (row, list) {
-      this.curOperateRow = JSON.parse(JSON.stringify(row))
+      if (!this.isAdd) { // 编辑时可能需要走的步骤
+        this.curOperateRow = JSON.parse(JSON.stringify(row))
+        this.selfEdit && typeof this.selfEdit === 'function' && this.selfEdit(row)
+      }
       this.editVisible = true
     },
     handleEditClose () {
       this.curOperateRow = {}
       this.editVisible = false
     },
+    getEditParam () {
+      let data = {}
+      this.editKeys.forEach(el => {
+        data[el.key] = this.curOperateRow[el.key]
+      })
+      return data
+    },
     async editSure () {
       let hadleEditItemFn = this.hadleEditItemFn
-      let res = await this._fetch(this.apis.edit, hadleEditItemFn && typeof hadleEditItemFn === 'function' ? hadleEditItemFn(this.curOperateRow) : this.curOperateRow)
+      let params = this.getEditParam()
+      let res = await this._fetch(
+        this.apis.edit,
+        hadleEditItemFn && typeof hadleEditItemFn === 'function' ? hadleEditItemFn(params, this.curOperateRow) : params
+      )
       if (res && res.code === 0) {
         this.handleEditClose()
         this.getList()
@@ -174,5 +192,9 @@ export default {
   .table_cp_page {
     margin-top: 20px;
   }
+}
+.op-btns {
+  text-align: center;
+  margin-top: 20px;
 }
 </style>
