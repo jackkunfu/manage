@@ -33,19 +33,19 @@
           el-button(
             v-for="(op, idx) in operates" :key="idx"
             v-if="!op.ishow || op.ishow(row)"
-            @click="handleOperate(op, row)"
+            @click="_handleOperate(op, row)"
           ) {{op.name}}
           slot(:data="row" :list="tableData" name="operate")
     //- 页码区域
     .table_cp_page
       el-pagination(
-        @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        @size-change="_handleSizeChange" @current-change="_handleCurrentChange"
         :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper"
         :current-page="pageInfo.cur" :page-size="pageInfo.size" :total="pageInfo.total"
       )
     //- 编辑弹窗
     el-dialog(
-      :visible.sync="editVisible" :before-close="handleEditClose"
+      :visible.sync="editVisible" :before-close="_handleEditClose"
       v-if="editKeys && editKeys.length"
     )
       el-form(v-model="curOperateRow" label-width="80px")
@@ -68,8 +68,8 @@
           el-input-number(v-else-if="item.number" v-model="curOperateRow[item.key]")
           el-input(v-else v-model="curOperateRow[item.key]" placeholder="请输入")
       .op-btns
-        el-button(@click="editSure") 确定
-        el-button(@click="handleEditClose") 取消
+        el-button(@click="_editSure") 确定
+        el-button(@click="_handleEditClose") 取消
 </template>
 
 <script>
@@ -102,7 +102,9 @@ export default {
       editKeys: []
     },
     hadleEditItemFn: Function,
-    selfEdit: Function
+    selfEdit: Function,
+    selfAdd: Function,
+    editCheck: Function
   },
   data () {
     let config = this._props.config || {}
@@ -123,6 +125,11 @@ export default {
   created () {
     this.getList()
   },
+  watch: {
+    isAdd (v) {
+      if (v) this.edit() // 外部改变 isAdd 为 true 时 显示新增编辑弹窗
+    }
+  },
   methods: {
     async getList () {
       let res = await this._fetch(this.apis.list.url, {
@@ -135,54 +142,75 @@ export default {
         this.pageInfo.total = res.data.total || 0
       }
     },
-    handleOperate (op, row) {
+    _handleOperate (op, row) {
       if (!op.handleSelf && this[op.fn] && typeof this[op.fn] === 'function') {
         this[op.fn](row, this.tableData)
       } else {
         this.$emit(op.fn, row, this.tableData)
       }
     },
-    edit (row, list) {
+    _edit (row, list) {
       if (!this.isAdd) { // 编辑时可能需要走的步骤
         this.curOperateRow = JSON.parse(JSON.stringify(row))
-        this.selfEdit && typeof this.selfEdit === 'function' && this.selfEdit(row)
+        this.selfEdit && typeof this.selfEdit === 'function' && this.selfEdit(row, this.curOperateRow)
+      } else {
+        this.selfAdd && typeof this.selfAdd === 'function' && this.selfAdd(row, this.curOperateRow)
       }
       this.editVisible = true
     },
-    handleEditClose () {
+    _handleEditClose () {
       this.curOperateRow = {}
       this.editVisible = false
     },
-    getEditParam () {
+    _getEditParam () {
       let data = {}
       this.editKeys.forEach(el => {
         data[el.key] = this.curOperateRow[el.key]
       })
       return data
     },
-    async editSure () {
+    async _editSure () {
+      if (this.editCheck) { // 输入验证提示
+        let checkData = this.editCheck()
+        if (!checkData.ok) return this._messageTip(checkData.msg)
+      }
+      let params = this._getEditParam()
+      let op = this.isAdd ? 'add' : 'edit'
+      let { url, type } = this.apis[op]
       let hadleEditItemFn = this.hadleEditItemFn
-      let params = this.getEditParam()
       let res = await this._fetch(
-        this.apis.edit.url,
+        url,
         hadleEditItemFn && typeof hadleEditItemFn === 'function' ? hadleEditItemFn(params, this.curOperateRow) : params,
-        this.apis.edit.type || 'post'
+        type || 'post'
       )
-      if (res && res.code === 0) {
-        this.handleEditClose()
+      if (res && res.code === 1) {
+        this._handleEditClose()
         this.getList()
+        this._messageTip(res.msg || '操作成功', 1)
       } else {
         this._messageTip((res && res.msg) || '请求失败')
       }
     },
-    handleSizeChange (v) {
+    _handleSizeChange (v) {
       this.pageInfo.cur = 1
       this.pageInfo.size = v
       this.getList()
     },
-    handleCurrentChange (v) {
+    _handleCurrentChange (v) {
       this.pageInfo.cur = v
       this.getList()
+    },
+    _del (row) {
+      this._confirm('确定删除?').then(async _ => {
+        let key = this.apis.del.delKey ? this.apis.del.delKey : 'id'
+        let data = {}
+        data[key] = row[key]
+        let res = await this._fetch(this.apis.del.url, data, this.apis.del.type || 'post')
+        if (res && res.code === 1) {
+          this._messageTip(res.msg || '操作成功', 1)
+          this.getList()
+        } else this._messageTip(res.msg || '操作失败')
+      })
     }
   }
 }

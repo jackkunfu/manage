@@ -1,8 +1,8 @@
 <template lang="pug">
   .plat_desc
     .fr
-      el-button() 新增管理员
-    TableCp(:config="config")
+      el-button(@click="showAdd") 新增管理员
+    TableCp(:config="config" ref="TableCp" :editCheck="editCheck")
 </template>
 
 <script>
@@ -22,8 +22,8 @@ export default {
           edit: { url: '/admin/user/update' }
         },
         operates: [
-          { name: '编辑', fn: 'edit' },
-          { name: '删除', fn: 'del' }
+          { name: '编辑', fn: '_edit' },
+          { name: '删除', fn: '_del' }
         ],
         tableItems: [
           { name: '姓名', prop: 'name' },
@@ -31,13 +31,27 @@ export default {
           { name: '账号', prop: 'name' },
           { name: '上传时间', handle: (row, list) => row.createtime.slice(0, 16) }
         ],
-        seachOpt: { name: '' }
+        seachOpt: { name: '' },
+        editKeys: [
+          { label: '姓名', key: 'name' },
+          { label: '手机号', key: '' },
+          { label: '账号', key: 'username' },
+          { label: '密码', key: 'password' }
+        ]
       }
     }
   },
   created () {
   },
   methods: {
+    showAdd () {
+      this.$refs.TableCp.isAdd = true
+    },
+    editCheck (data) {
+      let res = { ok: false, msg: '' }
+      // if () 
+      return { ok: true }
+    }
   }
 }
 </script>

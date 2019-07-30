@@ -11,7 +11,7 @@ export default function (Vue) {
     let res = await axios({
       method: type || 'post',
       url: '/api' + url,
-      data: data || {},
+      // data: data || {},
       params: data || {},
       dataType: 'json',
       headers: {
@@ -20,7 +20,7 @@ export default function (Vue) {
     })
     let result = res.data
     if (result) {
-      if (result.code === -1) this.goLogin()
+      if (result.code === -1 && result.msg.indexOf('token') > -1) this.goLogin()
       else return result || {}
     } else throw new Error('请求失败')
   }
@@ -39,6 +39,16 @@ export default function (Vue) {
   Vue.prototype._messageTip = function (message = '', type) {
     this.$message({
       message, type: type === 1 ? 'success' : type === 2 ? 'warn' : 'error'
+    })
+  }
+
+  Vue.prototype._confirm = function (str, fn) {
+    return this.$confirm(str, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(_ => {
+      return _
     })
   }
 }
