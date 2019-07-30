@@ -3,6 +3,7 @@ import { Loading } from 'element-ui'
 export default function (Vue) {
   Vue.prototype.goLogin = function () {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })
+    this.$router.push({ path: '/' })
     localStorage.removeItem('MToken')
   }
 
@@ -14,11 +15,14 @@ export default function (Vue) {
       params: data || {},
       dataType: 'json',
       headers: {
-        // token: 123456789
+        token: localStorage.MToken || ''
       }
     })
-    if (res) return res.data || {}
-    else throw new Error('请求失败')
+    let result = res.data
+    if (result) {
+      if (result.code === -1) this.goLogin()
+      else return result || {}
+    } else throw new Error('请求失败')
   }
 
   Vue.prototype.$loading = function (url, data, type) {

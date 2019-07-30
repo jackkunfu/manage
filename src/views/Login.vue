@@ -25,14 +25,11 @@ export default {
   methods: {
     async fn () {
       let res = await this._fetch('/admin/user/login', this.formData, 'post')
-      if (res && res.code === 0) {
-        this.$store.commit('setStoreData', { key: 'isLogin', value: false })
+      if (res && res.code === 1) {
         localStorage.setItem('MToken', res.data.token)
+        this.$store.commit('setStoreData', { key: 'isLogin', value: false })
       }
     }
-  },
-  mounted () {
-    this.$store.commit('setStoreData', { key: 'isLogin', value: false })
   }
 }
 </script>

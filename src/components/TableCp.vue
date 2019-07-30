@@ -40,7 +40,7 @@
     .table_cp_page
       el-pagination(
         @size-change="handleSizeChange" @current-change="handleCurrentChange"
-        :page-sizes="[100, 200, 300, 400]" layout="total, sizes, prev, pager, next, jumper"
+        :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper"
         :current-page="pageInfo.cur" :page-size="pageInfo.size" :total="pageInfo.total"
       )
     //- 编辑弹窗
@@ -130,7 +130,7 @@ export default {
         pageNum: this.pageInfo.cur,
         ...this.searchOpts
       }, this.apis.list.type || 'get')
-      if (res.code === 0) {
+      if (res.code === 1) {
         this.tableData = res.data.list || []
         this.pageInfo.total = res.data.total || 0
       }
@@ -181,7 +181,6 @@ export default {
       this.getList()
     },
     handleCurrentChange (v) {
-      alert(v)
       this.pageInfo.cur = v
       this.getList()
     }

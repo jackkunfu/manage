@@ -26,10 +26,10 @@ export default {
           { name: '删除', fn: 'del' }
         ],
         tableItems: [
-          { name: '姓名', prop: 'nghdAddress' },
+          { name: '姓名', prop: 'name' },
           { name: '手机号', prop: 'nghdAddress' },
-          { name: '账号', handle: (row, list) => row.succCount + '/' + row.allCount },
-          { name: '上传时间', handle: (row, list) => row.succCount + '/' + row.allCount }
+          { name: '账号', prop: 'name' },
+          { name: '上传时间', handle: (row, list) => row.createtime.slice(0, 16) }
         ],
         seachOpt: { name: '' }
       }
