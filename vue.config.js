@@ -17,19 +17,14 @@ module.exports = {
     }
   },
   devServer: {
-    port: 7777, // 端口号
+    port: 8888, // 端口号
     host: '0.0.0.0',
     https: false, // https:{type:Boolean}
     open: false, // 配置自动启动浏览器
     proxy: {
-      '/dsp': {
-        target: 'http://10.10.0.244:10080',
-        // pathRewrite: { '^/dsp': ''},
-        changeOrigin: true
-      },
-      '/boss': {
-        target: 'http://10.10.0.244:10090',
-        // pathRewrite: { '^/boss': ''},
+      '/api': {
+        target: 'http://47.99.201.236:9000',
+        pathRewrite: { '^/api': '' },
         changeOrigin: true
       }
     }

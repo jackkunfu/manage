@@ -21,11 +21,11 @@ export default {
     return {
       menus: [
         { name: '实验教学', path: '/jiaoxue' },
-        { name: '实验管理', path: '/guanli' },
-        { name: '平台介绍', path: '' },
-        { name: '资料下载', path: '' },
-        { name: '通知中心', path: '' },
-        { name: '管理员设置', path: '' }
+        { name: '实验管理', path: '/testmanage' },
+        { name: '平台介绍', path: '/platdesc' },
+        { name: '资料下载', path: '/downloads' },
+        { name: '通知中心', path: '/notices' },
+        { name: '管理员设置', path: '/adminManage' }
       ]
       // menus: [
       //   {

@@ -12,7 +12,10 @@ export default {
     return {
       config: {
         apis: {
-          list: '/boss/message/v2/getMessagePage'
+          list: { url: '/admin/user/list' },
+          del: { url: '/admin/user/delete' },
+          add: { url: '/admin/user/add' },
+          edit: { url: '/admin/user/update' }
         },
         operates: [
           { name: '编辑', fn: 'edit' },

@@ -19,7 +19,10 @@ export default {
       activeName: '1',
       configZhidaoshu: {
         apis: {
-          list: '/boss/message/v2/getMessagePage'
+          list: { url: '/admin/user/list' },
+          del: { url: '/admin/user/delete' },
+          add: { url: '/admin/user/add' },
+          edit: { url: '/admin/user/update' }
         },
         operates: [
           { name: '上传', fn: 'upload', isShow: data => data.aa },
@@ -39,7 +42,10 @@ export default {
       },
       configAnwswer: {
         apis: {
-          list: '/boss/message/v2/getMessagePage'
+          list: { url: '/admin/user/list' },
+          del: { url: '/admin/user/delete' },
+          add: { url: '/admin/user/add' },
+          edit: { url: '/admin/user/update' }
         },
         operates: [
           { name: '上传', fn: 'upload', isShow: data => data.aa },
@@ -55,7 +61,10 @@ export default {
       },
       configScoer: {
         apis: {
-          list: '/boss/message/v2/getMessagePage'
+          list: { url: '/admin/user/list' },
+          del: { url: '/admin/user/delete' },
+          add: { url: '/admin/user/add' },
+          edit: { url: '/admin/user/update' }
         },
         operates: [
           { name: '上传', fn: 'upload', isShow: data => data.aa },

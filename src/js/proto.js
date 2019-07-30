@@ -3,15 +3,18 @@ import { Loading } from 'element-ui'
 export default function (Vue) {
   Vue.prototype.goLogin = function () {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })
+    localStorage.removeItem('MToken')
   }
 
   Vue.prototype._fetch = async function (url, data, type) {
     let res = await axios({
       method: type || 'post',
-      url,
+      url: '/api' + url,
       data: data || {},
+      params: data || {},
+      dataType: 'json',
       headers: {
-        token: 123456789
+        // token: 123456789
       }
     })
     if (res) return res.data || {}
@@ -29,9 +32,9 @@ export default function (Vue) {
     })
   }
 
-  Vue.prototype._messageFn = function (message = '', type = 1) {
+  Vue.prototype._messageTip = function (message = '', type) {
     this.$message({
-      message, type: type === 1 ? 'error' : type === 2 ? 'success' : 'warn'
+      message, type: type === 1 ? 'success' : type === 2 ? 'warn' : 'error'
     })
   }
 }

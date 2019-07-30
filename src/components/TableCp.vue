@@ -125,11 +125,11 @@ export default {
   },
   methods: {
     async getList () {
-      let res = await this._fetch(this.apis.list, {
+      let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,
         ...this.searchOpts
-      })
+      }, this.apis.list.type || 'get')
       if (res.code === 0) {
         this.tableData = res.data.list || []
         this.pageInfo.total = res.data.total || 0
@@ -164,14 +164,15 @@ export default {
       let hadleEditItemFn = this.hadleEditItemFn
       let params = this.getEditParam()
       let res = await this._fetch(
-        this.apis.edit,
-        hadleEditItemFn && typeof hadleEditItemFn === 'function' ? hadleEditItemFn(params, this.curOperateRow) : params
+        this.apis.edit.url,
+        hadleEditItemFn && typeof hadleEditItemFn === 'function' ? hadleEditItemFn(params, this.curOperateRow) : params,
+        this.apis.edit.type || 'post'
       )
       if (res && res.code === 0) {
         this.handleEditClose()
         this.getList()
       } else {
-        this._messageFn((res && res.msg) || '请求失败')
+        this._messageTip((res && res.msg) || '请求失败')
       }
     },
     handleSizeChange (v) {

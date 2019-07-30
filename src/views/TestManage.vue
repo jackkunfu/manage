@@ -19,7 +19,10 @@ export default {
       activeName: '1',
       config: {
         apis: {
-          list: '/boss/message/v2/getMessagePage'
+          list: { url: '/admin/user/list' },
+          del: { url: '/admin/user/delete' },
+          add: { url: '/admin/user/add' },
+          edit: { url: '/admin/user/update' }
         },
         operates: [
         ],
