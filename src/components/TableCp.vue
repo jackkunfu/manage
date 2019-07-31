@@ -66,6 +66,7 @@
               :label="each.label" :value="each.value"
             )
           el-input-number(v-else-if="item.number" v-model="curOperateRow[item.key]")
+          el-input(v-else-if="item.textarea" type="textarea" v-model="curOperateRow[item.key]")
           el-input(v-else v-model="curOperateRow[item.key]" placeholder="请输入")
       .op-btns
         el-button(@click="_editSure") 确定
@@ -129,7 +130,7 @@ export default {
   },
   watch: {
     isAdd (v) {
-      if (v) this.edit() // 外部改变 isAdd 为 true 时 显示新增编辑弹窗
+      if (v) this._edit() // 外部改变 isAdd 为 true 时 显示新增编辑弹窗
     }
   },
   methods: {
