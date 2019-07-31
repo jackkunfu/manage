@@ -48,7 +48,7 @@
       :visible.sync="editVisible" :before-close="_handleEditClose"
       v-if="editKeys && editKeys.length"
     )
-      el-form(v-model="curOperateRow" label-width="80px")
+      el-form(v-model="curOperateRow" label-width="80px" size="mini")
         el-form-item(v-for="(item, i) in editKeys" :label="item.label" :key="i")
           el-select(v-model="curOperateRow[item.key]" v-if="item.select")
             el-option(
@@ -98,7 +98,7 @@ export default {
       apis: {},
       tableItems: [],
       isChoose: false,
-      searchOpts: {},
+      seachOpt: {},
       editKeys: []
     },
     hadleEditItemFn: Function,
@@ -108,10 +108,12 @@ export default {
   },
   data () {
     let config = this._props.config || {}
+    console.log(config)
     return {
       // props数据
       isChoose: false,
       editKeys: [],
+      seachOpt: {},
       ...config,
 
       // 内部数据
@@ -135,7 +137,7 @@ export default {
       let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,
-        ...this.searchOpts
+        ...this.seachOpt
       }, this.apis.list.type || 'get')
       if (res.code === 1) {
         this.tableData = res.data.list || []
@@ -161,12 +163,17 @@ export default {
     _handleEditClose () {
       this.curOperateRow = {}
       this.editVisible = false
+      if (this.isAdd) this.isAdd = false
     },
     _getEditParam () {
       let data = {}
       this.editKeys.forEach(el => {
         data[el.key] = this.curOperateRow[el.key]
       })
+      if (!this.isAdd) {
+        let key = this.apis.edit.idKey || 'id'
+        data[key] = this.curOperateRow[key]
+      }
       return data
     },
     async _editSure () {
@@ -202,7 +209,7 @@ export default {
     },
     _del (row) {
       this._confirm('确定删除?').then(async _ => {
-        let key = this.apis.del.delKey ? this.apis.del.delKey : 'id'
+        let key = this.apis.del.delKey ? this.apis.del.idKey : 'id'
         let data = {}
         data[key] = row[key]
         let res = await this._fetch(this.apis.del.url, data, this.apis.del.type || 'post')

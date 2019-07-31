@@ -16,10 +16,10 @@ export default {
     return {
       config: {
         apis: {
-          list: { url: '/admin/user/list' },
-          del: { url: '/admin/user/delete' },
-          add: { url: '/admin/user/add' },
-          edit: { url: '/admin/user/update' }
+          list: { url: '/admin/article/list' },
+          del: { url: '/admin/article/delete' },
+          add: { url: '/admin/article/add' },
+          edit: { url: '/admin/article/update' }
         },
         operates: [
           { name: '删除', fn: 'del' }
@@ -29,7 +29,13 @@ export default {
           { name: '作者', prop: 'nghdAddress' },
           { name: '发布时间', handle: (row, list) => row.succCount + '/' + row.allCount }
         ],
-        seachOpt: { name: '' }
+        seachOpt: { category: 'notify' },
+        editKeys: [
+          { label: '姓名', key: 'name' },
+          { label: '手机号', key: 'phone' },
+          { label: '账号', key: 'username' },
+          { label: '密码', key: 'password' }
+        ]
       }
     }
   },

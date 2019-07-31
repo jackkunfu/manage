@@ -1,10 +1,8 @@
 <template lang="pug">
   .upload
     el-upload(
-      :action="action" :data="otherData"
-      :on-success="handleSuccess"
-      :on-error="handleError"
-      :on-progress="handleProgress"
+      :action="actionUrl" :data="otherData" :show-file-list="false"
+      :on-success="handleSuccess" :on-error="handleError" :on-progress="handleProgress"
     )
       el-button(size="small" type="primary") {{name}}
 </template>
@@ -14,11 +12,12 @@ export default {
   name: 'Upload',
   props: {
     name: String,
-    action: String,
+    url: String,
     otherData: {}
   },
   data () {
     return {
+      actionUrl: this.url || '/api/admin/file/upload'
     }
   },
   created () {

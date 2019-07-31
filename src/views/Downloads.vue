@@ -1,8 +1,8 @@
 <template lang="pug">
   .downloads
     .fr
-      Upload(:name="上传" @upSus="upSus" :otherData="{}")
-    TableCp(:config="config")
+      Upload(name="上传" @upSus="upSus" :otherData="{}")
+    TableCp(:config="config" ref="TableCp")
 </template>
 
 <script>
@@ -15,10 +15,8 @@ export default {
     return {
       config: {
         apis: {
-          list: { url: '/admin/user/list' },
-          del: { url: '/admin/user/delete' },
-          add: { url: '/admin/user/add' },
-          edit: { url: '/admin/user/update' }
+          list: { url: '/admin/file/list' },
+          del: { url: '/admin/file/delete' }
         },
         operates: [
           { name: '删除', fn: 'edit' }
@@ -36,7 +34,8 @@ export default {
   },
   methods: {
     upSus (res, file, fileList) {
-      console.log(res)
+      this._messageTip('上传成功', 1)
+      this.$refs.TableCp.getList()
     }
   }
 }

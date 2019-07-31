@@ -17,9 +17,9 @@ export default {
       config: {
         apis: {
           list: { url: '/admin/user/list' },
-          del: { url: '/admin/user/delete' },
+          del: { url: '/admin/user/delete', idKey: 'id' },
           add: { url: '/admin/user/add' },
-          edit: { url: '/admin/user/update' }
+          edit: { url: '/admin/user/update', idKey: 'id' }
         },
         operates: [
           { name: '编辑', fn: '_edit' },
@@ -28,7 +28,7 @@ export default {
         tableItems: [
           { name: '姓名', prop: 'name' },
           { name: '手机号', prop: 'nghdAddress' },
-          { name: '账号', prop: 'name' },
+          { name: '账号', prop: 'username' },
           { name: '上传时间', handle: (row, list) => row.createtime.slice(0, 16) }
         ],
         seachOpt: { name: '' },
