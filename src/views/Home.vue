@@ -3,10 +3,10 @@
     el-header header
     el-container
       el-aside(width="200px")
-        el-menu(:default-openeds="[0]")
+        el-menu(:default-openeds="[0]" :default-active="activeUrl")
           //- el-submenu(v-for="(menu, i) in menus" :index="i")
           //-   el-menu-item(v-for="(item, j) in menu.children" :key="j") {{item.name}}
-          el-menu-item(v-for="(item, j) in menus" :key="j" @click="clickItem(item)") {{item.name}}
+          el-menu-item(v-for="(item, j) in menus" :key="j" @click="clickItem(item)" :index="item.path") {{item.name}}
       el-main
         .main-ctn
           router-view
@@ -19,6 +19,7 @@ export default {
   },
   data () {
     return {
+      activeUrl: this.$route.path,
       menus: [
         { name: '实验教学', path: '/jiaoxue' },
         { name: '实验管理', path: '/testmanage' },
@@ -44,10 +45,12 @@ export default {
   },
   methods: {
     clickItem (item) {
+      this.activeUrl = item.path
       this._goUrl(item.path)
     }
   },
   mounted () {
+    if (this.$route.path === '/') this._goUrl('/adminManage')
   }
 }
 </script>
