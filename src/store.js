@@ -10,15 +10,15 @@ export default new Vuex.Store({
   },
   mutations: {
     setStoreData (state, data) {
-      let key = data.key
+      let { key, value } = data
       if (Array.isArray(key)) {
         let zhizhen = ''
         while (key.length > 0) {
           zhizhen += "['" + key.shift() + "']"
         }
-        eval('state' + zhizhen + '=' + JSON.stringify(data.value))
+        eval('state' + zhizhen + '=' + JSON.stringify(value))
       } else {
-        state[data.key] = data.value
+        state[key] = value
       }
     }
   },

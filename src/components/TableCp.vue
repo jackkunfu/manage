@@ -140,7 +140,7 @@ export default {
         pageNum: this.pageInfo.cur,
         ...this.seachOpt
       }, this.apis.list.type || 'get')
-      if (res.code === 1) {
+      if (res && res.code === 1) {
         this.tableData = res.data.list || []
         this.pageInfo.total = res.data.total || 0
       }
