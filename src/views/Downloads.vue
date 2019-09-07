@@ -19,12 +19,12 @@ export default {
           del: { url: '/admin/file/delete' }
         },
         operates: [
-          { name: '删除', fn: 'edit' }
+          { name: '删除', fn: '_del' }
         ],
         tableItems: [
-          { name: '标题', prop: 'nghdAddress' },
-          { name: '作者', prop: 'nghdAddress' },
-          { name: '上传时间', handle: (row, list) => row.succCount + '/' + row.allCount }
+          { name: '标题', prop: 'name' },
+          { name: '作者', prop: 'createBy' },
+          { name: '上传时间', prop: 'createtime' }
         ],
         seachOpt: { name: '' }
       }

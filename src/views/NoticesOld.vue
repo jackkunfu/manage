@@ -1,15 +1,17 @@
 <template lang="pug">
   .plat_desc
     .fr
-      el-button(@click="$refs.tp.isAdd = true" size="mini") 发布通知
-    TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn")
+      el-button(@click="addFn") 发布通知
+    TableCp(:config="config" ref="TableCp")
 </template>
 
 <script>
 import TableCp from '@/components/TableCp'
+import Upload from '@/components/Upload'
+
 export default {
-  name: 'PlatDesc',
-  components: { TableCp },
+  name: 'Notices',
+  components: { TableCp, Upload },
   data () {
     return {
       config: {
@@ -20,20 +22,17 @@ export default {
           edit: { url: '/admin/article/update' }
         },
         operates: [
-          { name: '编辑', fn: '_edit' },
           { name: '删除', fn: '_del' }
         ],
         tableItems: [
           { name: '标题', prop: 'title' },
           { name: '作者', prop: 'username', handle: row => row.admin ? (row.admin.username || '') : '' },
-          { name: '发布时间', handle: (row, list) => row.createtime.slice(0, 16) },
-          { name: '是否置顶', handle: (row, list) => row.status ? '是' : '否' }
+          { name: '发布时间', handle: (row, list) => row.createtime.slice(0, 16) }
         ],
         seachOpt: { category: 'notify' },
         editKeys: [
           { label: '标题', key: 'title' },
-          { label: '内容', key: 'content', isEdt: true },
-          { label: '是否置顶', key: 'status', switch: true }
+          { label: '内容', key: 'content', type: 'textarea' }
         ]
       }
     }
@@ -41,10 +40,8 @@ export default {
   created () {
   },
   methods: {
-    hadleEditItemFn (data, row) {
-      return {
-        ...data, status: data.status || false, category: 'notify'
-      }
+    addFn () {
+      this.$refs.TableCp.isAdd = true
     }
   }
 }

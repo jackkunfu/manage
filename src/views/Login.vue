@@ -1,6 +1,6 @@
 <template lang="pug">
   .login
-    .top crm 管理系统
+    .top EVE-NG
     .form
       el-form(:model="formData")
         el-form-item(label="账号")
@@ -27,6 +27,7 @@ export default {
       let res = await this._fetch('/admin/user/login', this.formData, 'post')
       if (res && res.code === 1) {
         localStorage.setItem('MToken', res.data.token)
+        localStorage.setItem('EVENGFRONTUSER', this.formData.username.trim())
         this.$store.commit('setStoreData', { key: 'isLogin', value: false })
       }
     }
@@ -37,6 +38,7 @@ export default {
 <style lang="scss" scoped>
 .login {
   text-align: center;
+  padding-top: 200px;
   .form {
     width: 300px;
     margin: 20px auto;

@@ -5,6 +5,7 @@ export default function (Vue) {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })
     this.$router.push({ path: '/' })
     localStorage.removeItem('MToken')
+    localStorage.removeItem('EVENGFRONTUSER')
   }
 
   Vue.prototype._fetch = async function (url, data, type) {
@@ -20,8 +21,12 @@ export default function (Vue) {
     })
     let result = res.data
     if (result) {
-      if (result.code === -1 && result.msg.indexOf('token') > -1) this.goLogin()
-      else return result || {}
+      if (result.code === -1) {
+        if (result.msg) {
+          if (result.msg.indexOf('token') > -1) this.goLogin()
+          else this._messageTip(result.msg)
+        } else this._messageTip('请求失败')
+      } else return result || {}
     } else throw new Error('请求失败')
   }
 

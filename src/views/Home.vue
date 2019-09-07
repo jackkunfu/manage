@@ -1,6 +1,8 @@
 <template lang="pug">
   el-container.ctn
-    el-header header
+    el-header
+      .fr
+        el-button(size="mini" @click="logout" style="margin-top: 15px;") 退出登录
     el-container
       el-aside(width="200px")
         el-menu(:default-openeds="[0]" :default-active="activeUrl")
@@ -21,8 +23,10 @@ export default {
     return {
       activeUrl: this.$route.path,
       menus: [
-        { name: '实验教学', path: '/jiaoxue' },
-        { name: '实验管理', path: '/testmanage' },
+        // { name: '实验教学', path: '/jiaoxue' },
+        // { name: '实验管理', path: '/testmanage' },
+        { name: '实验教学', path: '/course1' },
+        { name: '实验管理', path: '/course2' },
         { name: '平台介绍', path: '/platdesc' },
         { name: '资料下载', path: '/downloads' },
         { name: '通知中心', path: '/notices' },
@@ -46,7 +50,10 @@ export default {
   methods: {
     clickItem (item) {
       this.activeUrl = item.path
-      this._goUrl(item.path)
+      this._goUrl(item.path, item.data || {})
+    },
+    logout () {
+      this.goLogin()
     }
   },
   mounted () {

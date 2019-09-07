@@ -1,6 +1,8 @@
 <template lang="pug">
   .plat_desc
-    TableCp(:config="config")
+    .fr
+      el-button(@click="$refs.tp.isAdd = true" size="mini") 新增
+    TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn")
 </template>
 
 <script>
@@ -18,21 +20,30 @@ export default {
           edit: { url: '/admin/article/update' }
         },
         operates: [
-          { name: '编辑', fn: 'edit' },
-          { name: '删除', fn: 'edit' }
+          { name: '编辑', fn: '_edit' },
+          { name: '删除', fn: '_del' }
         ],
         tableItems: [
           { name: '标题', prop: 'title' },
           { name: '作者', prop: 'username', handle: row => row.admin ? (row.admin.username || '') : '' },
           { name: '发布时间', handle: (row, list) => row.createtime.slice(0, 16) }
         ],
-        seachOpt: { category: 'introduce' }
+        seachOpt: { category: 'introduce' },
+        editKeys: [
+          { label: '标题', key: 'title' },
+          { label: '内容', key: 'content', isEdt: true }
+        ]
       }
     }
   },
   created () {
   },
   methods: {
+    hadleEditItemFn (data, row) {
+      return {
+        ...data, status: data.status || false, category: 'introduce'
+      }
+    }
   }
 }
 </script>

@@ -65,8 +65,10 @@
               v-for="(each, idx) in item.list" :key="idx"
               :label="each.label" :value="each.value"
             )
+          el-switch(v-else-if="item.switch" v-model="curOperateRow[item.key]")
           el-input-number(v-else-if="item.number" v-model="curOperateRow[item.key]")
           el-input(v-else-if="item.textarea" type="textarea" v-model="curOperateRow[item.key]")
+          Wangeditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
           el-input(v-else v-model="curOperateRow[item.key]" placeholder="请输入")
       .op-btns
         el-button(@click="_editSure") 确定
@@ -92,8 +94,10 @@
  *}
  *------------
  */
+import Wangeditor from '@/components/Wangeditor.vue'
 export default {
   name: 'TableCp',
+  components: { Wangeditor },
   props: {
     config: {
       apis: {},
@@ -122,7 +126,7 @@ export default {
       pageInfo: { cur: 1, size: 10, total: 0 },
       curOperateRow: {},
       editVisible: false,
-      isAdd: false // 是否是新增， 新增和编辑走同一个逻辑， 以此区分
+      isAdd: false // 是否是新增， 新增和编辑走同一个逻辑， 以此区分  this.$refs.tp.isAdd = true
     }
   },
   created () {
@@ -135,6 +139,11 @@ export default {
   },
   methods: {
     async getList () {
+      let listApi = this.apis.list || {}
+      // if (listApi.data && listApi.data.length) {
+      //   // this.tableData = listApi.data
+      //   return
+      // }
       let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,
@@ -210,7 +219,7 @@ export default {
     },
     _del (row) {
       this._confirm('确定删除?').then(async _ => {
-        let key = this.apis.del.delKey ? this.apis.del.idKey : 'id'
+        let key = this.apis.del.idKey ? this.apis.del.idKey : 'id'
         let data = {}
         data[key] = row[key]
         let res = await this._fetch(this.apis.del.url, data, this.apis.del.type || 'post')

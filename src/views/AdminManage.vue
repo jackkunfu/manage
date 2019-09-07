@@ -27,14 +27,14 @@ export default {
         ],
         tableItems: [
           { name: '姓名', prop: 'name' },
-          { name: '手机号', prop: 'nghdAddress' },
+          { name: '手机号', prop: 'phone' },
           { name: '账号', prop: 'username' },
           { name: '上传时间', handle: (row, list) => row.createtime.slice(0, 16) }
         ],
         seachOpt: { name: '' },
         editKeys: [
           { label: '姓名', key: 'name' },
-          { label: '手机号', key: '' },
+          { label: '手机号', key: 'phone' },
           { label: '账号', key: 'username' },
           { label: '密码', key: 'password' }
         ]
