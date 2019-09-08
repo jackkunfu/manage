@@ -13,15 +13,10 @@ export default {
       type: 1, // 1管理  2教学
       config: {
         apis: {
-          list: {
-            url: '/api/lab/list',
-            data: [
-              { name: 'CCNA' }
-            ]
-          }
+          list: { url: '/api/lab/list', isList: true }
         },
         seachOpt: {
-          username: localStorage.EVENGFRONTUSER
+          // username: localStorage.EVENGFRONTUSER
         },
         // operates: [
         //   { name: '编辑', fn: 'edit' }

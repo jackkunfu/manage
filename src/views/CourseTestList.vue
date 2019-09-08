@@ -1,7 +1,7 @@
 <template lang="pug">
   .list
     .page_top 实验{{csType == 1 ? '管理' : '教学'}}/
-      span {{csName}}
+      span {{csname}}
       .fr
         span.btn(@click="pageBack") 返回
     TableCp(ref="tbcp" :config="config" :hadleEditItemFn="hadleEditItemFn" :selfEdit="selfEdit")
@@ -17,18 +17,13 @@ export default {
     return {
       type: query.type,
       csType: query.type, // 1管理  2教学
-      csName: query.csname,
+      csname: query.csname,
       config: {
         apis: {
-          list: {
-            url: '/admin/lab/list',
-            data: [
-              { name: '实验1', id: 1 }
-            ]
-          }
+          list: { url: '/admin/lab/list', isList: true }
         },
         seachOpt: {
-          path: '/opt/unetlab/labs/' + this.csName
+          path: '/opt/unetlab/labs/' + query.csname
         },
         // operates: [
         //   { name: '编辑', fn: 'edit' }
@@ -37,7 +32,7 @@ export default {
           {
             name: '实验名称', prop: 'name', html: true,
             handle: row => {
-              return `<a href="/testmanage?type=${this.type}&csname=${this.csName}&tsname=${row.name}&tsid=${row.id}">${row.name}</a>`
+              return `<a href="/testmanage?type=${query.type}&csname=${query.csname}&tsname=${row.name}&tsid=${row.path}">${row.name}</a>`
             }
           }
         ],

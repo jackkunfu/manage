@@ -142,6 +142,7 @@ export default {
   methods: {
     async _getList () {
       let listApi = this.apis.list || {}
+      let isDataList = listApi.isList
       if (listApi.data && listApi.data.length) {
         this.tableData = listApi.data
         return
@@ -153,7 +154,7 @@ export default {
         ...this.seachOpt
       }, this.apis.list.type || 'get')
       if (res && res.code === 1) {
-        this.tableData = res.data.list || []
+        this.tableData = isDataList ? (res.data || []) : (res.data.list || [])
         this.pageInfo.total = res.data.total || 0
       }
     },
