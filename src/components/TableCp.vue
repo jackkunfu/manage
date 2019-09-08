@@ -11,15 +11,15 @@
         //- img, 须配置 handle方法处理返回结果
         template(v-if="item.img")
           el-table-column(:label="item.name" :key="i")
-            img(:src="item.handle ? item.handle(row, tableData) : item.prop")
+            img(slot-scope="{row}" :src="item.handle ? item.handle(row, tableData) : item.prop")
         //- video, 须配置 handle方法处理返回结果
         template(v-else-if="item.video")
           el-table-column(:label="item.name" :key="i")
-            video(:src="item.handle ? item.handle(row, tableData) : item.prop")
+            video(slot-scope="{row}" :src="item.handle ? item.handle(row, tableData) : item.prop")
         //- html, 须配置 handle方法处理返回结果
         template(v-else-if="item.html")
           el-table-column(:label="item.name" :key="i")
-            template(slot-scope="{row}" v-html="item.handle(row, tableData)")
+            div(slot-scope="{row}" v-html="item.handle(row, tableData)")
         //- 需要显示处理后的数据的
         template(v-else-if="item.handle")
           el-table-column(:label="item.name" :key="i")
@@ -104,6 +104,7 @@ export default {
       tableItems: [],
       isChoose: false,
       seachOpt: {},
+      operates: [],
       editKeys: []
     },
     hadleEditItemFn: Function,
@@ -113,12 +114,13 @@ export default {
   },
   data () {
     let config = this._props.config || {}
-    console.log(config)
+    // console.log(config)
     return {
       // props数据
       isChoose: false,
       editKeys: [],
       seachOpt: {},
+      operates: [],
       ...config,
 
       // 内部数据
@@ -130,7 +132,7 @@ export default {
     }
   },
   created () {
-    this.getList()
+    this._getList()
   },
   watch: {
     isAdd (v) {
@@ -138,12 +140,13 @@ export default {
     }
   },
   methods: {
-    async getList () {
+    async _getList () {
       let listApi = this.apis.list || {}
-      // if (listApi.data && listApi.data.length) {
-      //   // this.tableData = listApi.data
-      //   return
-      // }
+      if (listApi.data && listApi.data.length) {
+        this.tableData = listApi.data
+        return
+      }
+      console.log(this.seachOpt)
       let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,
@@ -202,7 +205,7 @@ export default {
       )
       if (res && res.code === 1) {
         this._handleEditClose()
-        this.getList()
+        this._getList()
         this._messageTip(res.msg || '操作成功', 1)
       } else {
         this._messageTip((res && res.msg) || '请求失败')
@@ -211,11 +214,11 @@ export default {
     _handleSizeChange (v) {
       this.pageInfo.cur = 1
       this.pageInfo.size = v
-      this.getList()
+      this._getList()
     },
     _handleCurrentChange (v) {
       this.pageInfo.cur = v
-      this.getList()
+      this._getList()
     },
     _del (row) {
       this._confirm('确定删除?').then(async _ => {
@@ -225,7 +228,7 @@ export default {
         let res = await this._fetch(this.apis.del.url, data, this.apis.del.type || 'post')
         if (res && res.code === 1) {
           this._messageTip(res.msg || '操作成功', 1)
-          this.getList()
+          this._getList()
         } else this._messageTip(res.msg || '操作失败')
       })
     }

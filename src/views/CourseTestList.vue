@@ -1,5 +1,9 @@
 <template lang="pug">
   .list
+    .page_top 实验{{csType == 1 ? '管理' : '教学'}}/
+      span {{csName}}
+      .fr
+        span.btn(@click="pageBack") 返回
     TableCp(ref="tbcp" :config="config" :hadleEditItemFn="hadleEditItemFn" :selfEdit="selfEdit")
 </template>
 
@@ -9,19 +13,22 @@ export default {
   name: 'Course1',
   components: { TableCp },
   data () {
+    let query = this.$route.query
     return {
-      type: 1, // 1管理  2教学
+      type: query.type,
+      csType: query.type, // 1管理  2教学
+      csName: query.csname,
       config: {
         apis: {
           list: {
-            url: '/api/lab/list',
+            url: '/admin/lab/list',
             data: [
-              { name: 'CCNA' }
+              { name: '实验1', id: 1 }
             ]
           }
         },
         seachOpt: {
-          username: localStorage.EVENGFRONTUSER
+          path: '/opt/unetlab/labs/' + this.csName
         },
         // operates: [
         //   { name: '编辑', fn: 'edit' }
@@ -30,7 +37,7 @@ export default {
           {
             name: '实验名称', prop: 'name', html: true,
             handle: row => {
-              return `<a href="/cslist?type=${this.type}&csname=${row.name}">${row.name}</a>`
+              return `<a href="/testmanage?type=${this.type}&csname=${this.csName}&tsname=${row.name}&tsid=${row.id}">${row.name}</a>`
             }
           }
         ],

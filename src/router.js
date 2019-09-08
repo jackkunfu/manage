@@ -17,8 +17,9 @@ export default new Router({
         login: Login
       },
       children: [
-        { path: '/course1', name: 'course', component: () => import('./views/Course1.vue') },
-        { path: '/course2', name: 'course', component: () => import('./views/Course2.vue') },
+        { path: '/course1', name: 'course1', component: () => import('./views/Course1.vue') },
+        { path: '/course2', name: 'course2', component: () => import('./views/Course2.vue') },
+        { path: '/cslist', name: 'cslist', component: () => import('./views/CourseTestList.vue') },
         { path: '/demo', name: 'demo', component: () => import('./views/Demo.vue') },
         { path: '/jiaoxue', name: 'jiaoxue', component: () => import('./views/Jiaoxue.vue') },
         { path: '/testmanage', name: 'jiaoxue', component: () => import('./views/TestManage.vue') },

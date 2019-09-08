@@ -35,6 +35,10 @@ export default function (Vue) {
     return loading
   }
 
+  Vue.prototype.pageBack = function () {
+    window.history.go(-1)
+  }
+
   Vue.prototype._goUrl = function (path, data = {}) {
     this.$router.push({
       path: path, query: data.query || {}, params: data.params

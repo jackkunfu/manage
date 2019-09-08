@@ -46,3 +46,14 @@ s, i, em {
   cursor: pointer;
   border-radius: 4px;
 }
+
+.page_top {
+  border-bottom: 1px solid #409EFF;
+  padding: 10px 0;
+  margin-bottom: 30px;
+  .fr {
+    .btn {
+      cursor: pointer;
+    }
+  }
+}
