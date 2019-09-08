@@ -32,6 +32,7 @@ export default {
         { name: '平台介绍', path: '/platdesc' },
         { name: '资料下载', path: '/downloads' },
         { name: '通知中心', path: '/notices' },
+        { name: '学生中心', path: '/class' },
         { name: '管理员设置', path: '/adminManage' }
       ]
       // menus: [
