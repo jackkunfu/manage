@@ -1,6 +1,6 @@
 <template lang="pug">
   .list
-    TableCp(:config="config" :hadleEditItemFn="hadleEditItemFn" :selfEdit="selfEdit")
+    TableCp(ref="tbcp" :config="config" :hadleEditItemFn="hadleEditItemFn" :selfEdit="selfEdit")
 </template>
 
 <script>
@@ -10,26 +10,25 @@ export default {
   components: { TableCp },
   data () {
     return {
-      type: 2,
+      type: 2, // 1管理  2教学
       config: {
         apis: {
-          list: {
-            url: '/api/lab/list',
-            data: [
-              { name: 'CCNA' }
-            ]
-          }
+          list: { url: '/api/lab/list', isList: true }
         },
         seachOpt: {
-          username: localStorage.EVENGFRONTUSER,
-          path: '/opt/unetlab/labs'
+          // username: localStorage.EVENGFRONTUSER
         },
         // operates: [
         //   { name: '编辑', fn: 'edit' }
         // ],
         tableItems: [
-          // { name: '序号', prop: 'contentDetaile' },
-          { name: '实验名称', prop: 'name' }
+          {
+            name: '实验名称', prop: 'name', html: true,
+            handle: row => {
+              if (row.directory) return `<a href="/cslist?type=${this.type}&csname=${row.name}">${row.name}</a>`
+              else return `<a href="${this.type == 1 ? '/testmanage' : '/Jiaoxue'}?type=${this.type}&csname=实验&tsname=${row.name}&tsid=${row.path}">${row.name}</a>`
+            }
+          }
         ],
         // editKeys: [
         //   { label: '消息内容', key: 'contentDetaile' },
@@ -39,6 +38,11 @@ export default {
     }
   },
   created () {
+  },
+  watch: {
+    '$route.query.type' (v) {
+      this.$refs.tbcp._getList();
+    }
   },
   methods: {
     hadleEditItemFn (data, item) { // 需要再次处理edit请求参数的时候配置此数据

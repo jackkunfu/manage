@@ -27,8 +27,8 @@ export default {
       menus: [
         // { name: '实验教学', path: '/jiaoxue' },
         // { name: '实验管理', path: '/testmanage' },
-        { name: '实验教学', path: '/course1', data: {query:{type:1}} },
-        { name: '实验管理', path: '/course1', data: {query:{type:2}} },
+        { name: '实验管理', path: '/course1' },
+        { name: '实验教学', path: '/course2' },
         { name: '平台介绍', path: '/platdesc' },
         { name: '资料下载', path: '/downloads' },
         { name: '通知中心', path: '/notices' },

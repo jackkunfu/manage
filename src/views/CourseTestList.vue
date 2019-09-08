@@ -32,7 +32,7 @@ export default {
           {
             name: '实验名称', prop: 'name', html: true,
             handle: row => {
-              return `<a href="/testmanage?type=${query.type}&csname=${query.csname}&tsname=${row.name}&tsid=${row.path}">${row.name}</a>`
+              return `<a href="${query.type == 1 ? '/testmanage' : '/Jiaoxue'}?type=${query.type}&csname=${query.csname}&tsname=${row.name}&tsid=${row.path}">${row.name}</a>`
             }
           }
         ],

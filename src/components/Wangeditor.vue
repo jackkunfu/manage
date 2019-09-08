@@ -21,6 +21,9 @@
         this.$emit('input', html)
       }
       editor.create()
+    },
+    beforeDestroy () {
+      this.editorContent = ''
     }
   }
 </script>

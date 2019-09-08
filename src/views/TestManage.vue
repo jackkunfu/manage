@@ -4,27 +4,46 @@
       span {{csName}}/{{tsName}}
       .fr
         span.btn(@click="pageBack") 返回
-    el-tabs(v-model="activeName" type="card" @tab-click="handleTabClick")
+    el-tabs(v-model="activeName" type="card" @tab-click="handleTabClick" lazy)
       el-tab-pane(label="指导书管理" name="1")
-        el-input(placeholder="请输入实验名称搜索" v-model="searchStr")
+        //- el-input(placeholder="请输入实验名称搜索" v-model="searchStr")
           el-button(slot="append" @click="searchTest") 搜索
-        TableCp(:config="config1")
-          template(slot="operate" slot-scope="row")
-            Upload( name="上传" url="/api/admin/labGuide/add" @upSus="upSus" :otherData="{ labId: row.labId }")
+        div
+          .fr
+            el-button(size="mini" @click="$refs.tp1.isAdd = true") 上传指导书
+        TableCp(:config="config1" ref="tp1" :hadleEditItemFn="hadleEditItemFn1")
+          //- template(slot="operate" slot-scope="row")
+            //- Upload( name="上传" url="/api/admin/labGuide/add" @upSus="upSus" :otherData="{ labId: row.labId }")
 
       el-tab-pane(label="标准答案设置" name="2")
-        TableCp(:config="config2")
+        div
+          .fr
+            el-button(size="mini" @click="isAddAns = true") 设置标准答案
+        TableCp(:config="config2" ref="tp2")
+        FixCenter(v-model="isAddAns")
+          el-from(v-mdel="newAns")
+            el-form-item(label="设备节点")
+              el-select(v-model="newAns.labId")
+                el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
+            el-form-item(label="答案")
+              Wangeditor(v-model="newAns.content")
+              //- Upload()
 
       el-tab-pane(label="采分点设置" name="3")
-        TableCp(:config="config3")
+        div
+          .fr
+            el-button(size="mini" @click="$refs.tp3.isAdd = true") 设置采分点
+        TableCp(:config="config3" ref="tp3")
 </template>
 
 <script>
 import TableCp from '@/components/TableCp'
 import Upload from '@/components/Upload'
+import FixCenter from '@/components/FixCenter'
+import Wangeditor from '@/components/Wangeditor.vue'
 export default {
   name: 'TestManage',
-  components: { TableCp, Upload },
+  components: { TableCp, Upload, FixCenter, Wangeditor },
   data () {
     let query = this.$route.query
     return {
@@ -46,13 +65,18 @@ export default {
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: '实验指导书', prop: 'nghdAddress' },
+          { name: '实验指导书', prop: 'title' },
           { name: '作者', prop: 'createBy' },
           { name: '上传时间', prop: 'createtime' }
         ],
-        seachOpt: {}
+        seachOpt: {},
+        editKeys: [
+          { label: '标题', key: 'title' },
+          { label: '内容', key: 'content', isEdt: true }
+        ]
       },
       searchStr: '',
+      isAddAns: false,
       config2: { // 标准答案
         apis: {
           list: { url: '/admin/labAnswer/list' },
@@ -89,12 +113,24 @@ export default {
           { name: '操作时间', prop: 'createtime' }
         ],
         seachOpt: { labId: query.tsid }
-      }
+      },
+      testNodesData: [],
+      newAns: { labId: '', content: '' }
     }
   },
   created () {
+    this.getNodes()
   },
   methods: {
+    async getNodes () {
+      let res = await this._fetch('/api/lab/device/list', { path: this.$route.query.tsid }, 'get')
+      if (res && res.code == 1 && res.data && res.data.topology) this.testNodesData = res.data.topology.nodes || []
+    },
+    hadleEditItemFn1 (data, row) {
+      return {
+        ...data, labId: this.$route.query.tsid
+      }
+    },
     searchTest () {
       this.config.seachOpt.name = this.searchStr.trim()
     },
