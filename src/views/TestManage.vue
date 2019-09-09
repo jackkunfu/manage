@@ -21,19 +21,36 @@
             el-button(size="mini" @click="isAddAns = true") 设置标准答案
         TableCp(:config="config2" ref="tp2")
         FixCenter(v-model="isAddAns")
-          el-from(v-mdel="newAns")
+          el-form(v-model="newAns" label-width="70px")
             el-form-item(label="设备节点")
-              el-select(v-model="newAns.labId")
+              el-select(v-model="newAns.id")
                 el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
             el-form-item(label="答案")
               Wangeditor(v-model="newAns.content")
-              //- Upload()
+            el-form-item
+              el-button(type="primary" @click="addAnsFn") 新增
+              el-button(@click="newAns = {};isAddAns = false;") 取消
 
       el-tab-pane(label="采分点设置" name="3")
         div
           .fr
-            el-button(size="mini" @click="$refs.tp3.isAdd = true") 设置采分点
+            el-button(size="mini" @click="isAddScPoint= true") 设置采分点
         TableCp(:config="config3" ref="tp3")
+        FixCenter(v-model="isAddScPoint")
+          el-form(v-model="newAns")
+            el-form-item
+              div(style="max-height: 400px;overflow: scroll;")
+                div(v-for="(item, i) in scorePoints" style="margin-bottom: 10px;overflow: hidden;")
+                  el-col(:span="10")
+                    el-select(v-model="item.id" placeholder="请选择节点")
+                      el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
+                  el-col(:span="13")
+                    el-input(v-model="item.text")
+            el-form-item
+              el-button(@click="scorePoints.push({})") 新增采分点
+            el-form-item
+              el-button(type="primary" @click="addScorePoint") 新增
+              el-button(@click="scorePoints = [];isAddScPoint = false;") 取消
 </template>
 
 <script>
@@ -115,7 +132,9 @@ export default {
         seachOpt: { labId: query.tsid }
       },
       testNodesData: [],
-      newAns: { labId: '', content: '' }
+      newAns: { labId: '', content: '' },
+      scorePoints: [{}],
+      isAddScPoint: false
     }
   },
   created () {
@@ -128,7 +147,7 @@ export default {
     },
     hadleEditItemFn1 (data, row) {
       return {
-        ...data, labId: this.$route.query.tsid
+        ...data, labId: this.tsId
       }
     },
     searchTest () {
@@ -139,6 +158,20 @@ export default {
     },
     upSus () {
       alert(1)
+    },
+    async addAnsFn () {
+      let res = await this._fetch('/admin/labAnswer/add', { ...this.newAns, labId: this.tsId })
+      if (res && res.code == 1) {
+        this.isAddAns = false
+        this.$refs.tp2._getList()
+      }
+    },
+    async addScorePoint () {
+      let res = await this._fetch('/admin/labAnswer/add', { ...this.newAns, labId: this.tsId })
+      if (res && res.code == 1) {
+        this.isAddScPoint = false
+        this.$refs.tp3._getList()
+      }
     }
   }
 }
