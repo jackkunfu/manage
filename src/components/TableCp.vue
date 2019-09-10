@@ -161,6 +161,7 @@ export default {
     _handleOperate (op, row) {
       if (!op.handleSelf && this[op.fn] && typeof this[op.fn] === 'function') {
         this[op.fn](row, this.tableData)
+        this.$emit(op.fn, row, this.tableData)
       } else {
         this.$emit(op.fn, row, this.tableData)
       }

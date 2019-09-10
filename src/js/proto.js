@@ -12,10 +12,12 @@ export default function (Vue) {
     let res = await axios({
       method: type || 'post',
       url: '/api' + url,
-      // data: data || {},
-      params: data || {},
+      data: type && type === 'get' ? {} : data,
+      // params: type && type === 'get' ? data : {},
+      params: data,
       dataType: 'json',
       headers: {
+        'Content-type': 'application/json',
         token: localStorage.MToken || ''
       }
     })

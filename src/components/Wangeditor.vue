@@ -6,8 +6,19 @@
   import E from 'wangeditor'
   export default {
     name: 'editor',
+    props: ['value'],
+    watch: {
+      value: {
+        immediate: true,
+        handler (v) {
+          this.editorContent = v
+          if (this.editor) this.editor.txt.html(v || '')
+        }
+      }
+    },
     data () {
       return {
+        editor: null,
         editorContent: ''
       }
     },
@@ -15,15 +26,13 @@
       
     },
     mounted() {
-      var editor = new E(this.$refs.editor)
-      editor.customConfig.onchange = (html) => {
+      this.editor = new E(this.$refs.editor)
+      this.editor.customConfig.onchange = (html) => {
         this.editorContent = html
         this.$emit('input', html)
       }
-      editor.create()
-    },
-    beforeDestroy () {
-      this.editorContent = ''
+      this.editor.create()
+      if (this.value) this.editor.txt.html(this.value || '')
     }
   }
 </script>

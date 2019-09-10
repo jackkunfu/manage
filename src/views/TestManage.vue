@@ -19,8 +19,8 @@
         div
           .fr
             el-button(size="mini" @click="isAddAns = true") 设置标准答案
-        TableCp(:config="config2" ref="tp2")
-        FixCenter(v-model="isAddAns")
+        TableCp(:config="config2" ref="tp2" @editAns="editAns")
+        FixCenter(v-model="isAddAns" @close="newAns = {}")
           el-form(v-model="newAns" label-width="70px" size="mini")
             el-form-item(label="设备节点")
               el-select(v-model="newAns.id")
@@ -28,7 +28,7 @@
             el-form-item(label="答案")
               Wangeditor(v-model="newAns.content")
             el-form-item
-              el-button(type="primary" @click="addAnsFn") 新增
+              el-button(type="primary" @click="addAnsFn") 确定
               el-button(@click="newAns = {};isAddAns = false;") 取消
 
       el-tab-pane(label="采分点设置" name="3")
@@ -36,22 +36,23 @@
           .fr
             el-button(size="mini" @click="isAddScPoint= true") 设置采分点
         TableCp(:config="config3" ref="tp3")
-        FixCenter(v-model="isAddScPoint")
-          el-form(v-model="newAns" size="mini")
+        FixCenter(v-model="isAddScPoint" @close="scorePoints = [{}]")
+          el-form(size="mini")
             el-form-item
               div(style="max-height: 400px;overflow: scroll;")
                 div(v-for="(item, i) in scorePoints" style="margin-bottom: 10px;overflow: hidden;")
-                  el-col(:span="7")
-                    el-select(v-model="item.nodeId" placeholder="请选择节点")
+                  el-col(:span="5")
+                    el-select(v-model="item.nodeId" placeholder="请选节点")
                       el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
-                  el-col(:span="6")
-                    el-input(v-model="item.title" placeholder="请输入采分点名称")
-                  el-col(:span="7")
-                    el-input(v-model="item.command" type="textarea" placeholder="请输入命令")
+                  el-col(:span="5")
+                    el-input(v-model="item.title" placeholder="采分点名称")
+                  el-col(:span="8")
+                    el-input(v-model="item.command" type="textarea" placeholder="输入命令")
                   el-col(:span="4")
-                    el-input(v-model="item.score" placeholder="请输入分数")
+                    el-input-number(v-model="item.score" placeholder="请输入分数" :min="0" :max="100")
             el-form-item
-              el-button(@click="scorePoints.push({})") 新增采分点
+              .fr
+                el-button(@click="scorePoints.push({})") 新增
             el-form-item
               el-button(type="primary" @click="addScorePoint") 确定
               el-button(@click="scorePoints = [];isAddScPoint = false;") 取消
@@ -67,6 +68,7 @@ export default {
   components: { TableCp, Upload, FixCenter, Wangeditor },
   data () {
     let query = this.$route.query
+    let vm = this
     return {
       csType: query.type, // 1管理  2教学
       csName: query.csname,
@@ -106,14 +108,19 @@ export default {
           edit: { url: '/admin/labAnswer/update' }
         },
         operates: [
-          { name: '编辑', fn: '_edit', ishow: row => row.id },
+          { name: '编辑', fn: '_edit', ishow: row => row.id, handleSelf: true, fn: 'editAns' },
           { name: '删除', fn: '_del', ishow: row => row.id },
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: 'ID', prop: 'nghdAddress' },
+          { name: 'ID', prop: 'id' },
           { name: 'Name', prop: 'name' },
+          { name: '答案', prop: 'content', html: true, handle: data => data.content },
           { name: '操作时间', prop: 'createtime' }
+        ],
+        editKeys: [
+          { label: '标题', key: 'title' },
+          { label: '内容', key: 'content', isEdt: true }
         ],
         seachOpt: { labId: query.tsid }
       },
@@ -130,8 +137,14 @@ export default {
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: '实验采分点', prop: 'nghdAddress' },
+          { name: '节点名称', prop: 'nodeName' },
+          { name: '实验采分点', prop: 'command' },
           { name: '操作时间', prop: 'createtime' }
+        ],
+        editKeys: [
+          { label: '采分点名称', key: 'title' },
+          { label: '节点', key: 'title', select: true, list: vm.testNodesData },
+          { label: '内容', key: 'content', isEdt: true }
         ],
         seachOpt: { labId: query.tsid }
       },
@@ -146,9 +159,13 @@ export default {
     this.getNodes()
   },
   methods: {
+    editAns (row, arr) {
+      this.newAns = { ...row, id: row.id + '' }
+      this.isAddAns = true
+    },
     async getNodes () {
       let res = await this._fetch('/api/lab/device/list', { path: this.$route.query.tsid }, 'get')
-      if (res && res.code == 1 && res.data && res.data.topology) this.testNodesData = res.data.topology.nodes || []
+      if (res && res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) this.testNodesData = res.data.topology.nodes.node || []
     },
     hadleEditItemFn1 (data, row) {
       return {
@@ -165,18 +182,23 @@ export default {
       alert(1)
     },
     async addAnsFn () {
-      let res = await this._fetch('/admin/labAnswer/add', { ...this.newAns, labId: this.tsId })
+      let url = '/admin/labAnswer/add'
+      if (this.newAns.id) url = '/admin/labAnswer/update'
+      let res = await this._fetch(url, { ...this.newAns, labId: this.tsId })
       if (res && res.code == 1) {
         this.isAddAns = false
+        this.newAns = {}
         this.$refs.tp2._getList()
       }
     },
     async addScorePoint () {
-      let nodeIds = this.testNodesData.map(el => el.nodeId)
+      let testNodesData = this.testNodesData
+      let nodeIds = testNodesData.map(el => el.id)
+      if (this.scorePoints.reduce((res, cur) => res + cur.score, 0) < 100) return this._messageTip('分数不足100')
       let spots = this.scorePoints.filter(el => el.nodeId).map(el => {
-        return { ...el, command: "string", labId: this.tsId, nodeName: this.testNodesData[nodeIds.indexOf(el.nodeId)].name, score: '', title: ''}
+        return { ...el, labId: this.tsId, nodeName: this.testNodesData[nodeIds.indexOf(el.nodeId)].name }
       })
-      let res = await this._fetch('/admin/labSpot/add/batch', { spots })
+      let res = await this._fetch('/admin/labSpot/add/batch', { spots: spots }, 'post')
       if (res && res.code == 1) {
         this.isAddScPoint = false
         this.$refs.tp3._getList()
