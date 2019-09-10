@@ -21,7 +21,7 @@
             el-button(size="mini" @click="isAddAns = true") 设置标准答案
         TableCp(:config="config2" ref="tp2")
         FixCenter(v-model="isAddAns")
-          el-form(v-model="newAns" label-width="70px")
+          el-form(v-model="newAns" label-width="70px" size="mini")
             el-form-item(label="设备节点")
               el-select(v-model="newAns.id")
                 el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
@@ -37,19 +37,23 @@
             el-button(size="mini" @click="isAddScPoint= true") 设置采分点
         TableCp(:config="config3" ref="tp3")
         FixCenter(v-model="isAddScPoint")
-          el-form(v-model="newAns")
+          el-form(v-model="newAns" size="mini")
             el-form-item
               div(style="max-height: 400px;overflow: scroll;")
                 div(v-for="(item, i) in scorePoints" style="margin-bottom: 10px;overflow: hidden;")
-                  el-col(:span="10")
-                    el-select(v-model="item.id" placeholder="请选择节点")
+                  el-col(:span="7")
+                    el-select(v-model="item.nodeId" placeholder="请选择节点")
                       el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
-                  el-col(:span="13")
-                    el-input(v-model="item.text")
+                  el-col(:span="6")
+                    el-input(v-model="item.title" placeholder="请输入采分点名称")
+                  el-col(:span="7")
+                    el-input(v-model="item.command" type="textarea" placeholder="请输入命令")
+                  el-col(:span="4")
+                    el-input(v-model="item.score" placeholder="请输入分数")
             el-form-item
               el-button(@click="scorePoints.push({})") 新增采分点
             el-form-item
-              el-button(type="primary" @click="addScorePoint") 新增
+              el-button(type="primary" @click="addScorePoint") 确定
               el-button(@click="scorePoints = [];isAddScPoint = false;") 取消
 </template>
 
@@ -111,7 +115,7 @@ export default {
           { name: 'Name', prop: 'name' },
           { name: '操作时间', prop: 'createtime' }
         ],
-        seachOpt: {}
+        seachOpt: { labId: query.tsid }
       },
       config3: { // 采分点
         apis: {
@@ -132,7 +136,8 @@ export default {
         seachOpt: { labId: query.tsid }
       },
       testNodesData: [],
-      newAns: { labId: '', content: '' },
+      // newAns: { labId: '', command: '', title: '',  },
+      newAns: {},
       scorePoints: [{}],
       isAddScPoint: false
     }
@@ -167,7 +172,11 @@ export default {
       }
     },
     async addScorePoint () {
-      let res = await this._fetch('/admin/labAnswer/add', { ...this.newAns, labId: this.tsId })
+      let nodeIds = this.testNodesData.map(el => el.nodeId)
+      let spots = this.scorePoints.filter(el => el.nodeId).map(el => {
+        return { ...el, command: "string", labId: this.tsId, nodeName: this.testNodesData[nodeIds.indexOf(el.nodeId)].name, score: '', title: ''}
+      })
+      let res = await this._fetch('/admin/labSpot/add/batch', { spots })
       if (res && res.code == 1) {
         this.isAddScPoint = false
         this.$refs.tp3._getList()
