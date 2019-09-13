@@ -31,6 +31,7 @@
       el-table-column(label="操作" v-if="operates.length > 0" :width="operates.length*100")
         template(slot-scope="{row}")
           el-button(
+            size="mini" style="margin-bottom： 10px;"
             v-for="(op, idx) in operates" :key="idx"
             v-if="!op.ishow || op.ishow(row)"
             @click="_handleOperate(op, row)"
@@ -147,7 +148,7 @@ export default {
         this.tableData = listApi.data
         return
       }
-      console.log(this.seachOpt)
+      // console.log(this.seachOpt)
       let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,

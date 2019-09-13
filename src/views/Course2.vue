@@ -9,6 +9,7 @@ export default {
   name: 'Course1',
   components: { TableCp },
   data () {
+    let vm = this
     return {
       type: 2, // 1管理  2教学
       config: {
@@ -25,8 +26,8 @@ export default {
           {
             name: '实验名称', prop: 'name', html: true,
             handle: row => {
-              if (row.directory) return `<a href="/cslist?type=${this.type}&csname=${row.name}">${row.name}</a>`
-              else return `<a href="${this.type == 1 ? '/testmanage' : '/Jiaoxue'}?type=${this.type}&csname=实验&tsname=${row.name}&tsid=${row.path}">${row.name}</a>`
+              if (row.directory) return `<a href="/cslist?type=${vm.type}&csname=${row.name}">${row.name}</a>`
+              else return `<a href="${vm.type == 1 ? '/testmanage' : '/Jiaoxue'}?type=${vm.type}&csname=实验&tsname=${row.name}&tsid=${row.path}">${row.name}</a>`
             }
           }
         ],

@@ -21,11 +21,11 @@ export default {
           add: { url: '/admin/student/add' },
           edit: { url: '/admin/student/update' }
         },
-        operates: [
-          { name: '编辑', fn: '_edit' },
-          { name: '学员导入', fn: 'export' },
-          { name: '删除', fn: '_del' }
-        ],
+        // operates: [
+        //   { name: '编辑', fn: '_edit' },
+        //   { name: '学员导入', fn: 'export' },
+        //   { name: '删除', fn: '_del' }
+        // ],
         tableItems: [
           { name: '学号', prop: 'name' },
           { name: '姓名', prop: 'name', handle: row => row.admin && row.admin.username },

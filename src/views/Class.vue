@@ -9,7 +9,7 @@
 import TableCp from '@/components/TableCp'
 export default {
   name: 'Class',
-  components: { TableCp, Upload },
+  components: { TableCp },
   data () {
     return {
       config: {
@@ -22,7 +22,7 @@ export default {
         operates: [
           { name: '编辑', fn: '_edit' },
           { name: '学员导入', fn: 'ept' },
-          { name: '删除', fn: '_del' }
+          // { name: '删除', fn: '_del' }
         ],
         tableItems: [
           { name: '班级名称', prop: 'name' },

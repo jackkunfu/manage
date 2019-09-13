@@ -34,7 +34,8 @@
       el-tab-pane(label="采分点设置" name="3")
         div
           .fr
-            el-button(size="mini" @click="isAddScPoint= true") 设置采分点
+            el-button(size="mini" @click="isAddScPoint= true") 批量设置采分点
+            el-button(size="mini" @click="$refs.tp3.isAdd = true") 新增
         TableCp(:config="config3" ref="tp3")
         FixCenter(v-model="isAddScPoint" @close="scorePoints = [{}]")
           el-form(size="mini")
@@ -55,7 +56,7 @@
                 el-button(@click="scorePoints.push({})") 新增
             el-form-item
               el-button(type="primary" @click="addScorePoint") 确定
-              el-button(@click="scorePoints = [];isAddScPoint = false;") 取消
+              el-button(@click="scorePoints = [{}];isAddScPoint = false;") 取消
 </template>
 
 <script>
@@ -142,9 +143,10 @@ export default {
           { name: '操作时间', prop: 'createtime' }
         ],
         editKeys: [
+          { label: '节点', key: 'nodeId', select: true, list: vm.testNodesData },
           { label: '采分点名称', key: 'title' },
-          { label: '节点', key: 'title', select: true, list: vm.testNodesData },
-          { label: '内容', key: 'content', isEdt: true }
+          { label: '命令', key: 'command', isEdt: true },
+          { label: '分数', key: 'score', number: true }
         ],
         seachOpt: { labId: query.tsid }
       },
@@ -198,9 +200,16 @@ export default {
       let spots = this.scorePoints.filter(el => el.nodeId).map(el => {
         return { ...el, labId: this.tsId, nodeName: this.testNodesData[nodeIds.indexOf(el.nodeId)].name }
       })
-      let res = await this._fetch('/admin/labSpot/add/batch', { spots: spots }, 'post')
+      // let res = await this._fetch('/admin/labSpot/add/batch', { spots: spots }, 'post')
+      
+      let res = await axios({
+        method: 'post',
+        url: '/api/admin/labSpot/add/batch',
+        data: spots
+      });
       if (res && res.code == 1) {
         this.isAddScPoint = false
+        this.scorePoints = [{}]
         this.$refs.tp3._getList()
       }
     }
