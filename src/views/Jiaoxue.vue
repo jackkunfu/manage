@@ -59,16 +59,16 @@ export default {
       activeName: '1',
       config1: { // 指导书
         apis: {
-          list: { url: '/admin/labGuide/list' },
+          list: { url: '/admin/labSpotReport/list' },
           del: { url: '/admin/labGuide/delete' },
           add: { url: '/admin/labGuide/add' },
           edit: { url: '/admin/labGuide/update' }
         },
-        operates: [
-          { name: '编辑', fn: '_edit', ishow: row => row.id },
-          { name: '删除', fn: '_del', ishow: row => row.id },
-          // { name: '上传', fn: 'up', ishow: row => row.id }
-        ],
+        // operates: [
+        //   { name: '编辑', fn: '_edit', ishow: row => row.id },
+        //   { name: '删除', fn: '_del', ishow: row => row.id },
+        //   // { name: '上传', fn: 'up', ishow: row => row.id }
+        // ],
         tableItems: [
           { name: '实验指导书', prop: 'nghdAddress' },
           { name: '作者', prop: 'createBy' },
