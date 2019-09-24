@@ -26,7 +26,8 @@
               el-select(v-model="newAns.id")
                 el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
             el-form-item(label="答案")
-              Wangeditor(v-model="newAns.content")
+              //- Wangeditor(v-model="newAns.content")
+              el-input(size="mini" type="textarea" v-model="newAns.content")
             el-form-item
               el-button(type="primary" @click="addAnsFn") 确定
               el-button(@click="newAns = {};isAddAns = false;") 取消
@@ -36,7 +37,7 @@
           .fr
             el-button(size="mini" @click="isAddScPoint= true") 批量设置采分点
             el-button(size="mini" @click="$refs.tp3.isAdd = true") 新增
-        TableCp(:config="config3" ref="tp3")
+        TableCp(:config="config3" ref="tp3" :hadleEditItemFn="hadleEditItemFnPoint")
         FixCenter(v-model="isAddScPoint" @close="scorePoints = [{}]")
           el-form(size="mini")
             el-form-item
@@ -145,7 +146,7 @@ export default {
         editKeys: [
           { label: '节点', key: 'nodeId', select: true, list: vm.testNodesData },
           { label: '采分点名称', key: 'title' },
-          { label: '命令', key: 'command', isEdt: true },
+          { label: '命令', key: 'command', textarea: true },
           { label: '分数', key: 'score', number: true }
         ],
         seachOpt: { labId: query.tsid }
@@ -167,12 +168,27 @@ export default {
     },
     async getNodes () {
       let res = await this._fetch('/api/lab/device/list', { path: this.$route.query.tsid }, 'get')
-      if (res && res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) this.testNodesData = res.data.topology.nodes.node || []
+      if (res && res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) {
+        this.testNodesData = res.data.topology.nodes.node || []
+        this.config3.editKeys[0].list = this.testNodesData.map(el => {
+          let data = el
+          data.label = el.name
+          data.value = el.id
+          return data
+        })
+      }
     },
     hadleEditItemFn1 (data, row) {
-      return {
-        ...data, labId: this.tsId
-      }
+      let el = data
+      el.labId = this.tsId
+      return el
+    },
+    hadleEditItemFnPoint (data, row) {
+      let item = data
+      item.labId = this.tsId
+      // console.log(el)
+      item.nodeName = this.testNodesData.filter(el => el.id == item.nodeId)[0].name
+      return item
     },
     searchTest () {
       this.config.seachOpt.name = this.searchStr.trim()
@@ -185,7 +201,7 @@ export default {
     },
     async addAnsFn () {
       let url = '/admin/labAnswer/add'
-      if (this.newAns.id) url = '/admin/labAnswer/update'
+      // if (this.newAns.id) url = '/admin/labAnswer/update'
       let res = await this._fetch(url, { ...this.newAns, labId: this.tsId })
       if (res && res.code == 1) {
         this.isAddAns = false

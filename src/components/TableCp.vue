@@ -133,7 +133,7 @@ export default {
     }
   },
   created () {
-    this._getList()
+    if (!this.config.firstNoReq) this._getList()
   },
   watch: {
     isAdd (v) {
@@ -141,14 +141,15 @@ export default {
     }
   },
   methods: {
-    async _getList () {
+    async _getList (p) {
       let listApi = this.apis.list || {}
       let isDataList = listApi.isList
       if (listApi.data && listApi.data.length) {
         this.tableData = listApi.data
         return
       }
-      // console.log(this.seachOpt)
+      console.log(this.seachOpt)
+      if (p) this.pageInfo.cur = p
       let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,
@@ -158,6 +159,7 @@ export default {
         this.tableData = isDataList ? (res.data || []) : (res.data.list || [])
         this.pageInfo.total = res.data.total || 0
       }
+      return res // 暴漏给外部使用
     },
     _handleOperate (op, row) {
       if (!op.handleSelf && this[op.fn] && typeof this[op.fn] === 'function') {
