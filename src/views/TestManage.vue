@@ -28,6 +28,8 @@
             el-form-item(label="答案")
               //- Wangeditor(v-model="newAns.content")
               el-input(size="mini" type="textarea" v-model="newAns.content")
+            el-form-item(label="是否展示")
+              el-switch(size="mini" v-model="newAns.display")
             el-form-item
               el-button(type="primary" @click="addAnsFn") 确定
               el-button(@click="newAns = {};isAddAns = false;") 取消
@@ -201,8 +203,10 @@ export default {
     },
     async addAnsFn () {
       let url = '/admin/labAnswer/add'
+      let testNodesData = this.testNodesData
+      let nodeIds = testNodesData.map(el => el.id)
       // if (this.newAns.id) url = '/admin/labAnswer/update'
-      let res = await this._fetch(url, { ...this.newAns, labId: this.tsId })
+      let res = await this._fetch(url, { ...this.newAns, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(this.newAns.nodeId)].name })
       if (res && res.code == 1) {
         this.isAddAns = false
         this.newAns = {}
@@ -214,7 +218,7 @@ export default {
       let nodeIds = testNodesData.map(el => el.id)
       if (this.scorePoints.reduce((res, cur) => res + cur.score, 0) < 100) return this._messageTip('分数不足100')
       let spots = this.scorePoints.filter(el => el.nodeId).map(el => {
-        return { ...el, labId: this.tsId, nodeName: this.testNodesData[nodeIds.indexOf(el.nodeId)].name }
+        return { ...el, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(el.nodeId)].name }
       })
       // let res = await this._fetch('/admin/labSpot/add/batch', { spots: spots }, 'post')
       

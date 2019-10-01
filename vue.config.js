@@ -23,8 +23,8 @@ module.exports = {
     open: false, // 配置自动启动浏览器
     proxy: {
       '/api': {
-        target: 'http://47.99.201.236:9000',
-        // target: 'http://6x8iiy.natappfree.cc',
+        // target: 'http://47.99.201.236:9000',
+        target: 'http://5jzmsn.natappfree.cc',
         pathRewrite: { '^/api': '' },
         changeOrigin: true
       }

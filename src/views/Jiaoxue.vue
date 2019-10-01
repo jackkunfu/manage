@@ -72,8 +72,8 @@ export default {
         //   // { name: '上传', fn: 'up', ishow: row => row.id }
         // ],
         tableItems: [
-          { name: '学号', prop: 'nghdAddress', handle: data => { return data.student.sno } },
-          { name: '姓名', prop: 'createBy', handle: data => { return data.student.name } },
+          { name: '学号', prop: 'sno', handle: data => { return data.student.sno } },
+          { name: '姓名', prop: 'name', handle: data => { return data.student.name } },
           { name: '提交时间', prop: 'createtime' },
           { name: '得分', prop: 'score' }
         ],
@@ -96,9 +96,13 @@ export default {
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: 'ID', prop: 'nghdAddress' },
-          { name: 'Name', prop: 'name' },
-          { name: '操作时间', prop: 'createtime' }
+          { name: '学号', prop: 'sno', handle: data => { return data.student.sno } },
+          { name: '姓名', prop: 'name', handle: data => { return data.student.name } },
+          { name: '提交时间', prop: 'createtime' },
+          { name: '得分', prop: 'score', handle: data => data.result.score },
+          { name: '操作人', prop: 'score', handle: data => data.result.score },
+          { name: '实验报告打分', prop: 'score', handle: data => data.result.score },
+          { name: '评语', prop: 'score', handle: data => data.result.score },
         ],
         seachOpt: { cid: vm.searchClassId }
       },
