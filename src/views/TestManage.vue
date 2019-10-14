@@ -206,7 +206,7 @@ export default {
       let testNodesData = this.testNodesData
       let nodeIds = testNodesData.map(el => el.id)
       // if (this.newAns.id) url = '/admin/labAnswer/update'
-      let res = await this._fetch(url, { ...this.newAns, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(this.newAns.nodeId)].name })
+      let res = await this._fetch(url, { ...this.newAns, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(this.newAns.id)].name })
       if (res && res.code == 1) {
         this.isAddAns = false
         this.newAns = {}

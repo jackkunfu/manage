@@ -11,7 +11,9 @@ export default function (Vue) {
   Vue.prototype._fetch = async function (url, data, type) {
     let res = await axios({
       method: type || 'post',
-      url: '/api' + url,
+      // url: '/api' + url,
+      // url: 'http://47.99.201.236:9000' + url,
+      url: 'http://4uxqz8.natappfree.cc' + url,
       data: type && type === 'get' ? {} : data,
       // params: type && type === 'get' ? data : {},
       params: data,
