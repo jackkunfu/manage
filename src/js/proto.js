@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { Loading } from 'element-ui'
 export default function (Vue) {
+  Vue.prototype.reqBasic = 'http://4uxqz8.natappfree.cc'
+
   Vue.prototype.goLogin = function () {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })
     this.$router.push({ path: '/' })
@@ -13,7 +15,7 @@ export default function (Vue) {
       method: type || 'post',
       // url: '/api' + url,
       // url: 'http://47.99.201.236:9000' + url,
-      url: 'http://4uxqz8.natappfree.cc' + url,
+      url: this.reqBasic + url,
       data: type && type === 'get' ? {} : data,
       // params: type && type === 'get' ? data : {},
       params: data,

@@ -17,7 +17,8 @@ export default {
   },
   data () {
     return {
-      actionUrl: this.url || '/api/admin/file/upload'
+      // actionUrl: this.url || '/api/admin/file/upload'
+      actionUrl: this.url || this.reqBasic + '/api/admin/file/upload'
     }
   },
   created () {

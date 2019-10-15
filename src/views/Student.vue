@@ -1,7 +1,7 @@
 <template lang="pug">
   .plat_desc
     .fr
-      Upload(name="学员批量导入" url="/api/admin/student/import" @upSus="upSus" :otherData="{}")
+      Upload(name="学员批量导入" :url="reqBasic + '/api/admin/student/import'" @upSus="upSus" :otherData="{}")
     TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept")
 </template>
 
