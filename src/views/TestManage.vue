@@ -225,9 +225,14 @@ export default {
       let res = await axios({
         method: 'post',
         url: '/api/admin/labSpot/add/batch',
-        data: spots
+        data: spots,
+        headers: {
+          'Content-type': 'application/json',
+          token: localStorage.MToken || ''
+        }
       });
-      if (res && res.code == 1) {
+      if (res && res.data && res.data.code == 1) {
+        this._messageTip('添加成功', 1)
         this.isAddScPoint = false
         this.scorePoints = [{}]
         this.$refs.tp3._getList()

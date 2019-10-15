@@ -72,8 +72,8 @@ export default {
         //   // { name: '上传', fn: 'up', ishow: row => row.id }
         // ],
         tableItems: [
-          { name: '学号', prop: 'sno', handle: data => { return data.student.sno } },
-          { name: '姓名', prop: 'name', handle: data => { return data.student.name } },
+          { name: '学号', prop: 'sno', handle: data => { return data.student && data.student.sno || '' } },
+          { name: '姓名', prop: 'name', handle: data => { return data.student && data.student.name || ''} },
           { name: '提交时间', prop: 'createtime' },
           { name: '得分', prop: 'score' }
         ],
@@ -96,8 +96,8 @@ export default {
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: '学号', prop: 'sno', handle: data => { return data.student.sno } },
-          { name: '姓名', prop: 'name', handle: data => { return data.student.name } },
+          { name: '学号', prop: 'sno', handle: data => { return data.student && data.student.sno } },
+          { name: '姓名', prop: 'name', handle: data => { return data.student && data.student.name } },
           { name: '提交时间', prop: 'createtime' },
           { name: '得分', prop: 'score', handle: data => data.result.score },
           { name: '操作人', prop: 'score', handle: data => data.result.score },

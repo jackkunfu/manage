@@ -22,7 +22,7 @@ export default {
           { name: '删除', fn: '_del' }
         ],
         tableItems: [
-          { name: '标题', prop: 'name' },
+          { name: '标题', prop: 'name', html: true, handle: item => `<a target="_blank" href="${item.url}">${item.name}</a>` },
           { name: '作者', prop: 'createBy' },
           { name: '上传时间', prop: 'createtime' }
         ],
