@@ -1,6 +1,7 @@
 <template lang="pug">
   .plat_desc
     .fr
+      el-button(size="mini" @click="downEc" style="margin-right: 10px;padding: 9 15px;") 学生模板下载
       Upload(name="学员批量导入" :url="reqBasic + '/api/admin/student/import'" @upSus="upSus" :otherData="{}")
     TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept")
 </template>
@@ -41,6 +42,9 @@ export default {
   created () {
   },
   methods: {
+    downEc () {
+      window.open(this.reqBasic + '/admin/student/import/template')
+    },
     hadleEditItemFn (data, row) {
       return {
         ...data, status: data.status || false, category: 'notify'
@@ -49,7 +53,9 @@ export default {
     ept (row) {
       this._goUrl('/stu', { query: { cid: row.id, cname: row.name } })
     },
-    upSus () {}
+    upSus () {
+      this.$refs.tp._getList()
+    }
   }
 }
 </script>

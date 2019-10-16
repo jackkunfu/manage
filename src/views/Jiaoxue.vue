@@ -17,7 +17,7 @@
             el-button(size="mini") 导出Excel
         TableCp(:config="config1" ref="tp1")
           template(slot="operate" slot-scope="row")
-            Upload(name="上传" :url="reqBasic + '/api/admin/labGuide/add'" @upSus="upSus" :otherData="{ labId: row.labId }")
+            Upload(name="上传" :url="reqBasic + '/admin/labGuide/add'" @upSus="upSus" :otherData="{ labId: row.labId }")
 
       el-tab-pane(label="实验报告" name="2")
         div(style="margin-bottom: 20px;'")
@@ -229,7 +229,7 @@ export default {
       console.log(b)
     },
     upSus () {
-      alert(1)
+      this.searchTp1()
     },
     searchTp1 () {
       this.$refs.tp1._getList()

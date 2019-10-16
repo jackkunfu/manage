@@ -23,7 +23,7 @@
         FixCenter(v-model="isAddAns" @close="newAns = {}")
           el-form(v-model="newAns" label-width="70px" size="mini")
             el-form-item(label="设备节点")
-              el-select(v-model="newAns.id")
+              el-select(v-model="newAns.nodeId")
                 el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
             el-form-item(label="答案")
               //- Wangeditor(v-model="newAns.content")
@@ -93,7 +93,7 @@ export default {
         ],
         tableItems: [
           { name: '实验指导书', prop: 'title' },
-          { name: '作者', prop: 'createBy' },
+          { name: '作者', prop: 'createBy', handle: data => data.admin && data.admin.name || '' },
           { name: '上传时间', prop: 'createtime' }
         ],
         seachOpt: {},
@@ -206,7 +206,7 @@ export default {
       let testNodesData = this.testNodesData
       let nodeIds = testNodesData.map(el => el.id)
       // if (this.newAns.id) url = '/admin/labAnswer/update'
-      let res = await this._fetch(url, { ...this.newAns, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(this.newAns.id)].name })
+      let res = await this._fetch(url, { ...this.newAns, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(this.newAns.nodeId)].name })
       if (res && res.code == 1) {
         this.isAddAns = false
         this.newAns = {}
@@ -224,7 +224,7 @@ export default {
       
       let res = await axios({
         method: 'post',
-        url: '/api/admin/labSpot/add/batch',
+        url: this.reqBasic + '/admin/labSpot/add/batch',
         data: spots,
         headers: {
           'Content-type': 'application/json',

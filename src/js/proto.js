@@ -36,10 +36,10 @@ export default function (Vue) {
     } else throw new Error('请求失败')
   }
 
-  Vue.prototype.$loading = function (url, data, type) {
-    let loading = Loading.serveice()
-    return loading
-  }
+  // Vue.prototype.$loading = function (url, data, type) {
+  //   let loading = Loading.service()
+  //   return loading
+  // }
 
   Vue.prototype.pageBack = function () {
     window.history.go(-1)

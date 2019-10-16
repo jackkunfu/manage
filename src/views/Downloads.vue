@@ -35,7 +35,7 @@ export default {
   methods: {
     upSus (res, file, fileList) {
       this._messageTip('上传成功', 1)
-      this.$refs.TableCp.getList()
+      this.$refs.TableCp._getList()
     }
   }
 }
