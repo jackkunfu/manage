@@ -143,6 +143,7 @@ export default {
         tableItems: [
           { name: '节点名称', prop: 'nodeName' },
           { name: '实验采分点', prop: 'command' },
+          { name: '分值', prop: 'score', handle: data => { return (data.score || 0) + '分' } },
           { name: '操作时间', prop: 'createtime' }
         ],
         editKeys: [
@@ -206,7 +207,7 @@ export default {
       let testNodesData = this.testNodesData
       let nodeIds = testNodesData.map(el => el.id)
       // if (this.newAns.id) url = '/admin/labAnswer/update'
-      let res = await this._fetch(url, { ...this.newAns, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(this.newAns.nodeId)].name })
+      let res = await this._fetch(url, { ...this.newAns, display: this.newAns.display || false, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(this.newAns.nodeId)].name })
       if (res && res.code == 1) {
         this.isAddAns = false
         this.newAns = {}

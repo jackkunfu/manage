@@ -216,7 +216,7 @@ export default {
       if (res && res.code == 1 && res.data) {
         this.classList = res.data.list || []
         if (this.classList.length > 0) {
-            this.searchClassId = this.classList[0].id
+          this.searchClassId = this.classList[0].id
         }
       }
     },
