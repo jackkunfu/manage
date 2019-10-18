@@ -203,7 +203,7 @@ export default {
       alert(1)
     },
     async addAnsFn () {
-      let url = '/admin/labAnswer/add'
+      let url = this.newAns.id ? '/admin/labAnswer/update' : '/admin/labAnswer/add'
       let testNodesData = this.testNodesData
       let nodeIds = testNodesData.map(el => el.id)
       // if (this.newAns.id) url = '/admin/labAnswer/update'

@@ -1,6 +1,7 @@
 <template lang="pug">
   el-container.ctn
     el-header
+      span.span 网络工程虚拟仿真管理后台
       .fr
         span {{userName}}
         el-button(size="mini" @click="logout" style="margin: 15px 0 0 10px;") 退出登录
@@ -68,7 +69,13 @@ export default {
 <style lang="scss" scoped>
 .ctn {
   .el-header {
-    border-bottom: 1px solid #e6e6e6;
+    // border-bottom: 1px solid #e6e6e6;
+    background: #3c8dbc;
+    > span {
+      line-height: 60px;
+      color: #c4ce73;
+      font-size: 20px;
+    }
   }
   .el-main {
     padding: 0;
@@ -83,6 +90,11 @@ export default {
   }
   .el-menu {
     height: 100%;
+    background: #3c8dbc;
+    li {
+      border-top: 1px solid #fff;
+      // color: #aaa;
+    }
   }
 }
 </style>
