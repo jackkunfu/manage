@@ -21,8 +21,8 @@ export default {
         },
         operates: [
           { name: '编辑', fn: '_edit' },
-          { name: '学员导入', fn: 'ept' },
-          // { name: '删除', fn: '_del' }
+          { name: '学员', fn: 'ept' },
+          { name: '删除', fn: '_del' }
         ],
         tableItems: [
           { name: '班级名称', prop: 'name' },

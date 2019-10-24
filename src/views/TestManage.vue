@@ -118,9 +118,10 @@ export default {
         ],
         tableItems: [
           { name: 'ID', prop: 'id' },
-          { name: 'Name', prop: 'name' },
+          { name: '节点名称', prop: 'nodeName' },
           { name: '答案', prop: 'content', html: true, handle: data => data.content },
-          { name: '操作时间', prop: 'createtime' }
+          { name: '操作时间', prop: 'createtime' },
+          { name: '是否展示', prop: 'display', handle: data => data.display ? '是' : '否' }
         ],
         editKeys: [
           { label: '标题', key: 'title' },
