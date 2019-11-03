@@ -77,7 +77,7 @@ export default {
           { name: '提交时间', prop: 'createtime' },
           { name: '得分', prop: 'score' }
         ],
-        searchOpt: { cid: vm.searchClassId }
+        seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
       },
       searchClassId: '',
       classList: [],
@@ -99,12 +99,12 @@ export default {
           { name: '学号', prop: 'sno', handle: data => { return data.student && data.student.sno } },
           { name: '姓名', prop: 'name', handle: data => { return data.student && data.student.name } },
           { name: '提交时间', prop: 'createtime' },
-          { name: '得分', prop: 'score', handle: data => data.result.score },
-          { name: '操作人', prop: 'score', handle: data => data.result.score },
-          { name: '实验报告打分', prop: 'score', handle: data => data.result.score },
-          { name: '评语', prop: 'score', handle: data => data.result.score },
+          { name: '得分', prop: 'score', handle: data => data.result && data.result.score || '' },
+          { name: '操作人', prop: 'score', handle: data => data.result && data.result.score || '' },
+          { name: '实验报告打分', prop: 'score', handle: data => data.result && data.result.score || '' },
+          { name: '评语', prop: 'score', handle: data => data.result && data.result.score || '' }
         ],
-        seachOpt: { cid: vm.searchClassId }
+        seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
       },
       config3: { // 数据统计
         firstNoReq: true,
@@ -122,7 +122,7 @@ export default {
           { name: '分值', prop: 'score' },
           { name: '错误率', prop: 'errRate', handle: data => data.errRate + '%' }
         ],
-        seachOpt: { cid: vm.searchClassId }
+        seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
       }
     }
   },
@@ -132,11 +132,12 @@ export default {
   mounted () {},
   watch: {
     async searchClassId (v) { // 班级改变，同时改变所有tab的数据
-      this.$refs.tp1.seachOpt = { cid: this.searchClassId }
+      let query = this.$route.query
+      this.$refs.tp1.seachOpt = { cid: this.searchClassId, labId: query.tsid }
       this.$refs.tp1._getList(1)
-      this.$refs.tp2.seachOpt = { cid: this.searchClassId }
+      this.$refs.tp2.seachOpt = { cid: this.searchClassId, labId: query.tsid }
       this.$refs.tp2._getList(1)
-      this.$refs.tp3.seachOpt = { cid: this.searchClassId }
+      this.$refs.tp3.seachOpt = { cid: this.searchClassId, labId: query.tsid }
       var data = await this.$refs.tp3._getList(1)
       this.handleRef3Data(data)
     }

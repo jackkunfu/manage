@@ -96,7 +96,7 @@ export default {
           { name: '作者', prop: 'createBy', handle: data => data.admin && data.admin.name || '' },
           { name: '上传时间', prop: 'createtime' }
         ],
-        seachOpt: {},
+        seachOpt: { labId: query.tsid },
         editKeys: [
           { label: '标题', key: 'title' },
           { label: '内容', key: 'content', isEdt: true }

@@ -47,9 +47,9 @@ export default {
           { name: '删除', fn: '_del' }
         ],
         tableItems: [
-          { name: '学号', prop: 'name' },
-          { name: '姓名', prop: 'name', handle: row => row.admin && row.admin.username },
-          { name: '性别', prop: '' }
+          { name: '学号', prop: 'sno' },
+          { name: '姓名', prop: 'name' },
+          { name: '性别', prop: 'sex', handle: row => row.sex ? '男' : '女' }
         ],
         seachOpt: { cid: query.cid },
         editKeys: [
