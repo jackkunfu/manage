@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  Vue.prototype.reqBasic = 'http://4tjp4m.natappfree.cc'
+  Vue.prototype.reqBasic = 'http://frk5y9.natappfree.cc'
 
   Vue.prototype.goLogin = function () {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })
@@ -11,6 +11,7 @@ export default function (Vue) {
   }
 
   Vue.prototype._fetch = async function (url, data, type) {
+    let loading = this.$loading()
     let res = await axios({
       method: type || 'post',
       // url: '/api' + url,
@@ -25,6 +26,7 @@ export default function (Vue) {
         token: localStorage.MToken || ''
       }
     })
+    loading.close()
     let result = res.data
     if (result) {
       if (result.code === -1) {

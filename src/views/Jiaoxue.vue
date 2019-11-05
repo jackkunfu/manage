@@ -24,7 +24,16 @@
           el-select(v-model="searchClassId" size="mini")
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
           span.s_btn(@click="searchTp2") 搜索
-        TableCp(:config="config2" ref="tp2")
+        TableCp(:config="config2" ref="tp2" @setScore="setScore")
+        el-dialog(:visible.sync="isEditScore" :before-close="closeSetScore")
+          el-form(v-model="editScore" label-width="80px" size="mini")
+            el-form-item(label="评分")
+              el-input-number(v-model="editScore.score" placeholder="请输入分数" :min="0" :max="100")
+            el-form-item(label="评语")
+              el-input(v-model="editScore.content" placeholder="请输入评语")
+          .op-btns
+            el-button(@click="scoreAjax" size="mini") 确定
+            el-button(@click="closeSetScore" size="mini") 取消
 
       el-tab-pane(label="数据统计" name="3")
         div(style="margin-bottom: 20px;'")
@@ -82,6 +91,8 @@ export default {
       searchClassId: '',
       classList: [],
       searchStr: '',
+      isEditScore: false,
+      editScore: {},
       config2: { // 报告
         firstNoReq: true,
         apis: {
@@ -93,6 +104,7 @@ export default {
         operates: [
           { name: '编辑', fn: '_edit', ishow: row => row.id },
           { name: '删除', fn: '_del', ishow: row => row.id },
+          { name: '打分评语', fn: 'setScore', ishow: row => row.id }
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
@@ -102,7 +114,7 @@ export default {
           // { name: '得分', prop: 'score', handle: data => data.result && data.result.score || '' },
           { name: '操作人', prop: 'score', handle: data => data.user && data.user.name || '' },
           { name: '实验报告打分', prop: 'score', handle: data => data.result && data.result.score || '' },
-          { name: '评语', prop: 'score', handle: data => data.result && data.result.score || '' }
+          { name: '评语', prop: 'score', handle: data => data.result && data.result.content || '' }
         ],
         seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
       },
@@ -143,6 +155,26 @@ export default {
     }
   },
   methods: {
+    setScore (row) {
+      this.isEditScore = true
+      this.editScore = {
+        resportId: row.id, score: row.result && row.result.score || 0, content: row.result && row.result.content || ''
+      }
+    },
+    closeSetScore () {
+      this.isEditScore = false
+      this.editScore = {}
+    },
+    async scoreAjax () {
+      let res = await this._fetch('/admin/labReportResult', this.editScore);
+      if (res && res.code == 1) {
+        this._messageTip(res.msg || '操作成功', 1)
+        this.closeSetScore();
+        this.$refs.tp2._getList();
+      } else {
+        this._messageTip(res.msg || '操作成功')
+      }
+    },
     chartSetData (dom, opts) {
       dom.setOption(opts)
     },

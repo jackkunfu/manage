@@ -19,8 +19,8 @@
             el-option(label="男" :value="true")
             el-option(label="女" :value="false")
       .op-btns
-        el-button(@click="editOk") 确定
-        el-button(@click="editClose") 取消
+        el-button(@click="editOk" size="mini") 确定
+        el-button(@click="editClose" size="mini") 取消
 </template>
 
 <script>
