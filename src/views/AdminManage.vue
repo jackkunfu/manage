@@ -35,6 +35,7 @@ export default {
         editKeys: [
           { label: '姓名', key: 'name' },
           { label: '手机号', key: 'phone' },
+          { label: '角色', key: 'role', select: true, list: [{ label: '管理员', value: 0 }, { label: '教师', value: 1 }] },
           { label: '账号', key: 'username' },
           { label: '密码', key: 'password' }
         ]

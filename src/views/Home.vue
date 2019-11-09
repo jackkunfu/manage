@@ -61,7 +61,14 @@ export default {
     }
   },
   mounted () {
-    if (this.$route.path === '/') this._goUrl('/adminManage')
+    if (this.$route.path === '/') {
+      this.activeUrl = '/course1'
+      this._goUrl('/course1')
+    } else if (this.$route.path === '/testmanage') {
+      this.activeUrl = '/course1'
+    } else if (this.$route.path === '/Jiaoxue') {
+      this.activeUrl = '/course2'
+    }
   }
 }
 </script>
@@ -70,11 +77,11 @@ export default {
 .ctn {
   .el-header {
     // border-bottom: 1px solid #e6e6e6;
-    background: #3c8dbc;
+    background: #00AAEE;
     > span {
       line-height: 60px;
       color: #c4ce73;
-      font-size: 20px;
+      font-size: 25px;
     }
   }
   .el-main {
@@ -90,10 +97,21 @@ export default {
   }
   .el-menu {
     height: 100%;
-    background: #3c8dbc;
+    background: #00AAEE;
     li {
       border-top: 1px solid #fff;
-      // color: #aaa;
+      color: #fff;
+      font-size: 16px;
+      &.is-active {
+        background: #00AAEE;
+        text-align: center;
+        font-size: 18px;
+      }
+      &:hover {
+        background: #00AAEE;
+        text-align: center;
+        font-size: 18px;
+      }
     }
   }
 }

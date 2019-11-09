@@ -36,6 +36,7 @@ export default {
       newStu: { sex: true },
       classList: [],
       config: {
+        tbIndex: true,
         apis: {
           list: { url: '/admin/student/list' },
           del: { url: '/admin/student/delete' },
