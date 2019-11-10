@@ -22,8 +22,9 @@ export default {
   components: {
   },
   data () {
+    let user = JSON.parse(localStorage.EVENGFRONTUSER).user
     return {
-      userName: localStorage.EVENGFRONTUSER,
+      userName: user && user.auth || 'admidsdsdn',
       activeUrl: this.$route.path,
       menus: [
         // { name: '实验教学', path: '/jiaoxue' },
@@ -34,7 +35,7 @@ export default {
         { name: '资料下载', path: '/downloads' },
         { name: '通知中心', path: '/notices' },
         { name: '学生中心', path: '/class' },
-        { name: '管理员设置', path: '/adminManage' }
+        // { name: '管理员设置', path: '/adminManage' }
       ]
       // menus: [
       //   {
@@ -68,6 +69,11 @@ export default {
       this.activeUrl = '/course1'
     } else if (this.$route.path === '/Jiaoxue') {
       this.activeUrl = '/course2'
+    }
+    // console.log(localStorage.EVENGFRONTUSER)
+    let user = JSON.parse(localStorage.EVENGFRONTUSER).user
+    if (user && user.auth == 'admin') {
+      this.menus.push({ name: '管理员设置', path: '/adminManage' })
     }
   }
 }

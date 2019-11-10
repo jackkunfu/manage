@@ -153,7 +153,7 @@ export default {
         this.tableData = listApi.data
         return
       }
-      console.log(this.seachOpt)
+      // console.log(this.seachOpt)
       if (p) this.pageInfo.cur = p
       let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,

@@ -27,7 +27,8 @@ export default {
       let res = await this._fetch('/admin/user/login', this.formData, 'post')
       if (res && res.code === 1) {
         localStorage.setItem('MToken', res.data.token)
-        localStorage.setItem('EVENGFRONTUSER', this.formData.username.trim())
+        // localStorage.setItem('EVENGFRONTUSER', this.formData.username.trim())
+        localStorage.setItem('EVENGFRONTUSER', JSON.stringify(res.data || {}));
         this.$store.commit('setStoreData', { key: 'isLogin', value: false })
       }
     }

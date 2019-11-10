@@ -110,6 +110,14 @@ export default {
         tableItems: [
           { name: '学号', prop: 'sno', handle: data => { return data.user && data.user.sno || '' } },
           { name: '姓名', prop: 'name', handle: data => { return data.user && data.user.name || '' } },
+          { name: '报告', prop: 'url', html: true,
+            handle: data => {
+              // return data.user && data.user.name || ''
+              let fileNameSps = data.url.split('/')
+              let fn = fileNameSps[fileNameSps.length - 1]
+              return '<a href="' + data.url + '" download="' + fn + '">' + fn + '</a>'
+            }
+          },
           { name: '提交时间', prop: 'createtime' },
           // { name: '得分', prop: 'score', handle: data => data.result && data.result.score || '' },
           { name: '操作人', prop: 'score', handle: data => data.user && data.user.name || '' },
