@@ -102,7 +102,7 @@ export default {
           edit: { url: '/admin/labReport/update' }
         },
         operates: [
-          { name: '编辑', fn: '_edit', ishow: row => row.id },
+          // { name: '编辑', fn: '_edit', ishow: row => row.id },
           { name: '删除', fn: '_del', ishow: row => row.id },
           { name: '打分评语', fn: 'setScore', ishow: row => row.id }
           // { name: '上传', fn: 'up', ishow: row => row.id }
@@ -113,13 +113,13 @@ export default {
           { name: '报告', prop: 'url', html: true,
             handle: data => {
               // return data.user && data.user.name || ''
-              let fileNameSps = data.url.split('/')
+              let file = data.content
+              let fileNameSps = file.split('/')
               let fn = fileNameSps[fileNameSps.length - 1]
-              return '<a href="' + data.url + '" download="' + fn + '">' + fn + '</a>'
+              return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;">' + fn + '</a>'
             }
           },
           { name: '提交时间', prop: 'createtime' },
-          // { name: '得分', prop: 'score', handle: data => data.result && data.result.score || '' },
           { name: '操作人', prop: 'score', handle: data => data.user && data.user.name || '' },
           { name: '实验报告打分', prop: 'score', handle: data => data.result && data.result.score || '' },
           { name: '评语', prop: 'score', handle: data => data.result && data.result.content || '' }
