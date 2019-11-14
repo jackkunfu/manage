@@ -13,8 +13,8 @@
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
           span.s_btn(@click="searchTp1") 搜索
           .fr
-            el-button(size="mini") 重新批阅
-            el-button(size="mini") 导出Excel
+            el-button(size="mini" @click="redo" style="background: rgba(102, 204, 0, 1);color: #fff;") 重新批阅
+            el-button(size="mini" @click="etPeizhi" style="background: rgba(60, 141, 188, 1);color: #fff;") 导出Excel
         TableCp(:config="config1" ref="tp1")
           template(slot="operate" slot-scope="row")
             Upload(name="上传" :url="reqBasic + '/admin/labGuide/add'" @upSus="upSus" :otherData="{ labId: row.labId }")
@@ -24,6 +24,8 @@
           el-select(v-model="searchClassId" size="mini")
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
           span.s_btn(@click="searchTp2") 搜索
+          .fr
+            el-button(size="mini" @click="etBaogao" style="background: rgba(60, 141, 188, 1);color: #fff;") 导出Excel
         TableCp(:config="config2" ref="tp2" @setScore="setScore")
         el-dialog(:visible.sync="isEditScore" :before-close="closeSetScore")
           el-form(v-model="editScore" label-width="80px" size="mini")
@@ -41,7 +43,6 @@
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
           span.s_btn(@click="searchTp3") 搜索
           .fr
-            el-button(size="mini") 导出Excel
         .bar(style="width: 300px;height: 300px;")
         .pie(style="width: 300px;height: 300px;")
         TableCp(:config="config3" ref="tp3")
@@ -163,6 +164,41 @@ export default {
     }
   },
   methods: {
+    async redo () {
+      let res = await this._fetch('/admin/labSpotReport/redo', { cid: this.searchClassId, labId: this.tsId }, 'post')
+      if (res && res.code == 1) {
+        this._messageTip(res.msg || '操作成功', 1)
+      } else {
+        this._messageTip(res.msg || '操作失败')
+      }
+    },
+    async etPeizhi () {
+      window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId)
+
+      // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
+
+      // let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId, { cid: this.searchClassId, labId: this.tsId }, { responseType: 'blob' })
+      // if (res && res.code == 1) {
+      //   var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.wordprocessingml.document这里表示doc类型
+      //   var downloadElement = document.createElement('a');
+      //   var href = window.URL.createObjectURL(blob); //创建下载的链接
+      //   downloadElement.style.display = 'none';
+      //   downloadElement.href = href;
+      //   downloadElement.download = filename ; //下载后文件名
+      //   document.body.appendChild(downloadElement);
+      //   downloadElement.click(); //点击下载
+      //   document.body.removeChild(downloadElement); //下载完成移除元素
+      //   window.URL.revokeObjectURL(href);
+      // }
+    },
+    async etBaogao () {
+      // window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId)
+      // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
+      let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId, { cid: this.searchClassId, labId: this.tsId }, { responseType: 'blob' })
+      if (res && res.code == 1) {
+
+      }
+    },
     setScore (row) {
       this.isEditScore = true
       this.editScore = {
