@@ -116,8 +116,9 @@ export default {
               // return data.user && data.user.name || ''
               let file = data.content
               let fileNameSps = file.split('/')
-              let fn = fileNameSps[fileNameSps.length - 1]
-              return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;">' + fn + '</a>'
+              let fn = (data.user && data.user.name || '') + fileNameSps[fileNameSps.length - 1]
+              // return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;">' + fn + '</a>'
+              return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;">下载报告</a>'
             }
           },
           { name: '提交时间', prop: 'createtime' },
@@ -178,26 +179,50 @@ export default {
       // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
 
       // let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId, { cid: this.searchClassId, labId: this.tsId }, { responseType: 'blob' })
-      // if (res && res.code == 1) {
-      //   var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.wordprocessingml.document这里表示doc类型
-      //   var downloadElement = document.createElement('a');
-      //   var href = window.URL.createObjectURL(blob); //创建下载的链接
-      //   downloadElement.style.display = 'none';
-      //   downloadElement.href = href;
-      //   downloadElement.download = filename ; //下载后文件名
-      //   document.body.appendChild(downloadElement);
-      //   downloadElement.click(); //点击下载
-      //   document.body.removeChild(downloadElement); //下载完成移除元素
-      //   window.URL.revokeObjectURL(href);
-      // }
+      // axios.get(
+      //   this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId,
+      //   { cid: this.searchClassId, labId: this.tsId },
+      //   { responseType: 'stream', headers: { 'content-type': 'application/x-www-form-urlencoded' } }
+      // ).then(res => {
+      //   console.log('res')
+      //   console.log(res)
+      // })
+      // let res = await axios({
+      //   methods: 'get',
+      //   url: this.reqBasic + '/admin/labSpotReport/export',
+      //   params: { cid: this.searchClassId, labId: this.tsId },
+      //   // responseType: 'blob',
+      //   responseType: 'stream',
+      //   // headers: { 'content-type': 'application/x-www-form-urlencoded' }
+      //   // headers: {
+      //   //   'Content-Type': 'application/json;'
+          
+      //   // }
+      // })
+      return
+      console.log('res.data')
+      console.log(res.data)
+      if (res && res.code == 1) {
+        // var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.wordprocessingml.document这里表示doc类型
+        var blob = new Blob([res.data]);
+        var downloadElement = document.createElement('a');
+        var href = window.URL.createObjectURL(blob); //创建下载的链接
+        downloadElement.style.display = 'none';
+        downloadElement.href = href;
+        downloadElement.download = filename ; //下载后文件名
+        document.body.appendChild(downloadElement);
+        downloadElement.click(); //点击下载
+        document.body.removeChild(downloadElement); //下载完成移除元素
+        window.URL.revokeObjectURL(href);
+      }
     },
     async etBaogao () {
-      // window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId)
+      window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId)
       // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
-      let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId, { cid: this.searchClassId, labId: this.tsId }, { responseType: 'blob' })
-      if (res && res.code == 1) {
+      // let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId, { cid: this.searchClassId, labId: this.tsId }, { responseType: 'blob' })
+      // if (res && res.code == 1) {
 
-      }
+      // }
     },
     setScore (row) {
       this.isEditScore = true

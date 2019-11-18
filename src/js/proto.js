@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  Vue.prototype.reqBasic = 'http://df3xs8.natappfree.cc'
+  Vue.prototype.reqBasic = 'http://myu4mq.natappfree.cc'
 
   Vue.prototype.goLogin = function () {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })
@@ -22,7 +22,7 @@ export default function (Vue) {
       params: data,
       dataType: 'json',
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
         token: localStorage.MToken || ''
       }
     })
