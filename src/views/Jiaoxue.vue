@@ -43,8 +43,8 @@
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
           span.s_btn(@click="searchTp3") 搜索
           .fr
-        .bar(style="width: 500px;height: 300px;")
-        .pie(style="width: 300px;height: 300px;")
+        .bar(style="width: 600px;height: 400px;")
+        .pie(style="width: 600px;height: 400px;")
         TableCp(:config="config3" ref="tp3")
 </template>
 
@@ -298,25 +298,26 @@ export default {
               name:'访问来源',
               type:'pie',
               radius: ['50%', '70%'],
-              avoidLabelOverlap: false,
-              label: {
-                normal: {
-                  show: false,
-                  position: 'center'
-                },
-                emphasis: {
-                  show: true,
-                  textStyle: {
-                    fontSize: '30',
-                    fontWeight: 'bold'
-                  }
-                }
-              },
-              labelLine: {
-                normal: {
-                  show: false
-                }
-              },
+              avoidLabelOverlap: true,
+              stillShowZeroSum: true,
+              // label: {
+              //   normal: {
+              //     show: false,
+              //     position: 'center'
+              //   },
+              //   emphasis: {
+              //     show: true,
+              //     textStyle: {
+              //       fontSize: '30',
+              //       fontWeight: 'bold'
+              //     }
+              //   }
+              // },
+              // labelLine: {
+              //   normal: {
+              //     show: false
+              //   }
+              // },
               data: data.spot.map(el => ({ value: el.errRate, name: el.title }))
               // data: data.stat && data.stat.length ? Object.keys(data.stat[0]).map(el => {
               //   return { value: data.stat[0][el], name: el } 
