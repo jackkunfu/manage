@@ -118,7 +118,7 @@ export default {
               let fileNameSps = file.split('/')
               let fn = (data.user && data.user.name || '') + fileNameSps[fileNameSps.length - 1]
               // return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;">' + fn + '</a>'
-              return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;">下载报告</a>'
+              return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;" target="_blank">下载报告</a>'
             }
           },
           { name: '提交时间', prop: 'createtime' },
