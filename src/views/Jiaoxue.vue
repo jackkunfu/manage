@@ -43,7 +43,7 @@
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
           span.s_btn(@click="searchTp3") 搜索
           .fr
-        .bar(style="width: 300px;height: 300px;")
+        .bar(style="width: 500px;height: 300px;")
         .pie(style="width: 300px;height: 300px;")
         TableCp(:config="config3" ref="tp3")
 </template>
@@ -251,28 +251,47 @@ export default {
       let data = res.data || {}
       this.$refs.tp3.tableData = data.spot || []
       this.$nextTick(() => {
+        let stat = (data.stat || [])[0] || {}
+        let xx = ['0-59', '60-69', '70-79', '80-89', '90-100']
+        let yy = [stat.lv1 || 0, stat.lv2 || 0, stat.lv3 || 0, stat.lv4 || 0, stat.lv5 || 0]
         this.chartSetData(echarts.init(document.querySelector('.bar')), {
           xAxis: {
             type: 'category',
-            data: data.spot.map(el => el.title)
+            // data: data.spot.map(el => el.title)
+            data: xx
           },
           yAxis: {
               type: 'value'
           },
           series: [{
-            data: data.spot.map(el => el.num),
-            type: 'line'
+            // data: data.spot.map(el => el.num),
+            data: yy,
+            type: 'bar'
           }]
         })
+        // this.chartSetData(echarts.init(document.querySelector('.bar')), {
+        //   xAxis: {
+        //     type: 'category',
+        //     data: data.spot.map(el => el.title)
+        //   },
+        //   yAxis: {
+        //       type: 'value'
+        //   },
+        //   series: [{
+        //     data: data.spot.map(el => el.num),
+        //     type: 'bar'
+        //   }]
+        // })
         this.chartSetData(echarts.init(document.querySelector('.pie')), {
           tooltip: {
             trigger: 'item',
-            formatter: "{a} <br/>{b}: {c} ({d}%)"
+            // formatter: "{a} <br/>{b}: {c} ({d}%)"
+            formatter: "{b} ({c}%)"
           },
           legend: {
             orient: 'vertical',
             x: 'left',
-            data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+            // data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
           },
           series: [
             {
@@ -298,9 +317,10 @@ export default {
                   show: false
                 }
               },
-              data: data.stat && data.stat.length ? Object.keys(data.stat[0]).map(el => {
-                return { value: data.stat[0][el], name: el } 
-              }) : []
+              data: data.spot.map(el => ({ value: el.errRate, name: el.title }))
+              // data: data.stat && data.stat.length ? Object.keys(data.stat[0]).map(el => {
+              //   return { value: data.stat[0][el], name: el } 
+              // }) : []
               // [
               //   {value:335, name:'直接访问'},
               //   {value:310, name:'邮件营销'},
