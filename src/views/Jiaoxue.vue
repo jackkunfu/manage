@@ -43,7 +43,9 @@
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
           span.s_btn(@click="searchTp3") 搜索
           .fr
+        div 成绩分布统计
         .bar(style="width: 600px;height: 400px;")
+        div(style="margin-bottom: 20px;") 采分点错误率统计
         .pie(style="width: 600px;height: 400px;")
         TableCp(:config="config3" ref="tp3")
 </template>
@@ -257,15 +259,18 @@ export default {
         this.chartSetData(echarts.init(document.querySelector('.bar')), {
           xAxis: {
             type: 'category',
+            axisTick: { alignWithLabel: true },
             // data: data.spot.map(el => el.title)
             data: xx
           },
+          grid: { top: '6%' },
           yAxis: {
               type: 'value'
           },
           series: [{
             // data: data.spot.map(el => el.num),
             data: yy,
+            barWidth: '40%',
             type: 'bar'
           }]
         })
@@ -368,6 +373,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-tabs {
+  .el-tabs__header {
+    border-bottom: 1px solid #00aaee;
+    .el-tabs__item {
+      border-left: 1px solid #00aaee;
+      &:first-child {
+        border-left: none;
+      }
+      &.is-active {
+        background: #00aaee;
+        color: #fff;
+        border-bottom-color: transparent;
+      }
+    }
+  }
+  .el-tabs__nav {
+    border: 1px solid #00aaee;
+  }
+}
+
 .s_btn {
   cursor: pointer;
   margin-left: 10px;

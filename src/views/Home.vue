@@ -83,11 +83,11 @@ export default {
 .ctn {
   .el-header {
     // border-bottom: 1px solid #e6e6e6;
-    background: #00AAEE;
+    background: #3c8dbc;
     > span {
       line-height: 60px;
-      color: #c4ce73;
-      font-size: 25px;
+      color: #fff;
+      font-size: 20px;
     }
   }
   .el-main {
@@ -103,19 +103,17 @@ export default {
   }
   .el-menu {
     height: 100%;
-    background: #00AAEE;
+    background: #f2f2f2;
     li {
-      border-top: 1px solid #fff;
-      color: #fff;
+      color: #5E5E5E;
       font-size: 16px;
+      text-align: center;
       &.is-active {
-        background: #00AAEE;
-        text-align: center;
+        background: #fff;
         font-size: 18px;
       }
       &:hover {
-        background: #00AAEE;
-        text-align: center;
+        background: #fff;
         font-size: 18px;
       }
     }
