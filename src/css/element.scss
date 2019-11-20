@@ -11,3 +11,23 @@
     margin-bottom: 20px;
   }
 }
+
+.el-tabs {
+  .el-tabs__header {
+    border-bottom: 1px solid #00aaee;
+    .el-tabs__item {
+      border-left: 1px solid #00aaee;
+      &:first-child {
+        border-left: none;
+      }
+      &.is-active {
+        background: #00aaee;
+        color: #fff;
+        border-bottom-color: transparent;
+      }
+    }
+  }
+  .el-tabs__nav {
+    border: 1px solid #00aaee!important;
+  }
+}

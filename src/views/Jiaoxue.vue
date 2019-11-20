@@ -11,10 +11,10 @@
         div(style="margin-bottom: 20px;'")
           el-select(v-model="searchClassId" size="mini")
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
-          span.s_btn(@click="searchTp1") 搜索
+          span.s_btn(@click="searchTp1") 查询
           .fr
-            el-button(size="mini" @click="redo" style="background: rgba(102, 204, 0, 1);color: #fff;") 重新批阅
-            el-button(size="mini" @click="etPeizhi" style="background: rgba(60, 141, 188, 1);color: #fff;") 导出Excel
+            el-button(size="small" @click="redo" style="background: rgba(102, 204, 0, 1);color: #fff;") 重新批阅
+            el-button(size="small" @click="etPeizhi" style="background: rgba(60, 141, 188, 1);color: #fff;") 导出Excel
         TableCp(:config="config1" ref="tp1")
           template(slot="operate" slot-scope="row")
             Upload(name="上传" :url="reqBasic + '/admin/labGuide/add'" @upSus="upSus" :otherData="{ labId: row.labId }")
@@ -171,6 +171,7 @@ export default {
       let res = await this._fetch('/admin/labSpotReport/redo', { cid: this.searchClassId, labId: this.tsId }, 'post')
       if (res && res.code == 1) {
         this._messageTip(res.msg || '操作成功', 1)
+        this.$refs.tp1._getList(1)
       } else {
         this._messageTip(res.msg || '操作失败')
       }
@@ -373,28 +374,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-tabs {
-  .el-tabs__header {
-    border-bottom: 1px solid #00aaee;
-    .el-tabs__item {
-      border-left: 1px solid #00aaee;
-      &:first-child {
-        border-left: none;
-      }
-      &.is-active {
-        background: #00aaee;
-        color: #fff;
-        border-bottom-color: transparent;
-      }
-    }
-  }
-  .el-tabs__nav {
-    border: 1px solid #00aaee;
-  }
-}
-
 .s_btn {
+  display: inline-block;
+  width: 80px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 0;
+  background: rgba(60, 141, 188, 1);
+  color: #fff;
+  font-size: 12px;
 }
 </style>
