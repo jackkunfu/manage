@@ -218,7 +218,7 @@ export default {
     async addScorePoint () {
       let testNodesData = this.testNodesData
       let nodeIds = testNodesData.map(el => el.id)
-      if (this.scorePoints.reduce((res, cur) => res + cur.score, 0) < 100) return this._messageTip('分数不足100')
+      // if (this.scorePoints.reduce((res, cur) => res + cur.score, 0) < 100) return this._messageTip('分数不足100')
       let spots = this.scorePoints.filter(el => el.nodeId).map(el => {
         return { ...el, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(el.nodeId)].name }
       })

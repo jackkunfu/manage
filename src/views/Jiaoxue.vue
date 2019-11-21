@@ -44,9 +44,9 @@
           span.s_btn(@click="searchTp3") 搜索
           .fr
         div 成绩分布统计
-        .bar(style="width: 600px;height: 400px;")
+        .bar.chart
         div(style="margin-bottom: 20px;") 采分点错误率统计
-        .pie(style="width: 600px;height: 400px;")
+        .pie.chart
         TableCp(:config="config3" ref="tp3")
 </template>
 
@@ -374,6 +374,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.chart {
+  width: 1100px;
+  height: 500px;
+}
 .s_btn {
   display: inline-block;
   width: 80px;
