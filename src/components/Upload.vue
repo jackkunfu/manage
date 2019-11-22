@@ -3,7 +3,7 @@
     el-upload(
       :action="actionUrl" :data="otherData" :show-file-list="false" :headers="headers"
       :on-success="handleSuccess" :on-error="handleError" :on-progress="handleProgress"
-      :before-upload="beforeUp"
+      :before-upload="beforeUp" :accept="accept"
     )
       el-button(size="small" type="primary") {{name}}
 </template>
@@ -14,7 +14,8 @@ export default {
   props: {
     name: String,
     url: String,
-    otherData: {}
+    otherData: {},
+    accept: ''
   },
   data () {
     return {
@@ -23,7 +24,8 @@ export default {
       headers: {
         token: localStorage.MToken || ''
       },
-      loading: null
+      loading: null,
+      // accept: ''
     }
   },
   created () {

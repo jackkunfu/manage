@@ -10,10 +10,11 @@
           el-button(slot="append" @click="searchTest") 搜索
         div
           .fr
-            el-button(size="mini" @click="$refs.tp1.isAdd = true") 上传指导书
-        TableCp(:config="config1" ref="tp1" :hadleEditItemFn="hadleEditItemFn1")
+            //- el-button(size="mini" @click="$refs.tp1.isAdd = true") 上传指导书
+            Upload(name="上传指导书" @upSus="upSus" accept=".pdf")
+        TableCp(:config="config1" ref="tp1" :hadleEditItemFn="hadleEditItemFn1" @downZhidao="downZhidao")
           //- template(slot="operate" slot-scope="row")
-            //- Upload( name="上传" url="/api/admin/labGuide/add" @upSus="upSus" :otherData="{ labId: row.labId }")
+          //-   Upload(name="上传" url="/api/admin/labGuide/add" @upSus="upSus" :otherData="{ labId: row.labId }")
 
       el-tab-pane(label="标准答案设置" name="2")
         div
@@ -87,7 +88,8 @@ export default {
           edit: { url: '/admin/labGuide/update' }
         },
         operates: [
-          { name: '编辑', fn: '_edit', ishow: row => row.id },
+          { name: '下载', fn: 'downZhidao', ishow: row => row.id },
+          // { name: '编辑', fn: '_edit', ishow: row => row.id },
           { name: '删除', fn: '_del', ishow: row => row.id },
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
@@ -166,6 +168,17 @@ export default {
     this.getNodes()
   },
   methods: {
+    downZhidao (data) {
+      // window.open(data.content)
+      let a = document.createElement('a');
+      a.href = data.content
+      a.target = '_blank'
+      a.download = data.title
+      a.style = "display: none;"
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    },
     editAns (row, arr) {
       this.newAns = { ...row, id: row.id + '' }
       this.isAddAns = true
@@ -200,8 +213,18 @@ export default {
     handleTabClick (tabVm) {
       console.log(tabVm)
     },
-    upSus () {
-      alert(1)
+    async upSus (res) {
+      // console.log(data)
+      if (res.code == 1) {
+        let file = res.data || {}
+        let req = await this._fetch(this.config1.apis.add.url, {
+          title: file.name || '', content: file.url || '', labId: this.tsId
+        })
+        if (req && req.code == 1) {
+          this._messageTip(req.msg || '操作成功', 1)
+          this.$refs.tp1._getList(1)
+        }
+      }
     },
     async addAnsFn () {
       let url = this.newAns.id ? '/admin/labAnswer/update' : '/admin/labAnswer/add'
