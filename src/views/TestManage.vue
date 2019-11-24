@@ -11,7 +11,7 @@
         div
           .fr
             //- el-button(size="mini" @click="$refs.tp1.isAdd = true") 上传指导书
-            Upload(name="上传指导书" @upSus="upSus" accept=".pdf")
+            Upload(name="上传指导书(pdf)" @upSus="upSus" accept=".pdf")
         TableCp(:config="config1" ref="tp1" :hadleEditItemFn="hadleEditItemFn1" @downZhidao="downZhidao")
           //- template(slot="operate" slot-scope="row")
           //-   Upload(name="上传" url="/api/admin/labGuide/add" @upSus="upSus" :otherData="{ labId: row.labId }")
