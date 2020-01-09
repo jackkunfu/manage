@@ -1,7 +1,7 @@
 <template lang="pug">
   .downloads
     .fr
-      Upload(name="上传" @upSus="upSus" :otherData="{}")
+      Upload(name="上传" @upSus="upSus" :otherData="otherObj" :beforeFn="beforeFn")
     TableCp(:config="config" ref="TableCp")
 </template>
 
@@ -27,7 +27,8 @@ export default {
           { name: '上传时间', prop: 'createtime' }
         ],
         seachOpt: { name: '' }
-      }
+      },
+      otherObj: { name: '' }
     }
   },
   created () {
@@ -36,6 +37,15 @@ export default {
     upSus (res, file, fileList) {
       this._messageTip('上传成功', 1)
       this.$refs.TableCp._getList()
+    },
+    beforeFn () {
+      return true
+      //
+      var a = prompt('请输入名称')
+      if (a && a.trim() != '') {
+        this.otherObj = { name: a.trim() }
+        return true
+      } else return false
     }
   }
 }

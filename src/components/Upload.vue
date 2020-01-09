@@ -1,7 +1,7 @@
 <template lang="pug">
   .upload
     el-upload(
-      :action="actionUrl" :data="otherData" :show-file-list="false" :headers="headers"
+      :action="actionUrl" :data="otherDataObj" :show-file-list="false" :headers="headers"
       :on-success="handleSuccess" :on-error="handleError" :on-progress="handleProgress"
       :before-upload="beforeUp" :accept="accept"
     )
@@ -14,8 +14,9 @@ export default {
   props: {
     name: String,
     url: String,
-    otherData: {},
-    accept: ''
+    otherData: Object,
+    beforeFn: Function,
+    accept: String
   },
   data () {
     return {
@@ -25,7 +26,13 @@ export default {
         token: localStorage.MToken || ''
       },
       loading: null,
-      // accept: ''
+      otherDataObj: {}
+    }
+  },
+  watch: {
+    otherData (v) {
+      // alert(v.name)
+      this.otherDataObj = v
     }
   },
   created () {
@@ -33,6 +40,15 @@ export default {
   methods: {
     beforeUp () {
       this.loading = this.$loading()
+      if (this.beforeFn) {
+        var data = this.beforeFn()
+        if (data) {
+          console.log(data)
+          // this.otherDataObj = 
+          return true
+        }
+        return false
+      }
       return true
     },
     handleSuccess (res, file, fileList) {

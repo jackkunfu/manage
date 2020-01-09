@@ -6,7 +6,7 @@
         el-form-item(label="账号")
           el-input(v-model="formData.username")
         el-form-item(label="密码")
-          el-input(v-model="formData.password")
+          el-input(v-model="formData.password" type="password")
 
       el-button(@click="fn") 登录
 

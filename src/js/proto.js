@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  Vue.prototype.reqBasic = 'http://u627fn.natappfree.cc'
+  Vue.prototype.reqBasic = 'http://bbddkb.natappfree.cc'
 
   Vue.prototype.goLogin = function () {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })

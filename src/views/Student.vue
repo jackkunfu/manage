@@ -7,7 +7,7 @@
     TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept" @edit="editItem")
     el-dialog(:visible.sync="editVisible" :before-close="editClose")
       el-form(v-model="newStu" label-width="80px" size="mini")
-        el-form-item(label="班级")
+        //- el-form-item(label="班级")
           el-select(v-model="newStu.cid")
             el-option(v-for="(each, idx) in classList" :key="idx" :label="each.name" :value="each.id")
         el-form-item(label="姓名")
@@ -44,7 +44,7 @@ export default {
           edit: { url: '/admin/student/update' }
         },
         operates: [
-          { name: '编辑', fn: '_edit', handleSelf: true, fn: 'edit' },
+          { name: '编辑', handleSelf: true, fn: 'edit' },
           { name: '删除', fn: '_del' }
         ],
         tableItems: [
@@ -54,16 +54,16 @@ export default {
         ],
         seachOpt: { cid: query.cid },
         editKeys: [
-          { label: '班级名称', key: 'cid', select: true, list: [] },
+          // { label: '班级名称', key: 'cid', select: true, list: [] },
           { label: '姓名', key: 'name' },
           { label: '学号', key: 'sno' },
-          { label: '性别', key: 'sex', select: true, list: [{label: '男', value: true}, {label: '女', value: false}] }
+          { label: '性别', key: 'sex', select: true, list: [{ label: '男', value: true }, { label: '女', value: false }] }
         ]
       }
     }
   },
   created () {
-    this.getClassList()
+    // this.getClassList()
   },
   methods: {
     editItem (item) {
@@ -72,6 +72,7 @@ export default {
     },
     async editOk () {
       let url = this.newStu.id ? '/admin/student/update' : '/admin/student/add'
+      this.newStu.cid = this.$route.query.cid
       let res = await this._fetch(url, this.newStu)
       if (res) {
         if (res.code == 1) {
@@ -86,12 +87,12 @@ export default {
       this.newStu = { sex: true }
       this.editVisible = false
     },
-    async getClassList () {
-      let res = await this._fetch('/admin/classes/list', { pageNum: 1, pageSize: 100 }, 'get')
-      if (res && res.code == 1 && res.data) {
-        this.classList = res.data.list || []
-      }
-    },
+    // async getClassList () {
+    //   let res = await this._fetch('/admin/classes/list', { pageNum: 1, pageSize: 100 }, 'get')
+    //   if (res && res.code == 1 && res.data) {
+    //     this.classList = res.data.list || []
+    //   }
+    // },
     downEc () {
       window.open(this.reqBasic + '/admin/student/import/template')
     },
