@@ -2,7 +2,14 @@
   .downloads
     .fr
       Upload(name="上传" @upSus="upSus" :otherData="otherObj" :beforeFn="beforeFn")
-    TableCp(:config="config" ref="TableCp")
+    TableCp(:config="config" ref="TableCp" @update="updateName")
+    el-dialog(:visible.sync="editVisible" :before-close="editClose")
+      el-form(v-model="newStu" label-width="80px" size="mini")
+        el-form-item(label="文件名称")
+          el-input(v-model="newStu.name" placeholder="请输入名称")
+      .op-btns
+        el-button(@click="editOk" size="mini") 确定
+        el-button(@click="editClose" size="mini") 取消
 </template>
 
 <script>
@@ -19,7 +26,8 @@ export default {
           del: { url: '/admin/file/delete' }
         },
         operates: [
-          { name: '删除', fn: '_del' }
+          { name: '删除', fn: '_del' },
+          { name: '更改名称', fn: 'update', handleSelf: true }
         ],
         tableItems: [
           { name: '标题', prop: 'name', html: true, handle: item => `<a target="_blank" href="${item.url}">${item.name}</a>` },
@@ -28,19 +36,36 @@ export default {
         ],
         seachOpt: { name: '' }
       },
-      otherObj: { name: '' }
+      otherObj: { name: '' },
+      newStu: { name: '' },
+      editVisible: false
     }
   },
   created () {
   },
   methods: {
+    updateName (data) {
+      this.newStu.id = data.id
+      this.editVisible = true
+    },
+    async editOk () {
+      let res = await this._fetch('/admin/file/update', this.newStu)
+      if (res && res.code == 1) {
+        this.$refs.TableCp._getList()
+        this._messageTip(res.msg || '操作成功', 1)
+        this.editClose()
+      } else this._messageTip(res.msg || '操作失败')
+    },
+    editClose () {
+      this.newStu.name = ''
+      this.newStu.id = ''
+      this.editVisible = false
+    },
     upSus (res, file, fileList) {
       this._messageTip('上传成功', 1)
       this.$refs.TableCp._getList()
     },
     beforeFn () {
-      return true
-      //
       var a = prompt('请输入名称')
       if (a && a.trim() != '') {
         this.otherObj = { name: a.trim() }

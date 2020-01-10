@@ -29,26 +29,18 @@ export default {
       otherDataObj: {}
     }
   },
-  watch: {
-    otherData (v) {
-      // alert(v.name)
-      this.otherDataObj = v
-    }
-  },
-  created () {
-  },
   methods: {
     beforeUp () {
       this.loading = this.$loading()
-      if (this.beforeFn) {
-        var data = this.beforeFn()
-        if (data) {
-          console.log(data)
-          // this.otherDataObj = 
-          return true
-        }
-        return false
-      }
+      // if (this.beforeFn) {
+      //   var data = this.beforeFn()
+      //   if (data) {
+      //     console.log(data)
+      //     // this.otherDataObj = 
+      //     return true
+      //   }
+      //   return false
+      // }
       return true
     },
     handleSuccess (res, file, fileList) {
