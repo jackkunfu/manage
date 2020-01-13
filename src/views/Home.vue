@@ -36,6 +36,7 @@ export default {
         { name: '通知中心', path: '/notices' },
         { name: '学生中心', path: '/class' },
         // { name: '管理员设置', path: '/adminManage' }
+        { name: '使用介绍', path: '/usedesc' }
       ]
       // menus: [
       //   {

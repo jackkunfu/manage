@@ -26,6 +26,7 @@ export default new Router({
         { path: '/platdesc', name: 'jiaoxue', component: () => import('./views/PlatDesc.vue') },
         { path: '/downloads', name: 'jiaoxue', component: () => import('./views/Downloads.vue') },
         { path: '/notices', name: 'notices', component: () => import('./views/Notices.vue') },
+        { path: '/usedesc', name: 'usedesc', component: () => import('./views/UseDesc.vue') },
         { path: '/class', name: 'class', component: () => import('./views/Class.vue') },
         { path: '/stu', name: 'stu', component: () => import('./views/Student.vue') },
         { path: '/adminManage', name: 'adminManage', component: () => import('./views/AdminManage.vue') }
