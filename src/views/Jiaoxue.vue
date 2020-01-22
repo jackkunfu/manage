@@ -27,7 +27,7 @@
           .fr
             el-button(size="mini" @click="etBaogao" style="background: rgba(60, 141, 188, 1);color: #fff;") 导出Excel
         TableCp(:config="config2" ref="tp2" @setScore="setScore")
-        el-dialog(:visible.sync="isEditScore" :before-close="closeSetScore")
+        el-dialog(:visible.sync="isEditScore" :before-close="closeSetScore" :close-on-click-modal="false")
           el-form(v-model="editScore" label-width="80px" size="mini")
             el-form-item(label="评分")
               el-input-number(v-model="editScore.score" placeholder="请输入分数" :min="0" :max="100")

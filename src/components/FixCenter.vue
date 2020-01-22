@@ -1,5 +1,5 @@
 <template lang="pug">
-  el-dialog(:visible.sync="editVisible" :before-close="handleDialogClose")
+  el-dialog(:visible.sync="editVisible" :before-close="handleDialogClose" :close-on-click-modal="false")
     slot
 </template>
 

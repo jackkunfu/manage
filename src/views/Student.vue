@@ -5,7 +5,7 @@
       el-button(size="mini" @click="downEc" style="margin-right: 10px;padding: 9 15px;") 学生模板下载
       Upload(name="学员批量导入" :url="reqBasic + '/admin/student/import'" @upSus="upSus" :otherData="{}")
     TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept" @edit="editItem")
-    el-dialog(:visible.sync="editVisible" :before-close="editClose")
+    el-dialog(:visible.sync="editVisible" :before-close="editClose" :close-on-click-modal="false")
       el-form(v-model="newStu" label-width="80px" size="mini")
         //- el-form-item(label="班级")
           el-select(v-model="newStu.cid")

@@ -51,7 +51,7 @@
     //- 编辑弹窗
     el-dialog(
       :visible.sync="editVisible" :before-close="_handleEditClose"
-      v-if="editKeys && editKeys.length"
+      v-if="editKeys && editKeys.length" :close-on-click-modal="false"
     )
       el-form(v-model="curOperateRow" label-width="80px" size="mini")
         el-form-item(v-for="(item, i) in editKeys" :label="item.label" :key="i")

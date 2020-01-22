@@ -3,7 +3,7 @@
     .fr
       Upload(name="上传" @upSus="upSus" :otherData="otherObj" :beforeFn="beforeFn")
     TableCp(:config="config" ref="TableCp" @update="updateName")
-    el-dialog(:visible.sync="editVisible" :before-close="editClose")
+    el-dialog(:visible.sync="editVisible" :before-close="editClose" :close-on-click-modal="false")
       el-form(v-model="newStu" label-width="80px" size="mini")
         el-form-item(label="文件名称")
           el-input(v-model="newStu.name" placeholder="请输入名称")
