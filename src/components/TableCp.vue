@@ -74,6 +74,12 @@
           el-input-number(v-else-if="item.number" v-model="curOperateRow[item.key]")
           el-input(v-else-if="item.textarea" type="textarea" v-model="curOperateRow[item.key]")
           Wangeditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
+          el-upload(
+            v-else-if="item.upload" v-model="curOperateRow[item.key]" limit="1"
+            action="/api/admin/file/upload" list-type="picture" accept="image/jpg,image/jpeg,image/png"
+            :on-success="data => upSus(data, item)" :before-remove="file => beforeRm(file, item)"
+          )
+            el-button(size="mini") 点击上传
           el-input(v-else v-model="curOperateRow[item.key]" placeholder="请输入")
       .op-btns
         el-button(@click="_editSure") 确定
@@ -146,6 +152,13 @@ export default {
     }
   },
   methods: {
+    beforeRm (file, item) {
+      this.curOperateRow[item.key] = ''
+    },
+    upSus (res, item) {
+      console.log(res, item);
+      if (res && res.code === 1) this.curOperateRow[item.key] = (res.data || {}).url || ''
+    },
     async _getList (p) {
       let listApi = this.apis.list || {}
       let isDataList = listApi.isList
