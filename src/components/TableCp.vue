@@ -73,7 +73,8 @@
           el-switch(v-else-if="item.switch" v-model="curOperateRow[item.key]")
           el-input-number(v-else-if="item.number" v-model="curOperateRow[item.key]")
           el-input(v-else-if="item.textarea" type="textarea" v-model="curOperateRow[item.key]")
-          Wangeditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
+          //- Wangeditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
+          QuillEditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
           el-upload(
             v-else-if="item.upload" v-model="curOperateRow[item.key]" :limit="1"
             action="/api/admin/file/upload" list-type="picture" accept="image/jpg,image/jpeg,image/png"
@@ -106,9 +107,10 @@
  *------------
  */
 import Wangeditor from '@/components/Wangeditor.vue'
+import QuillEditor from '@/components/quillEditor.vue'
 export default {
   name: 'TableCp',
-  components: { Wangeditor },
+  components: { Wangeditor, QuillEditor },
   props: {
     config: {
       apis: {},

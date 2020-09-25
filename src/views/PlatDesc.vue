@@ -2,7 +2,7 @@
   .plat_desc
     .fr
       el-button(@click="$refs.tp.isAdd = true" size="mini") 新增
-    TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn")
+    TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" :selfAdd="selfAdd" :selfEdit="selfEdit")
 </template>
 
 <script>
@@ -45,6 +45,15 @@ export default {
       return {
         ...data, status: data.status || false, category: 'introduce'
       }
+    },
+    selfAdd (row, editObj) {
+      editObj.image = ''
+      editObj.content = ''
+    },
+    selfEdit (row, editObj) {
+      // console.log(row, editObj)
+      editObj.image = row.image
+      editObj.content = row.content
     }
   }
 }
