@@ -15,11 +15,11 @@
         //- img, 须配置 handle方法处理返回结果
         template(v-if="item.img")
           el-table-column(:label="item.name" :key="i")
-            img(slot-scope="{row}" :src="item.handle ? item.handle(row, tableData) : item.prop")
+            img(slot-scope="{row}" :src="item.handle ? item.handle(row, tableData) : row[item.prop]" style="height: 100px;")
         //- video, 须配置 handle方法处理返回结果
         template(v-else-if="item.video")
           el-table-column(:label="item.name" :key="i")
-            video(slot-scope="{row}" :src="item.handle ? item.handle(row, tableData) : item.prop")
+            video(slot-scope="{row}" :src="item.handle ? item.handle(row, tableData) : row[item.prop]" style="height: 100px;")
         //- html, 须配置 handle方法处理返回结果
         template(v-else-if="item.html")
           el-table-column(:label="item.name" :key="i")
@@ -75,7 +75,7 @@
           el-input(v-else-if="item.textarea" type="textarea" v-model="curOperateRow[item.key]")
           Wangeditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
           el-upload(
-            v-else-if="item.upload" v-model="curOperateRow[item.key]" limit="1"
+            v-else-if="item.upload" v-model="curOperateRow[item.key]" :limit="1"
             action="/api/admin/file/upload" list-type="picture" accept="image/jpg,image/jpeg,image/png"
             :on-success="data => upSus(data, item)" :before-remove="file => beforeRm(file, item)"
           )

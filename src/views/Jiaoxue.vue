@@ -353,9 +353,9 @@ export default {
       this.config.seachOpt.name = this.searchStr.trim()
     },
     handleTabClick (tabVm, a, b) {
-      console.log(tabVm)
-      console.log(a)
-      console.log(b)
+      // console.log(tabVm)
+      // console.log(a)
+      // console.log(b)
     },
     upSus () {
       this.searchTp1()

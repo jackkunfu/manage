@@ -26,7 +26,7 @@ export default {
         tableItems: [
           { name: '标题', prop: 'title' },
           { name: '作者', prop: 'username', handle: row => row.admin ? (row.admin.username || '') : '' },
-          { name: '图片', prop: 'url', img: true },
+          { name: '图片', prop: 'image', img: true },
           { name: '发布时间', handle: (row, list) => row.createtime.slice(0, 16) }
         ],
         seachOpt: { category: 'introduce' },
