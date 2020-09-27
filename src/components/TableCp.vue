@@ -51,7 +51,7 @@
     //- 编辑弹窗
     el-dialog(
       :visible.sync="editVisible" :before-close="_handleEditClose"
-      v-if="editKeys && editKeys.length" :close-on-click-modal="false"
+      v-if="editKeys && editKeys.length && editVisible" :close-on-click-modal="false"
     )
       el-form(v-model="curOperateRow" label-width="80px" size="mini")
         el-form-item(v-for="(item, i) in editKeys" :label="item.label" :key="i")
@@ -76,14 +76,14 @@
           //- Wangeditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
           QuillEditorVue(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
           div(v-else-if="item.upload")
-            span(v-if="curOperateRow[item.key]")
+            .up-img(v-if="curOperateRow[item.key]")
               img(:src="curOperateRow[item.key]")
-              i.el-icon-close
+              i.el-icon-close.del(@click="curOperateRow[item.key] = ''")
             el-upload(
               v-else
               v-model="curOperateRow[item.key]" :limit="1"
               action="/api/admin/file/upload" accept="image/jpg,image/jpeg,image/png"
-              :on-success="data => upSus(data, item)" :before-remove="file => beforeRm(file, item)"
+              :on-success="data => upSus(data, item)"
             )
               el-button(size="mini") 点击上传
           el-input(v-else v-model="curOperateRow[item.key]" placeholder="请输入")
@@ -160,11 +160,8 @@ export default {
     }
   },
   methods: {
-    beforeRm (file, item) {
-      this.curOperateRow[item.key] = ''
-    },
     upSus (res, item) {
-      console.log(res, item);
+      // console.log(res, item);
       if (res && res.code === 1) this.curOperateRow[item.key] = (res.data || {}).url || ''
     },
     async _getList (p) {
@@ -202,9 +199,7 @@ export default {
       } else {
         this.selfAdd && typeof this.selfAdd === 'function' && this.selfAdd(row, this.curOperateRow)
       }
-      this.$nextTick(() => {
-        this.editVisible = true
-      })
+      this.editVisible = true
     },
     _handleEditClose () {
       this.curOperateRow = {}
@@ -277,5 +272,17 @@ export default {
 .op-btns {
   text-align: center;
   margin-top: 20px;
+}
+.up-img {
+  img {
+    max-width: 90%;
+    height: 100px;
+  }
+  .del {
+    cursor: pointer;
+    color: red;
+    font-size: 20px;
+    vertical-align: top;
+  }
 }
 </style>

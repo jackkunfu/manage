@@ -13,15 +13,12 @@ export default {
   components: { quillEditor },
   props: ['value'],
   data () {
-    return {
-      isShowOld: true,
-      content: null
-    }
+    return {}
   },
   computed: {
     content: {
       get () {
-        return this.value
+        return this.value || null
       },
       set (v) {
         this.$emit('input', v)
