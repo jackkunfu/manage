@@ -74,13 +74,18 @@
           el-input-number(v-else-if="item.number" v-model="curOperateRow[item.key]")
           el-input(v-else-if="item.textarea" type="textarea" v-model="curOperateRow[item.key]")
           //- Wangeditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
-          QuillEditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
-          el-upload(
-            v-else-if="item.upload" v-model="curOperateRow[item.key]" :limit="1"
-            action="/api/admin/file/upload" list-type="picture" accept="image/jpg,image/jpeg,image/png"
-            :on-success="data => upSus(data, item)" :before-remove="file => beforeRm(file, item)"
-          )
-            el-button(size="mini") 点击上传
+          QuillEditorVue(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
+          div(v-else-if="item.upload")
+            span(v-if="curOperateRow[item.key]")
+              img(:src="curOperateRow[item.key]")
+              i.el-icon-close
+            el-upload(
+              v-else
+              v-model="curOperateRow[item.key]" :limit="1"
+              action="/api/admin/file/upload" accept="image/jpg,image/jpeg,image/png"
+              :on-success="data => upSus(data, item)" :before-remove="file => beforeRm(file, item)"
+            )
+              el-button(size="mini") 点击上传
           el-input(v-else v-model="curOperateRow[item.key]" placeholder="请输入")
       .op-btns
         el-button(@click="_editSure") 确定
@@ -107,10 +112,10 @@
  *------------
  */
 import Wangeditor from '@/components/Wangeditor.vue'
-import QuillEditor from '@/components/quillEditor.vue'
+import QuillEditorVue from '@/components/quillEditorVue.vue'
 export default {
   name: 'TableCp',
-  components: { Wangeditor, QuillEditor },
+  components: { Wangeditor, QuillEditorVue },
   props: {
     config: {
       apis: {},
@@ -142,7 +147,8 @@ export default {
       pageInfo: { cur: 1, size: 10, total: 0 },
       curOperateRow: {},
       editVisible: false,
-      isAdd: false // 是否是新增， 新增和编辑走同一个逻辑， 以此区分  this.$refs.tp.isAdd = true
+      isAdd: false, // 是否是新增， 新增和编辑走同一个逻辑， 以此区分  this.$refs.tp.isAdd = true
+      upFileList: []
     }
   },
   created () {
@@ -196,7 +202,9 @@ export default {
       } else {
         this.selfAdd && typeof this.selfAdd === 'function' && this.selfAdd(row, this.curOperateRow)
       }
-      this.editVisible = true
+      this.$nextTick(() => {
+        this.editVisible = true
+      })
     },
     _handleEditClose () {
       this.curOperateRow = {}

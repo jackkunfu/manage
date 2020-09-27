@@ -25,7 +25,7 @@
           el-form(v-model="newAns" label-width="70px" size="mini")
             el-form-item(label="设备节点")
               el-select(v-model="newAns.nodeId")
-                el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
+                el-option(v-for="(item, i) in testNodesData" :key="item.id" :label="item.name" :value="item.id")
             el-form-item(label="答案")
               //- Wangeditor(v-model="newAns.content")
               el-input(size="mini" type="textarea" v-model="newAns.content")
@@ -68,6 +68,7 @@ import TableCp from '@/components/TableCp'
 import Upload from '@/components/Upload'
 import FixCenter from '@/components/FixCenter'
 import Wangeditor from '@/components/Wangeditor.vue'
+import axios from 'axios'
 export default {
   name: 'TestManage',
   components: { TableCp, Upload, FixCenter, Wangeditor },

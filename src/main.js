@@ -6,14 +6,14 @@ import ElementUI from 'element-ui'
 
 import proto from './js/proto'
 
-import VueQuillEditor from 'vue-quill-editor'
+// import VueQuillEditor from 'vue-quill-editor'
  
-// require styles
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+// // require styles
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
  
-Vue.use(VueQuillEditor, /* { default global options } */)
+// Vue.use(VueQuillEditor, /* { default global options } */)
 
 Vue.use(ElementUI)
 Vue.use(proto)

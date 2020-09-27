@@ -38,8 +38,6 @@ export default {
       }
     }
   },
-  created () {
-  },
   methods: {
     hadleEditItemFn (data, row) {
       return {
@@ -51,7 +49,6 @@ export default {
       editObj.content = ''
     },
     selfEdit (row, editObj) {
-      // console.log(row, editObj)
       editObj.image = row.image
       editObj.content = row.content
     }
