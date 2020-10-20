@@ -1,7 +1,8 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  Vue.prototype.reqBasic = 'http://10.1.125.130:9000'
+  Vue.prototype.reqBasic = 'http://10.1.40.216:9000'
+  // Vue.prototype.reqBasic = 'http://10.1.125.130:9000'
 
   Vue.prototype.goLogin = function () {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })
@@ -14,9 +15,7 @@ export default function (Vue) {
     let loading = this.$loading()
     let res = await axios({
       method: type || 'post',
-      url: '/api' + url,
-      // url: 'http://47.99.201.236:9000' + url,
-      // url: this.reqBasic + url,
+      url: this.reqBasic + url, // 直连 后端处理跨域
       data: type && type === 'get' ? {} : data,
       // params: type && type === 'get' ? data : {},
       params: data,
