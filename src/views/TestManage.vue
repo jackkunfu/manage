@@ -40,7 +40,8 @@
           .fr
             el-button(size="mini" @click="isAddScPoint= true") 批量设置采分点
             el-button(size="mini" @click="$refs.tp3.isAdd = true") 新增
-        TableCp(:config="config3" ref="tp3" :hadleEditItemFn="hadleEditItemFnPoint")
+        TableCp(:config="config3" ref="tp3" :hadleEditItemFn="hadleEditItemFnPoint" @spread="spreadScorePoint")
+          div(slot="header") 111
         FixCenter(v-model="isAddScPoint" @close="scorePoints = [{}]")
           el-form(size="mini")
             el-form-item
@@ -142,12 +143,14 @@ export default {
         operates: [
           { name: '编辑', fn: '_edit', ishow: row => row.id },
           { name: '删除', fn: '_del', ishow: row => row.id },
+          { name: '展开', fn: 'spread' }
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
           { name: '节点名称', prop: 'nodeName' },
-          { name: '实验采分点', prop: 'command' },
-          { name: '分值', prop: 'score', handle: data => { return (data.score || 0) + '分' } },
+          // { name: '实验采分点', prop: 'command' },
+          { name: '采分点数量', prop: 'num' },
+          { name: '总分值', prop: 'score', handle: data => { return (data.score || 0) + '分' } },
           { name: '操作时间', prop: 'createtime' }
         ],
         editKeys: [
@@ -169,6 +172,16 @@ export default {
     this.getNodes()
   },
   methods: {
+    async spreadScorePoint (data) {
+      let res = await this._fetch('/admin/labSpot/node', { nodeId: data.nodeId, labId: this.$route.query.tsid }, 'get')
+      if (res && res.code === 1) {
+        console.log(res);
+        data.children = res.data || []
+      } else {
+        data.children = []
+      }
+      this.$forceUpdate()
+    },
     downZhidao (data) {
       // window.open(data.content)
       let a = document.createElement('a');

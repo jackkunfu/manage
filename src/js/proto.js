@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  Vue.prototype.reqBasic = 'http://10.1.40.216:9000'
+  Vue.prototype.reqBasic = 'http://h743h5.natappfree.cc'
   // Vue.prototype.reqBasic = 'http://10.1.125.130:9000'
 
   Vue.prototype.goLogin = function () {
@@ -30,8 +30,8 @@ export default function (Vue) {
     if (result) {
       if (result.code === -1) {
         if (result.msg) {
-          // if (result.msg.indexOf('token') > -1) this.goLogin()
-          // else this._messageTip(result.msg)
+          if (result.msg.indexOf('token') > -1) this.goLogin()
+          else this._messageTip(result.msg)
         } else this._messageTip('请求失败')
       } else return result || {}
     } else throw new Error('请求失败')
