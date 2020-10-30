@@ -41,7 +41,11 @@
             el-button(size="mini" @click="isAddScPoint= true") 批量设置采分点
             el-button(size="mini" @click="$refs.tp3.isAdd = true") 新增
         TableCp(:config="config3" ref="tp3" :hadleEditItemFn="hadleEditItemFnPoint" @spread="spreadScorePoint")
-          div(slot="header") 111
+          template(slot="expand" slot-scope="row")
+            //- span 1
+            TableCp(:config="config3")
+
+
         FixCenter(v-model="isAddScPoint" @close="scorePoints = [{}]")
           el-form(size="mini")
             el-form-item
@@ -134,6 +138,7 @@ export default {
         seachOpt: { labId: query.tsid }
       },
       config3: { // 采分点
+        isExpand: true,
         apis: {
           list: { url: '/admin/labSpot/list' },
           del: { url: '/admin/labSpot/delete' },
@@ -172,6 +177,7 @@ export default {
     this.getNodes()
   },
   methods: {
+    // get
     async spreadScorePoint (data) {
       let res = await this._fetch('/admin/labSpot/node', { nodeId: data.nodeId, labId: this.$route.query.tsid }, 'get')
       if (res && res.code === 1) {
@@ -180,6 +186,8 @@ export default {
       } else {
         data.children = []
       }
+      console.log('this.$refs.tp3.tableData');
+      console.log(this.$refs.tp3.tableData);
       this.$forceUpdate()
     },
     downZhidao (data) {

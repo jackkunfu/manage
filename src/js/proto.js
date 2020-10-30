@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  Vue.prototype.reqBasic = 'http://h743h5.natappfree.cc'
+  Vue.prototype.reqBasic = 'http://qp2a6i.natappfree.cc'
   // Vue.prototype.reqBasic = 'http://10.1.125.130:9000'
 
   Vue.prototype.goLogin = function () {

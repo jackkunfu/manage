@@ -5,13 +5,17 @@
       template(slot="header")
         slot(name="header")
 
+      el-table-column(type="expand" v-if="config.isExpand")
+        template(slot-scope="{row}")
+          //- slot(:name="'expand'+row.nodeName" :row="row")
+          slot(name="expand" :row="row")
+
       el-table-column(type="index" v-if="config.tbIndex")
       
       //- 多选
       el-table-column(type="selection" width="55" v-if="isChoose")
       //- 主展示区
       template(v-for="(item, i) in tableItems")
-        
         //- img, 须配置 handle方法处理返回结果
         template(v-if="item.img")
           el-table-column(:label="item.name" :key="i")
