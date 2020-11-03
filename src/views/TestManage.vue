@@ -43,8 +43,7 @@
         TableCp(:config="config3" ref="tp3" :hadleEditItemFn="hadleEditItemFnPoint" @spread="spreadScorePoint")
           template(slot="expand" slot-scope="row")
             //- span 1
-            TableCp(:config="config3")
-
+            TableCp(:config="configRow(row)" :hadleEditItemFn="editSpreadItemRow")
 
         FixCenter(v-model="isAddScPoint" @close="scorePoints = [{}]")
           el-form(size="mini")
@@ -78,8 +77,8 @@ export default {
   name: 'TestManage',
   components: { TableCp, Upload, FixCenter, Wangeditor },
   data () {
-    let query = this.$route.query
-    let vm = this
+    var query = this.$route.query
+    var vm = this
     return {
       csType: query.type, // 1管理  2教学
       csName: query.csname,
@@ -146,9 +145,9 @@ export default {
           edit: { url: '/admin/labSpot/update' }
         },
         operates: [
-          { name: '编辑', fn: '_edit', ishow: row => row.id },
-          { name: '删除', fn: '_del', ishow: row => row.id },
-          { name: '展开', fn: 'spread' }
+          // { name: '编辑', fn: '_edit', ishow: row => row.id },
+          // { name: '删除', fn: '_del', ishow: row => row.id },
+          // { name: '展开', fn: 'spread' }
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
@@ -173,13 +172,53 @@ export default {
       isAddScPoint: false
     }
   },
+  computed: {
+    configRow () {
+      var vm = this
+      return data => {
+        var row = data.row
+        return {
+          noPage: true,
+          apis: {
+            list: { url: '/admin/labSpot/node' },
+            del: { url: '/admin/labSpot/delete' },
+            add: { url: '/admin/labSpot/add' },
+            edit: { url: '/admin/labSpot/update' }
+          },
+          operates: [
+            { name: '编辑', fn: '_edit', ishow: row => row.id },
+            { name: '删除', fn: '_del', ishow: row => row.id }
+          ],
+          tableItems: [
+            { name: '采分点名称', prop: 'title' },
+            { name: '采分点', prop: 'command' },
+            { name: '采分点分值', prop: 'score', handle: data => { return (data.score || 0) + '分' } },
+            { name: '操作时间', prop: 'createtime' }
+          ],
+          editKeys: [
+            { label: '采分点名称', key: 'title' },
+            { label: '命令', key: 'command', textarea: true },
+            { label: '分数', key: 'score', number: true }
+          ],
+          seachOpt: { labId: vm.tsId, nodeId: row.nodeId }
+        }
+      }
+    }
+  },
   created () {
     this.getNodes()
   },
   methods: {
+    editSpreadItemRow (opt, row) {
+      console.log(opt, row);
+      opt.labId = row.labId
+      opt.nodeId = row.nodeId
+      opt.nodeName = row.nodeName
+      return opt
+    },
     // get
     async spreadScorePoint (data) {
-      let res = await this._fetch('/admin/labSpot/node', { nodeId: data.nodeId, labId: this.$route.query.tsid }, 'get')
+      var res = await this._fetch('/admin/labSpot/node', { nodeId: data.nodeId, labId: this.$route.query.tsid }, 'get')
       if (res && res.code === 1) {
         console.log(res);
         data.children = res.data || []
@@ -192,7 +231,7 @@ export default {
     },
     downZhidao (data) {
       // window.open(data.content)
-      let a = document.createElement('a');
+      var a = document.createElement('a');
       a.href = data.content
       a.target = '_blank'
       a.download = data.title
@@ -278,11 +317,16 @@ export default {
           token: localStorage.MToken || ''
         }
       });
-      if (res && res.data && res.data.code == 1) {
-        this._messageTip('添加成功', 1)
-        this.isAddScPoint = false
-        this.scorePoints = [{}]
-        this.$refs.tp3._getList()
+      if (res && res.data) {
+        let data = res.data
+        if (data.code == 1) {
+          this._messageTip('添加成功', 1)
+          this.isAddScPoint = false
+          this.scorePoints = [{}]
+          this.$refs.tp3._getList()
+        } else {
+          this._messageTip(data.msg || '操作失败')
+        }
       }
     }
   }

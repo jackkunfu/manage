@@ -46,7 +46,7 @@
           ) {{op.name}}
           slot(:data="row" :list="tableData" name="operate")
     //- 页码区域
-    .table_cp_page
+    .table_cp_page(v-if="!config.noPage")
       el-pagination(
         @size-change="_handleSizeChange" @current-change="_handleCurrentChange"
         :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper"
@@ -170,19 +170,20 @@ export default {
     },
     async _getList (p) {
       let listApi = this.apis.list || {}
-      let isDataList = listApi.isList
       if (listApi.data && listApi.data.length) {
         this.tableData = listApi.data
         return
       }
       // console.log(this.seachOpt)
       if (p) this.pageInfo.cur = p
+      if (this.config.noPage) this.pageInfo.size = 1000
       let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,
         ...this.seachOpt
       }, this.apis.list.type || 'get')
-      if (res && res.code === 1) {
+      if (res && res.code === 1 && res.data) {
+        let isDataList = Object.prototype.toString.call(res.data) === '[object Array]'
         this.tableData = isDataList ? (res.data || []) : (res.data.list || [])
         this.pageInfo.total = res.data.total || 0
       }
