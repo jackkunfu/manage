@@ -1,11 +1,10 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  // Vue.prototype.reqBasic = 'http://vz6qg7.natappfree.cc'
+  Vue.prototype.reqBasic = 'http://sea6vb.natappfree.cc'
   // Vue.prototype.reqBasic = 'http://10.1.125.130:9000'
-  Vue.prototype.reqBasic = `http://${location.hostname}:9000`
+  // Vue.prototype.reqBasic = `http://${location.hostname}:9000`
   
-
   Vue.prototype.goLogin = function () {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })
     this.$router.push({ path: '/' })
