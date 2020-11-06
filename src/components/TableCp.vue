@@ -86,7 +86,7 @@
             el-upload(
               v-else
               v-model="curOperateRow[item.key]" :limit="1"
-              action="/api/admin/file/upload" accept="image/jpg,image/jpeg,image/png"
+              :action="reqBasic + '/admin/file/upload'" accept="image/jpg,image/jpeg,image/png"
               :on-success="data => upSus(data, item)"
             )
               el-button(size="mini") 点击上传
@@ -166,7 +166,10 @@ export default {
   methods: {
     upSus (res, item) {
       // console.log(res, item);
-      if (res && res.code === 1) this.curOperateRow[item.key] = (res.data || {}).url || ''
+      if (res && res.code === 1) {
+        this.curOperateRow[item.key] = (res.data || {}).url || ''
+        this.$forceUpdate()
+      }
     },
     async _getList (p) {
       let listApi = this.apis.list || {}

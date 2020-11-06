@@ -20,7 +20,7 @@ export default {
   },
   data () {
     return {
-      // actionUrl: this.url || '/api/admin/file/upload'
+      // actionUrl: this.url || '/admin/file/upload'
       actionUrl: this.url || this.reqBasic + '/admin/file/upload',
       headers: {
         token: localStorage.MToken || ''
