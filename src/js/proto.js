@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  Vue.prototype.reqBasic = 'http://sea6vb.natappfree.cc'
+  Vue.prototype.reqBasic = 'http://a26bgz.natappfree.cc'
   // Vue.prototype.reqBasic = 'http://10.1.125.130:9000'
   // Vue.prototype.reqBasic = `http://${location.hostname}:9000`
   

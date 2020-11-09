@@ -334,5 +334,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.list {
+  ::v-deep .el-tabs {
+    .el-tabs__content {
+      .el-table__row {
+        &.expanded {
+          background: #38f;
+          color: #fff;
+        }
+        &:hover {
+          td {
+            background: #38f;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
 </style>
