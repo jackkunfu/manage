@@ -324,7 +324,7 @@ export default {
               //     show: false
               //   }
               // },
-              data: data.spot.map(el => ({ value: el.errRate, name: el.title })).filter(el => el.value != 0)
+              data: data.spot.map(el => ({ value: el.errRate, name: el.nodeName + ' ' + el.title })).filter(el => el.value != 0)
               // data: data.stat && data.stat.length ? Object.keys(data.stat[0]).map(el => {
               //   return { value: data.stat[0][el], name: el } 
               // }) : []

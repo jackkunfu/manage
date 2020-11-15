@@ -1,9 +1,9 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  Vue.prototype.reqBasic = 'http://a26bgz.natappfree.cc'
-  // Vue.prototype.reqBasic = 'http://10.1.125.130:9000'
-  // Vue.prototype.reqBasic = `http://${location.hostname}:9000`
+  let isNeedNatFree = location.href.indexOf('zhenwu') > -1
+  var reqBasic = isNeedNatFree ? 'http://w28z2w.natappfree.cc' : `http://${location.hostname}:9000`
+  Vue.prototype.reqBasic = reqBasic
   
   Vue.prototype.goLogin = function () {
     this.$store.commit('setStoreData', { key: 'isLogin', value: true })
