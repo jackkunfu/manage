@@ -1,8 +1,9 @@
 import axios from 'axios'
 // import { Loading } from 'element-ui'
 export default function (Vue) {
-  let isNeedNatFree = location.href.indexOf('zhenwu') > -1
-  var reqBasic = isNeedNatFree ? 'http://w28z2w.natappfree.cc' : `http://${location.hostname}:9000`
+  var hrefUrl = location.href
+  let isNeedNatFree = hrefUrl.indexOf('zhenwu') > -1 || hrefUrl.indexOf('localhost') > -1
+  var reqBasic = isNeedNatFree ? 'http://drhb9b.natappfree.cc' : `http://${location.hostname}:9000`
   Vue.prototype.reqBasic = reqBasic
   
   Vue.prototype.goLogin = function () {

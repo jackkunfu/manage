@@ -27,7 +27,7 @@
     },
     mounted() {
       this.editor = new E(this.$refs.editor)
-      this.editor.customConfig.uploadImgServer = this.reqBasic + '/api/file/upload'  // 上传图片到服务器
+      this.editor.customConfig.uploadImgServer = this.reqBasic + '/admin/file/upload'  // 上传图片到服务器
       this.editor.customConfig.uploadFileName = 'file'
       this.editor.customConfig.uploadImgHooks = {
         before: function (xhr, editor, files) {
