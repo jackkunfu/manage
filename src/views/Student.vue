@@ -10,10 +10,10 @@
         //- el-form-item(label="班级")
           el-select(v-model="newStu.cid")
             el-option(v-for="(each, idx) in classList" :key="idx" :label="each.name" :value="each.id")
-        el-form-item(label="姓名")
-          el-input(v-model="newStu.name" placeholder="请输入姓名")
         el-form-item(label="学号")
           el-input(v-model="newStu.sno" placeholder="请输入学号")
+        el-form-item(label="姓名")
+          el-input(v-model="newStu.name" placeholder="请输入姓名")
         el-form-item(label="性别")
           el-select(v-model="newStu.sex")
             el-option(label="男" :value="true")
@@ -55,8 +55,8 @@ export default {
         seachOpt: { cid: query.cid },
         editKeys: [
           // { label: '班级名称', key: 'cid', select: true, list: [] },
-          { label: '姓名', key: 'name' },
           { label: '学号', key: 'sno' },
+          { label: '姓名', key: 'name' },
           { label: '性别', key: 'sex', select: true, list: [{ label: '男', value: true }, { label: '女', value: false }] }
         ]
       }

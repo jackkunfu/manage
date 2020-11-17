@@ -1,7 +1,7 @@
 <template lang="pug">
   el-container.ctn
     el-header
-      span.span 网络工程虚拟仿真管理后台
+      span.span web渗透测试虚拟仿真实验管理后台
       .fr
         span {{userName}}
         el-button(size="mini" @click="logout" style="margin: 15px 0 0 10px;") 退出登录
@@ -27,30 +27,11 @@ export default {
       userName: user && user.auth || 'admidsdsdn',
       activeUrl: this.$route.path,
       menus: [
-        // { name: '实验教学', path: '/jiaoxue' },
-        // { name: '实验管理', path: '/testmanage' },
         { name: '实验管理', path: '/course1' },
         { name: '实验教学', path: '/course2' },
-        { name: '平台介绍', path: '/platdesc' },
-        { name: '资料下载', path: '/downloads' },
-        { name: '通知中心', path: '/notices' },
         { name: '学生中心', path: '/class' },
         // { name: '管理员设置', path: '/adminManage' }
-        { name: '使用介绍', path: '/usedesc' }
       ]
-      // menus: [
-      //   {
-      //     name: '主页',
-      //     children: [
-      //       { name: '实验教学', path: '' },
-      //       { name: '实验管理', path: '' },
-      //       { name: '平台介绍', path: '' },
-      //       { name: '资料下载', path: '' },
-      //       { name: '通知中心', path: '' },
-      //       { name: '管理员设置', path: '' }
-      //     ]
-      //   }
-      // ]
     }
   },
   methods: {
