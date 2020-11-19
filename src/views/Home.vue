@@ -5,7 +5,7 @@
       .fr
         span {{userName}}
         el-button(size="mini" @click="logout" style="margin: 15px 0 0 10px;") 退出登录
-    el-container
+    el-container(style="height: calc(100% - 60px);")
       el-aside(width="200px")
         el-menu(:default-openeds="[0]" :default-active="activeUrl")
           //- el-submenu(v-for="(menu, i) in menus" :index="i")

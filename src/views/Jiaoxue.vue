@@ -167,6 +167,13 @@ export default {
     }
   },
   methods: {
+    handleList (list) {
+      list = list.sort((a, b) => b.errRate - a.errRate)
+      return list.map(el => {
+        el.errRate = el.errRate % 1 > 0 ? el.errRate.toFxed(1) : el.errRate
+        return el
+      })
+    },
     async redo () {
       let res = await this._fetch('/admin/labSpotReport/redo', { cid: this.searchClassId, labId: this.tsId }, 'post')
       if (res && res.code == 1) {
@@ -252,7 +259,7 @@ export default {
     },
     handleRef3Data (res) {
       let data = res.data || {}
-      this.$refs.tp3.tableData = data.spot || []
+      this.$refs.tp3.tableData = this.handleList(data.spot || [])
       this.$nextTick(() => {
         let stat = (data.stat || [])[0] || {}
         let xx = ['0-59', '60-69', '70-79', '80-89', '90-100']
@@ -265,9 +272,7 @@ export default {
             data: xx
           },
           grid: { top: '6%' },
-          yAxis: {
-              type: 'value'
-          },
+          yAxis: { type: 'value' },
           series: [{
             // data: data.spot.map(el => el.num),
             data: yy,

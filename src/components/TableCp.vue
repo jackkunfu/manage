@@ -133,7 +133,8 @@ export default {
     hadleEditItemFn: Function,
     selfEdit: Function,
     selfAdd: Function,
-    editCheck: Function
+    editCheck: Function,
+    handleList: Function
   },
   data () {
     let config = this._props.config || {}
@@ -187,7 +188,9 @@ export default {
       }, this.apis.list.type || 'get')
       if (res && res.code === 1 && res.data) {
         let isDataList = Object.prototype.toString.call(res.data) === '[object Array]'
-        this.tableData = isDataList ? (res.data || []) : (res.data.list || [])
+        let list = isDataList ? (res.data || []) : (res.data.list || [])
+        console.log(list);
+        this.tableData = this.handleList ? this.handleList(list) : list
         this.pageInfo.total = res.data.total || 0
       }
       return res // 暴漏给外部使用
