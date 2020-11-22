@@ -4,29 +4,16 @@
       span {{csName}}/{{tsName}}
       .fr
         span.btn(@click="pageBack") 返回
-    el-tabs(v-model="activeName" type="card" @tab-click="handleTabClick")
-      el-tab-pane(label="实验配置" name="1")
-        //- el-input(placeholder="请输入实验名称搜索" v-model="searchStr")
-          el-button(slot="append" @click="searchTest") 搜索
-        div(style="margin-bottom: 20px;'")
-          el-select(v-model="searchClassId" size="mini")
-            el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
-          span.s_btn(@click="searchTp1") 查询
-          .fr
-            el-button(size="small" @click="redo" style="background: rgba(102, 204, 0, 1);color: #fff;") 重新批阅
-            el-button(size="small" @click="etPeizhi" style="background: rgba(60, 141, 188, 1);color: #fff;") 导出Excel
-        TableCp(:config="config1" ref="tp1")
-          template(slot="operate" slot-scope="row")
-            Upload(name="上传" :url="reqBasic + '/admin/labGuide/add'" @upSus="upSus" :otherData="{ labId: row.labId }")
 
-      el-tab-pane(label="实验报告" name="2")
+    el-tabs(v-model="activeName" type="card" @tab-click="handleTabClick" lazy)
+      el-tab-pane(label="实验报告" name="1")
         div(style="margin-bottom: 20px;'")
           el-select(v-model="searchClassId" size="mini")
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
           span.s_btn(@click="searchTp2") 搜索
           .fr
             el-button(size="mini" @click="etBaogao" style="background: rgba(60, 141, 188, 1);color: #fff;") 导出Excel
-        TableCp(:config="config2" ref="tp2" @setScore="setScore")
+        TableCp(:config="config1" ref="tp1" @setScore="setScore")
         el-dialog(:visible.sync="isEditScore" :before-close="closeSetScore" :close-on-click-modal="false")
           el-form(v-model="editScore" label-width="80px" size="mini")
             el-form-item(label="评分")
@@ -37,17 +24,8 @@
             el-button(@click="scoreAjax" size="mini") 确定
             el-button(@click="closeSetScore" size="mini") 取消
 
-      el-tab-pane(label="数据统计" name="3")
-        div(style="margin-bottom: 20px;'")
-          el-select(v-model="searchClassId" size="mini")
-            el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
-          span.s_btn(@click="searchTp3") 搜索
-          .fr
-        div 成绩分布统计
-        .bar.chart
-        div(style="margin-bottom: 20px;") 采分点错误率统计
-        .pie.chart
-        TableCp(:config="config3" ref="tp3")
+      el-tab-pane(label="数据统计" name="2")
+        div(style="margin-top: 20px;'") 开发中，敬请期待
 </template>
 
 <script>
@@ -70,33 +48,12 @@ export default {
       tsName: query.tsname,
       tsId: query.tsid,
       activeName: '1',
-      config1: { // 配置
-        firstNoReq: true,
-        apis: {
-          list: { url: '/admin/labSpotReport/list' },
-          del: { url: '/admin/labGuide/delete' },
-          add: { url: '/admin/labGuide/add' },
-          edit: { url: '/admin/labGuide/update' }
-        },
-        // operates: [
-        //   { name: '编辑', fn: '_edit', ishow: row => row.id },
-        //   { name: '删除', fn: '_del', ishow: row => row.id },
-        //   // { name: '上传', fn: 'up', ishow: row => row.id }
-        // ],
-        tableItems: [
-          { name: '学号', prop: 'sno', handle: data => { return data.student && data.student.sno || '' } },
-          { name: '姓名', prop: 'name', handle: data => { return data.student && data.student.name || ''} },
-          { name: '提交时间', prop: 'createtime' },
-          { name: '得分', prop: 'score' }
-        ],
-        seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
-      },
       searchClassId: '',
       classList: [],
       searchStr: '',
       isEditScore: false,
       editScore: {},
-      config2: { // 报告
+      config1: { // 报告
         firstNoReq: true,
         apis: {
           list: { url: '/admin/labReport/list' },
@@ -128,25 +85,7 @@ export default {
           { name: '实验报告打分', prop: 'score', handle: data => data.result && data.result.score || '' },
           { name: '评语', prop: 'score', handle: data => data.result && data.result.content || '' }
         ],
-        seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
-      },
-      config3: { // 数据统计
-        firstNoReq: true,
-        apis: {
-          list: { url: '/admin/lab/statistics' }
-        },
-        // operates: [
-        //   { name: '编辑', fn: '_edit', ishow: row => row.id },
-        //   { name: '删除', fn: '_del', ishow: row => row.id },
-        //   // { name: '上传', fn: 'up', ishow: row => row.id }
-        // ],
-        tableItems: [
-          { name: '实验采分点', prop: 'title' },
-          { name: '命令', prop: 'command' },
-          { name: '分值', prop: 'score' },
-          { name: '错误率', prop: 'errRate', handle: data => data.errRate + '%' }
-        ],
-        seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
+        seachOpt: { cid: vm.searchClassId, labId: vm.tsName }
       }
     }
   },
@@ -157,13 +96,13 @@ export default {
   watch: {
     async searchClassId (v) { // 班级改变，同时改变所有tab的数据
       let query = this.$route.query
-      this.$refs.tp1.seachOpt = { cid: this.searchClassId, labId: query.tsid }
+      this.$refs.tp1.seachOpt = { cid: this.searchClassId, labId: this.tsName }
       this.$refs.tp1._getList(1)
-      this.$refs.tp2.seachOpt = { cid: this.searchClassId, labId: query.tsid }
-      this.$refs.tp2._getList(1)
-      this.$refs.tp3.seachOpt = { cid: this.searchClassId, labId: query.tsid }
-      var data = await this.$refs.tp3._getList(1)
-      this.handleRef3Data(data)
+      // this.$refs.tp2.seachOpt = { cid: this.searchClassId, labId: query.tsid }
+      // this.$refs.tp2._getList(1)
+      // this.$refs.tp3.seachOpt = { cid: this.searchClassId, labId: query.tsid }
+      // var data = await this.$refs.tp3._getList(1)
+      // this.handleRef3Data(data)
     }
   },
   methods: {
@@ -175,7 +114,7 @@ export default {
       })
     },
     async redo () {
-      let res = await this._fetch('/admin/labSpotReport/redo', { cid: this.searchClassId, labId: this.tsId }, 'post')
+      let res = await this._fetch('/admin/labSpotReport/redo', { cid: this.searchClassId, labId: this.tsName }, 'post')
       if (res && res.code == 1) {
         this._messageTip(res.msg || '操作成功', 1)
         this.$refs.tp1._getList(1)
@@ -184,7 +123,7 @@ export default {
       }
     },
     async etPeizhi () {
-      window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId)
+      window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsName)
 
       // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
 
@@ -227,7 +166,7 @@ export default {
       }
     },
     async etBaogao () {
-      window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId)
+      window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsName)
       // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
       // let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId, { cid: this.searchClassId, labId: this.tsId }, { responseType: 'blob' })
       // if (res && res.code == 1) {

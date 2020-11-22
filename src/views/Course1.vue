@@ -14,7 +14,8 @@ export default {
       type: 1, // 1管理  2教学
       config: {
         apis: {
-          list: { url: '/api/lab/list', isList: true }
+          // list: { url: '/api/lab/list', isList: true }
+          list: { url: '/admin/lab/category', isList: true }
         },
         seachOpt: {
           // username: localStorage.EVENGFRONTUSER
@@ -24,11 +25,12 @@ export default {
         // ],
         tableItems: [
           {
-            name: '实验名称', prop: 'name', html: true,
+            name: '实验管理', prop: 'name', html: true,
             handle: row => {
               // console.log(vm.type)
-              if (row.directory) return `<a href="/cslist?type=${vm.type}&csname=${row.name}">${row.name}</a>`
-              else return `<a href="${vm.type == 1 ? '/testmanage' : '/Jiaoxue'}?type=${vm.type}&csname=实验&tsname=${row.name}&tsid=${row.path}">${row.name}</a>`
+              var name = row.category
+              if (row.directory) return `<a href="/cslist?type=${vm.type}&csname=${ name }">${ name }</a>`
+              else return `<a href="${vm.type == 1 ? '/testmanage' : '/Jiaoxue'}?type=${vm.type}&csname=实验&tsname=${ name }&tsid=${row.path}">${ name }</a>`
             }
           }
         ],

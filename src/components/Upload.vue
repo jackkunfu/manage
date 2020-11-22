@@ -26,7 +26,7 @@ export default {
         token: localStorage.MToken || ''
       },
       loading: null,
-      otherDataObj: {}
+      otherDataObj: this.otherData || ''
     }
   },
   methods: {
