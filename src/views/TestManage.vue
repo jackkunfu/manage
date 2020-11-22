@@ -4,7 +4,7 @@
       //- span {{csName}}/{{tsName}}
       span {{tsName}}
       .fr
-        span.btn(@click="pageBack") 返回
+        el-button.btn(@click="pageBack" size="mini" type="primary") 返回
 
     el-tabs(v-model="activeName" type="card" @tab-click="handleTabClick" lazy)
       el-tab-pane(label="指导书管理" name="1")
@@ -79,7 +79,7 @@ export default {
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: '实验指导书', prop: 'title' },
+          { name: '实验视频', prop: 'title' },
           { name: '作者', prop: 'createBy', handle: data => data.admin && data.admin.name || '' },
           { name: '上传时间', prop: 'createtime' }
         ],

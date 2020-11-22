@@ -4,14 +4,14 @@
       //- span {{csName}}/{{tsName}}
       span {{tsName}}
       .fr
-        span.btn(@click="pageBack") 返回
+        el-button.btn(@click="pageBack" size="mini" type="primary") 返回
 
     el-tabs(v-model="activeName" type="card" @tab-click="handleTabClick" lazy)
       el-tab-pane(label="实验报告" name="1")
         div(style="margin-bottom: 20px;'")
           el-select(v-model="searchClassId" size="mini")
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
-          span.s_btn(@click="searchTp2") 搜索
+          span.s_btn(@click="searchTp1") 搜索
           .fr
             el-button(size="mini" @click="etBaogao" style="background: #66b1ff;color: #fff;") 导出Excel
         TableCp(:config="config1" ref="tp1" @setScore="setScore")
@@ -307,12 +307,6 @@ export default {
     },
     searchTp1 () {
       this.$refs.tp1._getList()
-    },
-    searchTp2 () {
-      this.$refs.tp2._getList()
-    },
-    searchTp3 () {
-      this.$refs.tp3._getList()
     }
   }
 }

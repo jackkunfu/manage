@@ -71,6 +71,11 @@ export default {
       color: #fff;
       font-size: 20px;
     }
+    .fr {
+      span {
+        color: #fff;
+      }
+    }
   }
   .el-main {
     padding: 0;
