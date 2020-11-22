@@ -25,7 +25,7 @@ export default {
         // ],
         tableItems: [
           {
-            name: '实验管理', prop: 'name', html: true,
+            name: '实验', prop: 'name', html: true,
             handle: row => {
               // console.log(vm.type)
               var name = row.category

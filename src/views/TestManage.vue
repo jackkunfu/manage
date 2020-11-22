@@ -1,7 +1,8 @@
 <template lang="pug">
   .list
     .page_top 实验{{csType == 1 ? '管理' : '教学'}}/
-      span {{csName}}/{{tsName}}
+      //- span {{csName}}/{{tsName}}
+      span {{tsName}}
       .fr
         span.btn(@click="pageBack") 返回
 
@@ -265,12 +266,12 @@ export default {
     .el-tabs__content {
       .el-table__row {
         &.expanded {
-          background: #38f;
+          background: #409EFF;
           color: #fff;
         }
         &:hover {
           td {
-            background: #38f;
+            background: #409EFF;
             color: #fff;
           }
         }

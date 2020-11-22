@@ -1,7 +1,8 @@
 <template lang="pug">
   .list
     .page_top 实验{{csType == 1 ? '管理' : '教学'}}/
-      span {{csName}}/{{tsName}}
+      //- span {{csName}}/{{tsName}}
+      span {{tsName}}
       .fr
         span.btn(@click="pageBack") 返回
 
@@ -12,7 +13,7 @@
             el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
           span.s_btn(@click="searchTp2") 搜索
           .fr
-            el-button(size="mini" @click="etBaogao" style="background: rgba(60, 141, 188, 1);color: #fff;") 导出Excel
+            el-button(size="mini" @click="etBaogao" style="background: #66b1ff;color: #fff;") 导出Excel
         TableCp(:config="config1" ref="tp1" @setScore="setScore")
         el-dialog(:visible.sync="isEditScore" :before-close="closeSetScore" :close-on-click-modal="false")
           el-form(v-model="editScore" label-width="80px" size="mini")
@@ -330,7 +331,7 @@ export default {
   line-height: 28px;
   cursor: pointer;
   margin-left: 0;
-  background: rgba(60, 141, 188, 1);
+  background: #66b1ff;
   color: #fff;
   font-size: 12px;
 }

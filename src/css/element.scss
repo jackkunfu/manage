@@ -14,20 +14,20 @@
 
 .el-tabs {
   .el-tabs__header {
-    border-bottom: 1px solid #00aaee;
+    border-bottom: 1px solid #409EFF;
     .el-tabs__item {
-      border-left: 1px solid #00aaee;
+      border-left: 1px solid #409EFF;
       &:first-child {
         border-left: none;
       }
       &.is-active {
-        background: #00aaee;
+        background: #409EFF;
         color: #fff;
         border-bottom-color: transparent;
       }
     }
   }
   .el-tabs__nav {
-    border: 1px solid #00aaee!important;
+    border: 1px solid #409EFF!important;
   }
 }

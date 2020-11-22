@@ -64,8 +64,8 @@ export default {
 <style lang="scss" scoped>
 .ctn {
   .el-header {
-    // border-bottom: 1px solid #e6e6e6;
-    background: #3c8dbc;
+    border-bottom: 1px solid #409eff;
+    background: #409eff;
     > span {
       line-height: 60px;
       color: #fff;
@@ -85,17 +85,19 @@ export default {
   }
   .el-menu {
     height: 100%;
-    background: #f2f2f2;
+    background: #F5F7FA;
     li {
       color: #5E5E5E;
       font-size: 16px;
       text-align: center;
       &.is-active {
-        background: #fff;
+        color: #fff;
+        background: $--color-primary-light-2;
         font-size: 18px;
       }
       &:hover {
-        background: #fff;
+        color: #fff;
+        background: $--color-primary-light-6;
         font-size: 18px;
       }
     }
