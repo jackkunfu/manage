@@ -1,6 +1,6 @@
 <template lang="pug">
   .login
-    .top EVE-NG
+    .top web渗透测试虚拟仿真实验管理后台
     .form
       el-form(:model="formData")
         el-form-item(label="账号")

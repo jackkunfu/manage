@@ -18,7 +18,7 @@
           .fr
             //-  :otherData="{ type: 1 }"
             Upload(name="上传视频(mp4)" @upSus="upSus" accept=".mp4")
-        TableCp(:config="config2" ref="tp1" :hadleEditItemFn="hadleEditItemFn1" @downZhidao="downZhidao")
+        TableCp(:config="config2" ref="tp2" :hadleEditItemFn="hadleEditItemFn1" @downZhidao="downZhidao")
 
 </template>
 
@@ -131,7 +131,7 @@ export default {
     }
   },
   created () {
-    this.getNodes()
+    // this.getNodes()
   },
   methods: {
     editSpreadItemRow (opt, row) {
@@ -197,7 +197,7 @@ export default {
       this.config.seachOpt.name = this.searchStr.trim()
     },
     handleTabClick (tabVm) {
-      console.log(tabVm)
+      // console.log(tabVm)
     },
     async upSus (res) {
       // console.log(data)
@@ -209,7 +209,7 @@ export default {
         if (req && req.code == 1) {
           this._messageTip(req.msg || '操作成功', 1)
           if (this.activeName == 1) this.$refs.tp1._getList(1) // 指导书列表
-          else if (this.activeName == 2) this.$refs.tp1._getList(1) // 视频列表
+          else if (this.activeName == 2) this.$refs.tp2._getList(1) // 视频列表
         }
       }
     },

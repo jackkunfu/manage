@@ -25,7 +25,7 @@
             el-button(@click="closeSetScore" size="mini") 取消
 
       el-tab-pane(label="数据统计" name="2")
-        div(style="margin-top: 20px;'") 开发中，敬请期待
+        div(style="margin-top: 20px;'") 即将上线，敬请期待
 </template>
 
 <script>
