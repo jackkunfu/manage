@@ -65,7 +65,7 @@ export default {
         operates: [
           // { name: '编辑', fn: '_edit', ishow: row => row.id },
           { name: '删除', fn: '_del', ishow: row => row.id },
-          { name: '打分评语', fn: 'setScore', ishow: row => row.id }
+          // { name: '打分评语', fn: 'setScore', ishow: row => row.id }
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
@@ -83,8 +83,9 @@ export default {
           },
           { name: '提交时间', prop: 'createtime' },
           { name: '操作人', prop: 'score', handle: data => data.user && data.user.name || '' },
+          { name: '实验操作打分', prop: 'opScore', handle: data => data.result && data.result.opScore || '' },
           { name: '实验报告打分', prop: 'score', handle: data => data.result && data.result.score || '' },
-          { name: '评语', prop: 'score', handle: data => data.result && data.result.content || '' }
+          // { name: '评语', prop: 'score', handle: data => data.result && data.result.content || '' }
         ],
         seachOpt: { cid: vm.searchClassId, labId: vm.tsName }
       }

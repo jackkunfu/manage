@@ -14,7 +14,9 @@
           el-input(v-model="newStu.sno" placeholder="请输入学号")
         el-form-item(label="姓名")
           el-input(v-model="newStu.name" placeholder="请输入姓名")
-        el-form-item(label="性别")
+        el-form-item(label="课程")
+          el-input(v-model="newStu.banji" placeholder="请输入课程")
+        //- el-form-item(label="性别")
           el-select(v-model="newStu.sex")
             el-option(label="男" :value="true")
             el-option(label="女" :value="false")
@@ -50,14 +52,16 @@ export default {
         tableItems: [
           { name: '学号', prop: 'sno' },
           { name: '姓名', prop: 'name' },
-          { name: '性别', prop: 'sex', handle: row => row.sex ? '男' : '女' }
+          { name: '班级', prop: 'banji' }
+          // { name: '课程', prop: 'sex', handle: row => row.sex ? '男' : '女' }
         ],
         seachOpt: { cid: query.cid },
         editKeys: [
           // { label: '班级名称', key: 'cid', select: true, list: [] },
           { label: '学号', key: 'sno' },
           { label: '姓名', key: 'name' },
-          { label: '性别', key: 'sex', select: true, list: [{ label: '男', value: true }, { label: '女', value: false }] }
+          { label: '性别', key: 'banji' }
+          // { label: '性别', key: 'sex', select: true, list: [{ label: '男', value: true }, { label: '女', value: false }] }
         ]
       }
     }
@@ -84,7 +88,7 @@ export default {
       }
     },
     editClose () {
-      this.newStu = { sex: true }
+      // this.newStu = { sex: true }
       this.editVisible = false
     },
     // async getClassList () {

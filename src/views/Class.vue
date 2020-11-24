@@ -25,7 +25,7 @@ export default {
           { name: '删除', fn: '_del' }
         ],
         tableItems: [
-          { name: '班级', prop: 'name' },
+          { name: '课程', prop: 'name' },
           { name: '操作人', prop: 'createBy', handle: row => row.admin && row.admin.username },
           { name: '发布时间', handle: (row, list) => row.createtime.slice(0, 16) }
         ],
