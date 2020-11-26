@@ -49,7 +49,7 @@
     .table_cp_page(v-if="!config.noPage")
       el-pagination(
         @size-change="_handleSizeChange" @current-change="_handleCurrentChange"
-        :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper"
+        :page-sizes="[2, 10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper"
         :current-page="pageInfo.cur" :page-size="pageInfo.size" :total="pageInfo.total"
       )
     //- 编辑弹窗
@@ -181,13 +181,13 @@ export default {
         this.tableData = listApi.data
         return
       }
+      this.seachOpt = { ...this.seachOpt, ...(otherOpts || {}) }
       if (p) this.pageInfo.cur = p
       if (this.config.noPage) this.pageInfo.size = 1000
       let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,
         ...this.seachOpt,
-        ...(otherOpts || {})
       }, this.apis.list.type || 'get')
       if (res && res.code === 1 && res.data) {
         let isDataList = Object.prototype.toString.call(res.data) === '[object Array]'

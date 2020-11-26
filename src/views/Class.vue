@@ -36,12 +36,12 @@ export default {
       }
     }
   },
-  created () {
-  },
+  created () {},
   methods: {
     sortChange (data) {
       let { prop, order } = data
-      this.$refs.tp._getList(1, { orderBy: prop + ' ' + (order || '').replace(/ending/, '') })
+      order = (order || '').replace(/ending/, '')
+      this.$refs.tp._getList(1, { orderBy: order ? prop + ' ' + order : '' })
     },
     hadleEditItemFn (data, row) {
       return {
