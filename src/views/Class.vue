@@ -41,7 +41,7 @@ export default {
     sortChange (data) {
       let { prop, order } = data
       order = (order || '').replace(/ending/, '')
-      this.$refs.tp._getList(1, { orderBy: order ? prop + ' ' + order : '' })
+      this.$refs.tp._getList(1, { orderBy: order ? prop + ' ' + order : '' }) // 第二个参数 会一直影响 table组件的 列表请求 切换为无排序状态的时候须 重置这些参数值为''
     },
     hadleEditItemFn (data, row) {
       return {
