@@ -1,6 +1,6 @@
 <template lang="pug">
   .table_cp
-    el-table(:data="tableData" @row-click="(row, column, event) => { $emit('rowClick', row, column, event) }")
+    el-table(:data="tableData" @row-click="(row, column, event) => { $emit('rowClick', row, column, event) }" @sort-change="sortChange")
       //- slot header
       template(slot="header")
         slot(name="header")
@@ -30,11 +30,11 @@
             div(slot-scope="{row}" v-html="item.handle(row, tableData)")
         //- 需要显示处理后的数据的
         template(v-else-if="item.handle")
-          el-table-column(:label="item.name" :key="i")
+          el-table-column(:label="item.name" :key="i" :sortable="item.sortable" :prop="item.prop")
             template(slot-scope="{row}") {{item.handle(row, tableData)}}
         //- 直接显示
         template(v-else)
-          el-table-column(:label="item.name" :prop="item.prop" :key="i")
+          el-table-column(:label="item.name" :prop="item.prop" :key="i" :sortable="item.sortable")
       //- 操作区域
       el-table-column(label="操作" v-if="operates.length > 0" :width="operates.length*100")
         template(slot-scope="{row}")
@@ -165,6 +165,9 @@ export default {
     }
   },
   methods: {
+    sortChange () {
+      this.$emit('sortChange', arguments[0] || {})
+    },
     upSus (res, item) {
       // console.log(res, item);
       if (res && res.code === 1) {
@@ -172,24 +175,24 @@ export default {
         this.$forceUpdate()
       }
     },
-    async _getList (p) {
+    async _getList (p, otherOpts) {
       let listApi = this.apis.list || {}
       if (listApi.data && listApi.data.length) {
         this.tableData = listApi.data
         return
       }
-      // console.log(this.seachOpt)
       if (p) this.pageInfo.cur = p
       if (this.config.noPage) this.pageInfo.size = 1000
       let res = await this._fetch(this.apis.list.url, {
         pageSize: this.pageInfo.size,
         pageNum: this.pageInfo.cur,
-        ...this.seachOpt
+        ...this.seachOpt,
+        ...(otherOpts || {})
       }, this.apis.list.type || 'get')
       if (res && res.code === 1 && res.data) {
         let isDataList = Object.prototype.toString.call(res.data) === '[object Array]'
         let list = isDataList ? (res.data || []) : (res.data.list || [])
-        console.log(list);
+        // console.log(list);
         this.tableData = this.handleList ? this.handleList(list) : list
         this.pageInfo.total = res.data.total || 0
       }

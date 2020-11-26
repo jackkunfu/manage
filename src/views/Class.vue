@@ -2,7 +2,7 @@
   .plat_desc
     .fr
       el-button(@click="$refs.tp.isAdd = true" size="mini") 新增班级
-    TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept")
+    TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept" @sortChange="sortChange")
 </template>
 
 <script>
@@ -25,9 +25,9 @@ export default {
           { name: '删除', fn: '_del' }
         ],
         tableItems: [
-          { name: '课程', prop: 'name' },
+          { name: '课程', prop: 'name', sortable: true },
           { name: '操作人', prop: 'createBy', handle: row => row.admin && row.admin.username },
-          { name: '发布时间', handle: (row, list) => row.createtime.slice(0, 16) }
+          { name: '发布时间', prop: 'createtime', handle: (row, list) => row.createtime.slice(0, 16), sortable: true }
         ],
         seachOpt: {},
         editKeys: [
@@ -39,6 +39,10 @@ export default {
   created () {
   },
   methods: {
+    sortChange (data) {
+      let { prop, order } = data
+      this.$refs.tp._getList(1, { orderBy: prop + ' ' + (order || '').replace(/ending/, '') })
+    },
     hadleEditItemFn (data, row) {
       return {
         ...data, status: data.status || false, category: 'notify'
