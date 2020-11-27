@@ -111,6 +111,8 @@ export default {
     upSus (res) {
       if (res && res.code == 1) this.$refs.tp._getList()
       else this._messageTip(res && res.msg || '批量新增失败')
+
+      if (res && res.data) this._messageTip(res && res.data || '批量新增失败')
     }
   }
 }
