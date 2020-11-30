@@ -77,8 +77,7 @@
           el-switch(v-else-if="item.switch" v-model="curOperateRow[item.key]")
           el-input-number(v-else-if="item.number" v-model="curOperateRow[item.key]")
           el-input(v-else-if="item.textarea" type="textarea" v-model="curOperateRow[item.key]")
-          //- Wangeditor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
-          QuillEditorVue(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
+          Editor(v-else-if="item.isEdt" v-model="curOperateRow[item.key]")
           div(v-else-if="item.upload")
             .up-img(v-if="curOperateRow[item.key]")
               img(:src="curOperateRow[item.key]")
@@ -115,11 +114,12 @@
  *}
  *------------
  */
-import Wangeditor from '@/components/Wangeditor.vue'
-import QuillEditorVue from '@/components/quillEditorVue.vue'
+// import Editor from '@/components/Wangeditor.vue'
+// import Editor from '@/components/quillEditorVue.vue'
+// import Editor from '@/components/TinyEditor.vue'
 export default {
   name: 'TableCp',
-  components: { Wangeditor, QuillEditorVue },
+  // components: { Editor },
   props: {
     config: {
       apis: {},
