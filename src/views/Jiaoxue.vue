@@ -26,7 +26,16 @@
             el-button(@click="closeSetScore" size="mini") 取消
 
       el-tab-pane(label="数据统计" name="2")
-        div(style="margin-top: 20px;'") 即将上线，敬请期待
+        div(style="margin-bottom: 20px;'")
+          el-select(v-model="searchClassId" size="mini")
+            el-option(v-for="(cls, i) in classList" :key="i" :label="cls.name" :value="cls.id")
+          span.s_btn(@click="searchTp2") 搜索
+          .fr
+        div 成绩分布统计
+        .bar.chart
+        TableCp(:config="config2" ref="tp2")
+        //- div(style="margin-bottom: 20px;") 采分点错误率统计
+        //- .pie.chart
 </template>
 
 <script>
@@ -88,6 +97,24 @@ export default {
           // { name: '评语', prop: 'score', handle: data => data.result && data.result.content || '' }
         ],
         seachOpt: { cid: vm.searchClassId, labId: vm.tsName }
+      },
+      config2: { // 数据统计
+        firstNoReq: true,
+        apis: {
+          list: { url: '/admin/lab/statistics' }
+        },
+        // operates: [
+        //   { name: '编辑', fn: '_edit', ishow: row => row.id },
+        //   { name: '删除', fn: '_del', ishow: row => row.id },
+        //   // { name: '上传', fn: 'up', ishow: row => row.id }
+        // ],
+        tableItems: [
+          { name: '实验采分点', prop: 'title' },
+          { name: '命令', prop: 'command' },
+          { name: '分值', prop: 'score' },
+          { name: '错误率', prop: 'errRate', handle: data => data.errRate + '%' }
+        ],
+        seachOpt: { cid: vm.searchClassId, labId: vm.tsName }
       }
     }
   },
@@ -97,14 +124,12 @@ export default {
   mounted () {},
   watch: {
     async searchClassId (v) { // 班级改变，同时改变所有tab的数据
-      let query = this.$route.query
-      this.$refs.tp1.seachOpt = { cid: this.searchClassId, labId: this.tsName }
+      let labId = this.tsName
+      this.$refs.tp1.seachOpt = { cid: this.searchClassId, labId: labId }
       this.$refs.tp1._getList(1)
-      // this.$refs.tp2.seachOpt = { cid: this.searchClassId, labId: query.tsid }
-      // this.$refs.tp2._getList(1)
-      // this.$refs.tp3.seachOpt = { cid: this.searchClassId, labId: query.tsid }
-      // var data = await this.$refs.tp3._getList(1)
-      // this.handleRef3Data(data)
+      this.$refs.tp2.seachOpt = { cid: this.searchClassId, labId: labId }
+      var data = await this.$refs.tp2._getList(1)
+      this.handleRef2Data(data)
     }
   },
   methods: {
@@ -127,12 +152,13 @@ export default {
     async etPeizhi () {
       window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsName)
 
-      // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
+      // let labId = this.tsName
+      // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: labId }, 'get')
 
-      // let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId, { cid: this.searchClassId, labId: this.tsId }, { responseType: 'blob' })
+      // let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + labId, { cid: this.searchClassId, labId: labId }, { responseType: 'blob' })
       // axios.get(
-      //   this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId,
-      //   { cid: this.searchClassId, labId: this.tsId },
+      //   this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + labId,
+      //   { cid: this.searchClassId, labId: labId },
       //   { responseType: 'stream', headers: { 'content-type': 'application/x-www-form-urlencoded' } }
       // ).then(res => {
       //   console.log('res')
@@ -141,7 +167,7 @@ export default {
       // let res = await axios({
       //   methods: 'get',
       //   url: this.reqBasic + '/admin/labSpotReport/export',
-      //   params: { cid: this.searchClassId, labId: this.tsId },
+      //   params: { cid: this.searchClassId, labId: labId },
       //   // responseType: 'blob',
       //   responseType: 'stream',
       //   // headers: { 'content-type': 'application/x-www-form-urlencoded' }
@@ -169,8 +195,9 @@ export default {
     },
     async etBaogao () {
       window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsName)
-      // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
-      // let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId, { cid: this.searchClassId, labId: this.tsId }, { responseType: 'blob' })
+      // let labId = this.tsName
+      // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: labId }, 'get')
+      // let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + labId, { cid: this.searchClassId, labId: labId }, { responseType: 'blob' })
       // if (res && res.code == 1) {
 
       // }
@@ -198,9 +225,9 @@ export default {
     chartSetData (dom, opts) {
       dom.setOption(opts)
     },
-    handleRef3Data (res) {
+    handleRef2Data (res) {
       let data = res.data || {}
-      this.$refs.tp3.tableData = this.handleList(data.spot || [])
+      this.$refs.tp2.tableData = this.handleList(data.spot || [])
       this.$nextTick(() => {
         let stat = (data.stat || [])[0] || {}
         let xx = ['0-59', '60-69', '70-79', '80-89', '90-100']
@@ -209,80 +236,15 @@ export default {
           xAxis: {
             type: 'category',
             axisTick: { alignWithLabel: true },
-            // data: data.spot.map(el => el.title)
             data: xx
           },
           grid: { top: '6%' },
           yAxis: { type: 'value' },
           series: [{
-            // data: data.spot.map(el => el.num),
             data: yy,
             barWidth: '40%',
             type: 'bar'
           }]
-        })
-        // this.chartSetData(echarts.init(document.querySelector('.bar')), {
-        //   xAxis: {
-        //     type: 'category',
-        //     data: data.spot.map(el => el.title)
-        //   },
-        //   yAxis: {
-        //       type: 'value'
-        //   },
-        //   series: [{
-        //     data: data.spot.map(el => el.num),
-        //     type: 'bar'
-        //   }]
-        // })
-        this.chartSetData(echarts.init(document.querySelector('.pie')), {
-          tooltip: {
-            trigger: 'item',
-            // formatter: "{a} <br/>{b}: {c} ({d}%)"
-            formatter: "{b} ({c}%)"
-          },
-          legend: {
-            orient: 'vertical',
-            x: 'left',
-            // data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-          },
-          series: [
-            {
-              name:'访问来源',
-              type:'pie',
-              radius: ['50%', '70%'],
-              avoidLabelOverlap: true,
-              stillShowZeroSum: true,
-              // label: {
-              //   normal: {
-              //     show: false,
-              //     position: 'center'
-              //   },
-              //   emphasis: {
-              //     show: true,
-              //     textStyle: {
-              //       fontSize: '30',
-              //       fontWeight: 'bold'
-              //     }
-              //   }
-              // },
-              // labelLine: {
-              //   normal: {
-              //     show: false
-              //   }
-              // },
-              data: data.spot.map(el => ({ value: el.errRate, name: el.nodeName + ' ' + el.title })).filter(el => el.value != 0)
-              // data: data.stat && data.stat.length ? Object.keys(data.stat[0]).map(el => {
-              //   return { value: data.stat[0][el], name: el } 
-              // }) : []
-              // [
-              //   {value:335, name:'直接访问'},
-              //   {value:310, name:'邮件营销'},
-              //   {value:234, name:'联盟广告'},
-              //   {value:135, name:'视频广告'},
-              //   {value:1548, name:'搜索引擎'}
-              // ]
-            }
-          ]
         })
       })
     },
@@ -308,6 +270,9 @@ export default {
     },
     searchTp1 () {
       this.$refs.tp1._getList()
+    },
+    searchTp2 () {
+      this.$refs.tp2._getList()
     }
   }
 }

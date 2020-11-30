@@ -1,7 +1,7 @@
 <template lang="pug">
   .plat_desc
     .fr
-      el-button(@click="$refs.tp.isAdd = true" size="mini") 新增班级
+      //- el-button(@click="$refs.tp.isAdd = true" size="mini") 新增课程
     TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept" @sortChange="sortChange")
 </template>
 
