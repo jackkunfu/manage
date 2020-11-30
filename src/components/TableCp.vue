@@ -116,10 +116,10 @@
  */
 // import Editor from '@/components/Wangeditor.vue'
 // import Editor from '@/components/quillEditorVue.vue'
-// import Editor from '@/components/TinyEditor.vue'
+import Editor from '@/components/TinyEditor.vue'
 export default {
   name: 'TableCp',
-  // components: { Editor },
+  components: { Editor },
   props: {
     config: {
       apis: {},
