@@ -2,7 +2,6 @@
   <div class="tinymce-editor">
     <Editor
       v-model="myValue"
-      api-key="no-api-key"
       :init="init"
     />
   </div>
