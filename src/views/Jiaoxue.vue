@@ -92,7 +92,8 @@ export default {
           },
           { name: '提交时间', prop: 'createtime' },
           { name: '操作人', prop: 'score', handle: data => data.user && data.user.name || '' },
-          { name: '实验操作打分', prop: 'opScore', handle: data => data.result && data.result.opScore || '' },
+          // { name: '实验操作打分', prop: 'opScore', handle: data => data.result && data.result.opScore || '' },
+          { name: '实验操作打分', prop: 'opScore', handle: data => data.opScore || '' },
           { name: '实验报告打分', prop: 'score', handle: data => data.result && data.result.score || '' },
           // { name: '评语', prop: 'score', handle: data => data.result && data.result.content || '' }
         ],
