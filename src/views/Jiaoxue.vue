@@ -33,7 +33,7 @@
           .fr
         div 成绩分布统计
         .bar.chart
-        TableCp(:config="config2" ref="tp2")
+        TableCp(:config="config2" ref="tp2" style="display: none;")
         //- div(style="margin-bottom: 20px;") 采分点错误率统计
         //- .pie.chart
 </template>
@@ -238,6 +238,12 @@ export default {
             type: 'category',
             axisTick: { alignWithLabel: true },
             data: xx
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross'
+            }
           },
           grid: { top: '6%' },
           yAxis: { type: 'value' },
