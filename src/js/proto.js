@@ -3,7 +3,8 @@ import axios from 'axios'
 export default function (Vue) {
   var hrefUrl = location.href
   let isNeedNatFree = hrefUrl.indexOf('zhenwu') > -1 || hrefUrl.indexOf('localhost') > -1
-  var reqBasic = isNeedNatFree ? 'http://9b5vpa.natappfree.cc' : `http://${location.hostname}:9000`
+  var reqBasic = isNeedNatFree ? 'http://7pa5u2.natappfree.cc' : `http://${location.hostname}:9000`
+  // var reqBasic = isNeedNatFree ? 'http://47.99.201.236:9000' : `http://${location.hostname}:9000`
   Vue.prototype.reqBasic = reqBasic
   
   Vue.prototype.goLogin = function () {

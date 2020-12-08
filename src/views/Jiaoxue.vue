@@ -141,7 +141,7 @@ export default {
         //   // { name: '上传', fn: 'up', ishow: row => row.id }
         // ],
         tableItems: [
-          { name: '实验采分点', prop: 'title' },
+          { name: '实验采分点', prop: 'title', handle: data => (data.nodeName || '') + ' ' + data.title },
           { name: '命令', prop: 'command' },
           { name: '分值', prop: 'score' },
           { name: '错误率', prop: 'errRate', handle: data => data.errRate + '%' }
@@ -170,7 +170,7 @@ export default {
     handleList (list) {
       list = list.sort((a, b) => b.errRate - a.errRate)
       return list.map(el => {
-        el.errRate = el.errRate % 1 > 0 ? el.errRate.toFxed(1) : el.errRate
+        el.errRate = (el.errRate || 0) % 1 > 0 ? el.errRate.toFixed(1) : el.errRate
         return el
       })
     },
