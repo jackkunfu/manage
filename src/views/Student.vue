@@ -50,7 +50,7 @@ export default {
           { name: '删除', fn: '_del' }
         ],
         tableItems: [
-          { name: '学号', prop: 'sno' },
+          { name: '学号', prop: 'sno', handle: row => row.sno + '' },
           { name: '姓名', prop: 'name' },
           { name: '班级', prop: 'banji' }
           // { name: '课程', prop: 'sex', handle: row => row.sex ? '男' : '女' }

@@ -233,6 +233,8 @@ export default {
         let stat = (data.stat || [])[0] || {}
         let xx = ['0-59', '60-69', '70-79', '80-89', '90-100']
         let yy = [stat.lv1 || 0, stat.lv2 || 0, stat.lv3 || 0, stat.lv4 || 0, stat.lv5 || 0]
+        let all = eval(yy.join('+'))
+        console.log('all:', all);
         this.chartSetData(echarts.init(document.querySelector('.bar')), {
           xAxis: {
             type: 'category',
@@ -241,12 +243,14 @@ export default {
           },
           tooltip: {
             trigger: 'axis',
-            axisPointer: {
-              type: 'cross'
+            axisPointer: { type: 'cross' },
+            formatter: (a, b, c) => {
+              let data = a[0]
+              return `${data.name}分 \n ${data.data}人，占${(data.data / all * 100).toFixed(1)}%`
             }
           },
           grid: { top: '6%' },
-          yAxis: { type: 'value' },
+          yAxis: { type: 'value', max: 50 },
           series: [{
             data: yy,
             barWidth: '40%',
