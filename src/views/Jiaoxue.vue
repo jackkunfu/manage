@@ -19,7 +19,7 @@
           el-form(v-model="editScore" label-width="80px" size="mini")
             el-form-item(label="评分")
               el-input-number(v-model="editScore.score" placeholder="请输入分数" :min="0" :max="100")
-            el-form-item(label="评语")
+            //- el-form-item(label="评语")
               el-input(v-model="editScore.content" placeholder="请输入评语")
           .op-btns
             el-button(@click="scoreAjax" size="mini") 确定
@@ -74,7 +74,7 @@ export default {
         operates: [
           // { name: '编辑', fn: '_edit', ishow: row => row.id },
           { name: '删除', fn: '_del', ishow: row => row.id },
-          // { name: '打分评语', fn: 'setScore', ishow: row => row.id }
+          { name: '打分', fn: 'setScore', ishow: row => row.id }
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
@@ -218,7 +218,7 @@ export default {
       if (res && res.code == 1) {
         this._messageTip(res.msg || '操作成功', 1)
         this.closeSetScore();
-        this.$refs.tp2._getList();
+        this.$refs.tp1._getList();
       } else {
         this._messageTip(res.msg || '操作成功')
       }
@@ -250,7 +250,7 @@ export default {
             }
           },
           grid: { top: '6%' },
-          yAxis: { type: 'value', max: 50 },
+          yAxis: { type: 'value', max: all },
           series: [{
             data: yy,
             barWidth: '40%',
