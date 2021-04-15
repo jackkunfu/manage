@@ -10,9 +10,9 @@
           el-button(slot="append" @click="searchTest") 搜索
         div
           .fr
-            //- el-button(size="mini" @click="$refs.tp1.isAdd = true") 上传指导书
-            Upload(name="上传指导书(pdf)" @upSus="upSus" accept=".pdf")
-        TableCp(:config="config1" ref="tp1" :hadleEditItemFn="hadleEditItemFn1" @downZhidao="downZhidao")
+            el-button(size="mini" @click="addGuide") 新增节点指导书
+            //- Upload(name="上传指导书(pdf)" @upSus="upSus" accept=".pdf")
+        TableCp(:config="config1" ref="tp1" :hadleEditItemFn="hadleEditItemFn1" :selfEdit="hadleEditItemFn1" @downZhidao="downZhidao")
           //- template(slot="operate" slot-scope="row")
           //-   Upload(name="上传" url="/api/admin/labGuide/add" @upSus="upSus" :otherData="{ labId: row.labId }")
 
@@ -93,18 +93,20 @@ export default {
           edit: { url: '/admin/labGuide/update' }
         },
         operates: [
-          { name: '下载', fn: 'downZhidao', ishow: row => row.id },
-          // { name: '编辑', fn: '_edit', ishow: row => row.id },
+          // { name: '下载', fn: 'downZhidao', ishow: row => row.id },
+          { name: '编辑', fn: '_edit', ishow: row => row.id },
           { name: '删除', fn: '_del', ishow: row => row.id },
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
           { name: '实验指导书', prop: 'title' },
           { name: '作者', prop: 'createBy', handle: data => data.admin && data.admin.name || '' },
+          { name: '节点名称', prop: 'nodeName' },
           { name: '上传时间', prop: 'createtime' }
         ],
         seachOpt: { labId: query.tsid },
         editKeys: [
+          { label: '节点', key: 'nodeId', select: true, list: vm.testNodesData },
           { label: '标题', key: 'title' },
           { label: '内容', key: 'content', isEdt: true }
         ]
@@ -209,6 +211,10 @@ export default {
     this.getNodes()
   },
   methods: {
+    addGuide () {
+      this.config1.editKeys[0].list = this.testNodesData
+      this.$refs.tp1.isAdd = true
+    },
     editSpreadItemRow (opt, row) {
       console.log(opt, row);
       opt.labId = row.labId
@@ -257,8 +263,10 @@ export default {
       }
     },
     hadleEditItemFn1 (data, row) {
+      console.log(data)
       let el = data
       el.labId = this.tsId
+      el.nodeName = this.testNodesData.filter(node => node.id === el.nodeId)[0].name
       return el
     },
     hadleEditItemFnPoint (data, row) {
