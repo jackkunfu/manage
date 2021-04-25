@@ -52,7 +52,7 @@
                 div(v-for="(item, i) in scorePoints" style="margin-bottom: 10px;overflow: hidden;")
                   el-col(:span="5")
                     el-select(v-model="item.nodeId" placeholder="请选节点")
-                      el-option(v-for="(item, i) in testNodesData" :label="item.name" :value="item.id")
+                      el-option(v-for="(item, i) in testNodesData" :key="item.id" :label="item.name" :value="item.id")
                   el-col(:span="5")
                     el-input(v-model="item.title" placeholder="采分点名称")
                   el-col(:span="8")
@@ -299,8 +299,13 @@ export default {
       let url = this.newAns.id ? '/admin/labAnswer/update' : '/admin/labAnswer/add'
       let testNodesData = this.testNodesData
       let nodeIds = testNodesData.map(el => el.id)
-      // if (this.newAns.id) url = '/admin/labAnswer/update'
-      let res = await this._fetch(url, { ...this.newAns, display: this.newAns.display || false, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(this.newAns.nodeId)].name })
+      let res = await this._fetch(url,
+        {
+          ...this.newAns, display: this.newAns.display || false, labId: this.tsId,
+          nodeName: testNodesData[nodeIds.indexOf(this.newAns.nodeId)].name,
+          global: true
+        }
+      )
       if (res && res.code == 1) {
         this.isAddAns = false
         this.newAns = {}
