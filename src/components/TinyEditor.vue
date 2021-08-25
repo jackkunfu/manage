@@ -39,6 +39,8 @@ export default {
         // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
         // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
 
+        // wordpaster 参考  https://www.jianshu.com/p/23badd25f6d2    https://www.e-learn.cn/topic/3788204
+
         // 官网抄的图片上传 项目如果用了vue-resource可以用$http 因为比较懒就没改
         images_upload_handler: async (blobInfo, success, failure) => {
           let fd = new FormData();
