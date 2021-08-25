@@ -125,6 +125,7 @@ import Editor from "@/components/TinyEditor.vue";
 export default {
   name: "TableCp",
   components: { Editor },
+  // components: { Editor: () => import("@/components/TinyEditor.vue") },
   props: {
     config: {
       apis: {},
