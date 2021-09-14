@@ -18,7 +18,7 @@ export default {
     },
     plugins: {
       type: [String, Array],
-      default: "lists image media table wordcount powerpaste"
+      default: "lists image media table wordcount" // powerpaste
     },
     toolbar: {
       type: [String, Array],
@@ -35,13 +35,26 @@ export default {
         height: 300,
         plugins: this.plugins, // 父组件传入 或者 填写个默认的插件 要选用什么插件都可以 去官网可以查到
         toolbar: this.toolbar, // 工具栏 我用到的也就是lists image media table wordcount 这些 根据需求而定
+
+        // wordpaster 参考  https://www.jianshu.com/p/23badd25f6d2    https://www.e-learn.cn/topic/3788204
+
+        //添加额外的插件
+        external_plugins: {
+          powerpaste: `/tinymce/powerpaste/plugin.min.js` //${this.baseUrl}
+        },
+        powerpaste_word_import: "merge", // 参数:propmt, merge, clear
+        powerpaste_html_import: "merge", // propmt, merge, clear
+
+        // powerpaste_word_import: "propmt", // 参数可以是propmt, merge, clear，效果自行切换对比
+        // powerpaste_html_import: "propmt", // propmt, merge, clear
+
+        powerpaste_allow_local_images: true,
+        paste_data_images: true, // 允许黏贴图片
+
         // images_upload_url: this.reqBasic + '/admin/file/upload', //上传路径
         // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
         // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
 
-        // wordpaster 参考  https://www.jianshu.com/p/23badd25f6d2    https://www.e-learn.cn/topic/3788204
-
-        // 官网抄的图片上传 项目如果用了vue-resource可以用$http 因为比较懒就没改
         images_upload_handler: async (blobInfo, success, failure) => {
           let fd = new FormData();
           fd.append("file", blobInfo.blob(), blobInfo.filename());

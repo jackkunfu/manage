@@ -5,7 +5,7 @@ export default function(Vue) {
   let isNeedNatFree =
     hrefUrl.indexOf("zhenwu") > -1 || hrefUrl.indexOf("localhost") > -1;
   var reqBasic = isNeedNatFree
-    ? "http://jrzb63.natappfree.cc"
+    ? "http://9bm798.natappfree.cc"
     : `http://${location.hostname}:9000`;
   // var reqBasic = isNeedNatFree ? 'http://47.99.201.236:9000' : `http://${location.hostname}:9000`
   Vue.prototype.reqBasic = reqBasic;
@@ -36,11 +36,11 @@ export default function(Vue) {
     if (result) {
       if (result.code === -1) {
         if (result.msg) {
-          if (result.msg.indexOf("token") > -1) this.goLogin();
-          else this._messageTip(result.msg);
-        } else this._messageTip("请求失败");
+          if (result.msg.indexOf("token") > -1) return this.goLogin();
+          else return this._messageTip(result.msg);
+        } else return this._messageTip("请求失败1");
       } else return result || {};
-    } else throw new Error("请求失败");
+    } else throw new Error("请求失败2");
   };
 
   // Vue.prototype.$loading = function (url, data, type) {

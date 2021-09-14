@@ -68,83 +68,113 @@
 </template>
 
 <script>
-import TableCp from '@/components/TableCp'
-import Upload from '@/components/Upload'
-import FixCenter from '@/components/FixCenter'
-import Wangeditor from '@/components/Wangeditor.vue'
-import axios from 'axios'
+import TableCp from "@/components/TableCp";
+import Upload from "@/components/Upload";
+import FixCenter from "@/components/FixCenter";
+import Wangeditor from "@/components/Wangeditor.vue";
+import axios from "axios";
 export default {
-  name: 'TestManage',
+  name: "TestManage",
   components: { TableCp, Upload, FixCenter, Wangeditor },
-  data () {
-    var query = this.$route.query
-    var vm = this
+  data() {
+    var query = this.$route.query;
+    var vm = this;
     return {
       csType: query.type, // 1管理  2教学
       csName: query.csname,
       tsName: query.tsname,
       tsId: query.tsid,
-      activeName: '1',
-      config1: { // 指导书
+      activeName: "1",
+      config1: {
+        // 指导书
         apis: {
-          list: { url: '/admin/labGuide/list' },
-          del: { url: '/admin/labGuide/delete' },
-          add: { url: '/admin/labGuide/add' },
-          edit: { url: '/admin/labGuide/update' }
+          list: { url: "/admin/labGuide/list" },
+          del: { url: "/admin/labGuide/delete" },
+          add: { url: "/admin/labGuide/add" },
+          edit: { url: "/admin/labGuide/update" }
         },
         operates: [
           // { name: '下载', fn: 'downZhidao', ishow: row => row.id },
-          { name: '编辑', fn: '_edit', ishow: row => row.id },
-          { name: '删除', fn: '_del', ishow: row => row.id },
+          { name: "编辑", fn: "_edit", ishow: row => row.id },
+          { name: "删除", fn: "_del", ishow: row => row.id }
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: '实验指导书', prop: 'title' },
-          { name: '作者', prop: 'createBy', handle: data => data.admin && data.admin.name || '' },
-          { name: '节点名称', prop: 'nodeName' },
-          { name: '上传时间', prop: 'createtime' }
+          { name: "实验指导书", prop: "title" },
+          {
+            name: "作者",
+            prop: "createBy",
+            handle: data => (data.admin && data.admin.name) || ""
+          },
+          { name: "节点名称", prop: "nodeName" },
+          { name: "上传时间", prop: "createtime" }
         ],
         seachOpt: { labId: query.tsid },
         editKeys: [
-          { label: '节点', key: 'nodeId', select: true, list: vm.testNodesData },
-          { label: '标题', key: 'title' },
-          { label: '内容', key: 'content', isEdt: true }
+          {
+            label: "节点",
+            key: "nodeId",
+            select: true,
+            list: vm.testNodesData
+          },
+          { label: "标题", key: "title" },
+          { label: "内容", key: "content", isEdt: true }
         ]
       },
-      searchStr: '',
+      searchStr: "",
       isAddAns: false,
-      config2: { // 标准答案
+      config2: {
+        // 标准答案
         apis: {
-          list: { url: '/admin/labAnswer/list' },
-          del: { url: '/admin/labAnswer/delete' },
-          add: { url: '/admin/labAnswer/add' },
-          edit: { url: '/admin/labAnswer/update' }
+          list: { url: "/admin/labAnswer/list" },
+          del: { url: "/admin/labAnswer/delete" },
+          add: { url: "/admin/labAnswer/add" },
+          edit: { url: "/admin/labAnswer/update" }
         },
         operates: [
-          { name: '编辑', fn: '_edit', ishow: row => row.id, handleSelf: true, fn: 'editAns' },
-          { name: '删除', fn: '_del', ishow: row => row.id },
+          {
+            name: "编辑",
+            fn: "_edit",
+            ishow: row => row.id,
+            handleSelf: true,
+            fn: "editAns"
+          },
+          { name: "删除", fn: "_del", ishow: row => row.id }
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: 'ID', prop: 'id' },
-          { name: '节点名称', prop: 'nodeName' },
-          { name: '答案', prop: 'content', html: true, handle: data => data.content },
-          { name: '操作时间', prop: 'createtime' },
-          { name: '是否展示', prop: 'display', handle: data => data.display ? '是' : '否' }
+          { name: "ID", prop: "id" },
+          { name: "节点名称", prop: "nodeName" },
+          {
+            name: "答案",
+            prop: "content",
+            html: true,
+            handle: data => {
+              let c = data.content || "";
+              return c.length > 10 ? c.substring(0, 10) + "..." : c;
+            }
+          },
+          { name: "操作时间", prop: "createtime" },
+          {
+            name: "是否展示",
+            prop: "display",
+            handle: data => (data.display ? "是" : "否")
+          }
         ],
         editKeys: [
-          { label: '标题', key: 'title' },
-          { label: '内容', key: 'content', isEdt: true }
+          { label: "标题", key: "title" },
+          { label: "内容", key: "content", isEdt: true }
         ],
         seachOpt: { labId: query.tsid }
       },
-      config3: { // 采分点
+      config3: {
+        // 采分点
         isExpand: true,
         apis: {
-          list: { url: '/admin/labSpot/list' },
-          del: { url: '/admin/labSpot/delete' },
-          add: { url: '/admin/labSpot/add' },
-          edit: { url: '/admin/labSpot/update' }
+          list: { url: "/admin/labSpot/list" },
+          del: { url: "/admin/labSpot/delete" },
+          add: { url: "/admin/labSpot/add" },
+          edit: { url: "/admin/labSpot/update" }
         },
         operates: [
           // { name: '编辑', fn: '_edit', ishow: row => row.id },
@@ -153,17 +183,28 @@ export default {
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: '节点名称', prop: 'nodeName' },
+          { name: "节点名称", prop: "nodeName" },
           // { name: '实验采分点', prop: 'command' },
-          { name: '采分点数量', prop: 'num' },
-          { name: '总分值', prop: 'score', handle: data => { return (data.score || 0) + '分' } },
-          { name: '操作时间', prop: 'createtime' }
+          { name: "采分点数量", prop: "num" },
+          {
+            name: "总分值",
+            prop: "score",
+            handle: data => {
+              return (data.score || 0) + "分";
+            }
+          },
+          { name: "操作时间", prop: "createtime" }
         ],
         editKeys: [
-          { label: '节点', key: 'nodeId', select: true, list: vm.testNodesData },
-          { label: '采分点名称', key: 'title' },
-          { label: '命令', key: 'command', textarea: true },
-          { label: '分数', key: 'score', number: true }
+          {
+            label: "节点",
+            key: "nodeId",
+            select: true,
+            list: vm.testNodesData
+          },
+          { label: "采分点名称", key: "title" },
+          { label: "命令", key: "command", textarea: true },
+          { label: "分数", key: "score", number: true }
         ],
         seachOpt: { labId: query.tsid }
       },
@@ -172,178 +213,212 @@ export default {
       newAns: {},
       scorePoints: [{}],
       isAddScPoint: false
-    }
+    };
   },
   computed: {
-    configRow () {
-      var vm = this
+    configRow() {
+      var vm = this;
       return data => {
-        var row = data.row
+        var row = data.row;
         return {
           noPage: true,
           apis: {
-            list: { url: '/admin/labSpot/node' },
-            del: { url: '/admin/labSpot/delete' },
-            add: { url: '/admin/labSpot/add' },
-            edit: { url: '/admin/labSpot/update' }
+            list: { url: "/admin/labSpot/node" },
+            del: { url: "/admin/labSpot/delete" },
+            add: { url: "/admin/labSpot/add" },
+            edit: { url: "/admin/labSpot/update" }
           },
           operates: [
-            { name: '编辑', fn: '_edit', ishow: row => row.id },
-            { name: '删除', fn: '_del', ishow: row => row.id }
+            { name: "编辑", fn: "_edit", ishow: row => row.id },
+            { name: "删除", fn: "_del", ishow: row => row.id }
           ],
           tableItems: [
-            { name: '采分点名称', prop: 'title' },
-            { name: '采分点', prop: 'command' },
-            { name: '采分点分值', prop: 'score', handle: data => { return (data.score || 0) + '分' } },
-            { name: '操作时间', prop: 'createtime' }
+            { name: "采分点名称", prop: "title" },
+            { name: "采分点", prop: "command" },
+            {
+              name: "采分点分值",
+              prop: "score",
+              handle: data => {
+                return (data.score || 0) + "分";
+              }
+            },
+            { name: "操作时间", prop: "createtime" }
           ],
           editKeys: [
-            { label: '采分点名称', key: 'title' },
-            { label: '命令', key: 'command', textarea: true },
-            { label: '分数', key: 'score', number: true }
+            { label: "采分点名称", key: "title" },
+            { label: "命令", key: "command", textarea: true },
+            { label: "分数", key: "score", number: true }
           ],
           seachOpt: { labId: vm.tsId, nodeId: row.nodeId }
-        }
-      }
+        };
+      };
     }
   },
-  created () {
-    this.getNodes()
+  created() {
+    this.getNodes();
   },
   methods: {
-    addGuide () {
-      this.config1.editKeys[0].list = this.testNodesData
-      this.$refs.tp1.isAdd = true
+    addGuide() {
+      this.config1.editKeys[0].list = this.testNodesData;
+      this.$refs.tp1.isAdd = true;
     },
-    editSpreadItemRow (opt, row) {
+    editSpreadItemRow(opt, row) {
       console.log(opt, row);
-      opt.labId = row.labId
-      opt.nodeId = row.nodeId
-      opt.nodeName = row.nodeName
-      return opt
+      opt.labId = row.labId;
+      opt.nodeId = row.nodeId;
+      opt.nodeName = row.nodeName;
+      return opt;
     },
     // get
-    async spreadScorePoint (data) {
-      var res = await this._fetch('/admin/labSpot/node', { nodeId: data.nodeId, labId: this.$route.query.tsid }, 'get')
+    async spreadScorePoint(data) {
+      var res = await this._fetch(
+        "/admin/labSpot/node",
+        { nodeId: data.nodeId, labId: this.$route.query.tsid },
+        "get"
+      );
       if (res && res.code === 1) {
         console.log(res);
-        data.children = res.data || []
+        data.children = res.data || [];
       } else {
-        data.children = []
+        data.children = [];
       }
-      console.log('this.$refs.tp3.tableData');
+      console.log("this.$refs.tp3.tableData");
       console.log(this.$refs.tp3.tableData);
-      this.$forceUpdate()
+      this.$forceUpdate();
     },
-    downZhidao (data) {
+    downZhidao(data) {
       // window.open(data.content)
-      var a = document.createElement('a');
-      a.href = data.content
-      a.target = '_blank'
-      a.download = data.title
-      a.style = "display: none;"
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
+      var a = document.createElement("a");
+      a.href = data.content;
+      a.target = "_blank";
+      a.download = data.title;
+      a.style = "display: none;";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     },
-    editAns (row, arr) {
-      this.newAns = { ...row, id: row.id + '' }
-      this.isAddAns = true
+    editAns(row, arr) {
+      this.newAns = { ...row, id: row.id + "" };
+      this.isAddAns = true;
     },
-    async getNodes () {
-      let res = await this._fetch('/api/lab/device/list', { path: this.$route.query.tsid }, 'get')
-      if (res && res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) {
-        this.testNodesData = res.data.topology.nodes.node || []
+    async getNodes() {
+      let res = await this._fetch(
+        "/api/lab/device/list",
+        { path: this.$route.query.tsid },
+        "get"
+      );
+      if (
+        res &&
+        res.code == 1 &&
+        res.data &&
+        res.data.topology &&
+        res.data.topology.nodes
+      ) {
+        this.testNodesData = res.data.topology.nodes.node || [];
         this.config3.editKeys[0].list = this.testNodesData.map(el => {
-          let data = el
-          data.label = el.name
-          data.value = el.id
-          return data
-        })
+          let data = el;
+          data.label = el.name;
+          data.value = el.id;
+          return data;
+        });
       }
     },
-    hadleEditItemFn1 (data, row) {
-      console.log(data)
-      let el = data
-      el.labId = this.tsId
-      el.nodeName = this.testNodesData.filter(node => node.id === el.nodeId)[0].name
-      return el
+    hadleEditItemFn1(data, row) {
+      console.log(data);
+      let el = data;
+      el.labId = this.tsId;
+      el.nodeName = this.testNodesData.filter(
+        node => node.id === el.nodeId
+      )[0].name;
+      return el;
     },
-    hadleEditItemFnPoint (data, row) {
-      let item = data
-      item.labId = this.tsId
+    hadleEditItemFnPoint(data, row) {
+      let item = data;
+      item.labId = this.tsId;
       // console.log(el)
-      item.nodeName = this.testNodesData.filter(el => el.id == item.nodeId)[0].name
-      return item
+      item.nodeName = this.testNodesData.filter(
+        el => el.id == item.nodeId
+      )[0].name;
+      return item;
     },
-    searchTest () {
-      this.config.seachOpt.name = this.searchStr.trim()
+    searchTest() {
+      this.config.seachOpt.name = this.searchStr.trim();
     },
-    handleTabClick (tabVm) {
-      console.log(tabVm)
+    handleTabClick(tabVm) {
+      console.log(tabVm);
     },
-    async upSus (res) {
+    async upSus(res) {
       // console.log(data)
       if (res.code == 1) {
-        let file = res.data || {}
+        let file = res.data || {};
         let req = await this._fetch(this.config1.apis.add.url, {
-          title: file.name || '', content: file.url || '', labId: this.tsId
-        })
+          title: file.name || "",
+          content: file.url || "",
+          labId: this.tsId
+        });
         if (req && req.code == 1) {
-          this._messageTip(req.msg || '操作成功', 1)
-          this.$refs.tp1._getList(1)
+          this._messageTip(req.msg || "操作成功", 1);
+          this.$refs.tp1._getList(1);
         }
       }
     },
-    async addAnsFn () {
-      let url = this.newAns.id ? '/admin/labAnswer/update' : '/admin/labAnswer/add'
-      let testNodesData = this.testNodesData
-      let nodeIds = testNodesData.map(el => el.id)
-      let res = await this._fetch(url,
-        {
-          ...this.newAns, display: this.newAns.display || false, labId: this.tsId,
-          nodeName: testNodesData[nodeIds.indexOf(this.newAns.nodeId)].name,
-          global: true
-        }
-      )
+    async addAnsFn() {
+      let url = this.newAns.id
+        ? "/admin/labAnswer/update"
+        : "/admin/labAnswer/add";
+      let testNodesData = this.testNodesData;
+      let nodeIds = testNodesData.map(el => el.id);
+      let res = await this._fetch(url, {
+        ...this.newAns,
+        display: this.newAns.display || false,
+        labId: this.tsId,
+        nodeName: testNodesData[nodeIds.indexOf(this.newAns.nodeId)].name,
+        global: true
+      });
       if (res && res.code == 1) {
-        this.isAddAns = false
-        this.newAns = {}
-        this.$refs.tp2._getList()
+        this.isAddAns = false;
+        this.newAns = {};
+        this.$refs.tp2._getList();
       }
     },
-    async addScorePoint () {
-      let testNodesData = this.testNodesData
-      let nodeIds = testNodesData.map(el => el.id)
+    async addScorePoint() {
+      let testNodesData = this.testNodesData;
+      let nodeIds = testNodesData.map(el => el.id);
       // if (this.scorePoints.reduce((res, cur) => res + cur.score, 0) < 100) return this._messageTip('分数不足100')
-      let spots = this.scorePoints.filter(el => el.nodeId).map(el => {
-        return { ...el, labId: this.tsId, nodeName: testNodesData[nodeIds.indexOf(el.nodeId)].name }
-      })
+      let spots = this.scorePoints
+        .filter(el => el.nodeId)
+        .map(el => {
+          return {
+            ...el,
+            labId: this.tsId,
+            nodeName: testNodesData[nodeIds.indexOf(el.nodeId)].name
+          };
+        });
       // let res = await this._fetch('/admin/labSpot/add/batch', { spots: spots }, 'post')
-      
+
       let res = await axios({
-        method: 'post',
-        url: this.reqBasic + '/admin/labSpot/add/batch',
+        method: "post",
+        url: this.reqBasic + "/admin/labSpot/add/batch",
         data: spots,
         headers: {
-          'Content-type': 'application/json',
-          token: localStorage.MToken || ''
+          "Content-type": "application/json",
+          token: localStorage.MToken || ""
         }
       });
       if (res && res.data) {
-        let data = res.data
+        let data = res.data;
         if (data.code == 1) {
-          this._messageTip('添加成功', 1)
-          this.isAddScPoint = false
-          this.scorePoints = [{}]
-          this.$refs.tp3._getList()
+          this._messageTip("添加成功", 1);
+          this.isAddScPoint = false;
+          this.scorePoints = [{}];
+          this.$refs.tp3._getList();
         } else {
-          this._messageTip(data.msg || '操作失败')
+          this._messageTip(data.msg || "操作失败");
         }
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
