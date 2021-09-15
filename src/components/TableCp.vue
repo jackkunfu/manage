@@ -200,7 +200,7 @@ export default {
         let isDataList =
           Object.prototype.toString.call(res.data) === "[object Array]";
         let list = isDataList ? res.data || [] : res.data.list || [];
-        console.log(list);
+        // console.log(list);
         this.tableData = this.handleList ? this.handleList(list) : list;
         this.pageInfo.total = res.data.total || 0;
       }

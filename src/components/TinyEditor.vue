@@ -58,7 +58,7 @@ export default {
         images_upload_handler: async (blobInfo, success, failure) => {
           let fd = new FormData();
           fd.append("file", blobInfo.blob(), blobInfo.filename());
-          let res = await this._fetch("/admin/file/upload", fd, "post");
+          let res = await this._fetch("/admin/file/editor/upload", fd, "post");
           if (res && res.code === 1) {
             success((res.data && res.data.url) || "");
           } else {

@@ -8,7 +8,7 @@
         el-form-item(label="文件名称")
           el-input(v-model="newStu.name" placeholder="请输入名称")
         el-form-item(label="是否展示")
-          el-switch(v-model="newStu.show")
+          el-switch(v-model="newStu.display")
       .op-btns
         el-button(@click="editOk" size="mini") 确定
         el-button(@click="editClose" size="mini") 取消
@@ -42,15 +42,15 @@ export default {
           { name: "作者", prop: "createBy" },
           {
             name: "是否展示",
-            prop: "show",
-            handle: item => (item.show ? "是" : "否")
+            prop: "display",
+            handle: item => (item.display ? "是" : "否")
           },
           { name: "上传时间", prop: "createtime" }
         ],
         seachOpt: { name: "" }
       },
-      otherObj: { name: "", show: false },
-      newStu: { name: "", show: false },
+      otherObj: { name: "", display: false },
+      newStu: { name: "", display: false },
       editVisible: false
     };
   },
@@ -59,7 +59,7 @@ export default {
     updateName(data) {
       this.newStu.id = data.id;
       this.newStu.name = data.name;
-      this.newStu.show = data.show;
+      this.newStu.display = data.display;
       this.editVisible = true;
     },
     async editOk() {
@@ -72,7 +72,7 @@ export default {
     },
     editClose() {
       this.newStu.name = "";
-      this.newStu.show = false;
+      this.newStu.display = false;
       this.newStu.id = "";
       this.editVisible = false;
     },

@@ -11,6 +11,7 @@
         div
           .fr
             el-button(size="mini" @click="addGuide") 新增节点指导书
+            el-button(size="mini" @click="addGuide('self')") 新增自定义节点指导书
             //- Upload(name="上传指导书(pdf)" @upSus="upSus" accept=".pdf")
         TableCp(:config="config1" ref="tp1" :hadleEditItemFn="hadleEditItemFn1" :selfEdit="hadleEditItemFn1" @downZhidao="downZhidao")
           //- template(slot="operate" slot-scope="row")
@@ -80,6 +81,7 @@ export default {
     var query = this.$route.query;
     var vm = this;
     return {
+      isSelfPointName: false,
       csType: query.type, // 1管理  2教学
       csName: query.csname,
       tsName: query.tsname,
@@ -258,12 +260,28 @@ export default {
     this.getNodes();
   },
   methods: {
-    addGuide() {
-      this.config1.editKeys[0].list = this.testNodesData;
+    addGuide(type) {
+      let isSelfName = type === "self";
+      this.isSelfPointName = isSelfName;
+      if (!isSelfName) {
+        // 新增节点
+        this.config1.editKeys[0] = {
+          label: "节点",
+          key: "nodeId",
+          select: true,
+          list: this.testNodesData
+        };
+      } else {
+        // 新增自定义节点
+        this.config1.editKeys[0] = {
+          label: "自定义节点名称",
+          key: "nodeName"
+        };
+      }
       this.$refs.tp1.isAdd = true;
     },
     editSpreadItemRow(opt, row) {
-      console.log(opt, row);
+      // console.log(opt, row);
       opt.labId = row.labId;
       opt.nodeId = row.nodeId;
       opt.nodeName = row.nodeName;
@@ -277,13 +295,13 @@ export default {
         "get"
       );
       if (res && res.code === 1) {
-        console.log(res);
+        // console.log(res);
         data.children = res.data || [];
       } else {
         data.children = [];
       }
-      console.log("this.$refs.tp3.tableData");
-      console.log(this.$refs.tp3.tableData);
+      // console.log("this.$refs.tp3.tableData");
+      // console.log(this.$refs.tp3.tableData);
       this.$forceUpdate();
     },
     downZhidao(data) {
@@ -324,12 +342,15 @@ export default {
       }
     },
     hadleEditItemFn1(data, row) {
-      console.log(data);
+      // console.log(data);
       let el = data;
       el.labId = this.tsId;
-      el.nodeName = this.testNodesData.filter(
-        node => node.id === el.nodeId
-      )[0].name;
+      if (this.isSelfPointName) el.nodeId = Date.now();
+      else {
+        el.nodeName = this.testNodesData.filter(
+          node => node.id === el.nodeId
+        )[0].name;
+      }
       return el;
     },
     hadleEditItemFnPoint(data, row) {
@@ -345,7 +366,7 @@ export default {
       this.config.seachOpt.name = this.searchStr.trim();
     },
     handleTabClick(tabVm) {
-      console.log(tabVm);
+      // console.log(tabVm);
     },
     async upSus(res) {
       // console.log(data)
