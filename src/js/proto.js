@@ -1,11 +1,12 @@
 import axios from "axios";
+import { reqCb } from "@/js/fn";
 // import { Loading } from 'element-ui'
 export default function(Vue) {
   var hrefUrl = location.href;
   let isNeedNatFree =
     hrefUrl.indexOf("zhenwu") > -1 || hrefUrl.indexOf("localhost") > -1;
   var reqBasic = isNeedNatFree
-    ? "http://9bm798.natappfree.cc"
+    ? "http://ie5ncy.natappfree.cc"
     : `http://${location.hostname}:9000`;
   // var reqBasic = isNeedNatFree ? 'http://47.99.201.236:9000' : `http://${location.hostname}:9000`
   Vue.prototype.reqBasic = reqBasic;
@@ -42,6 +43,9 @@ export default function(Vue) {
       } else return result || {};
     } else throw new Error("请求失败2");
   };
+
+  // 请求再次封装省略res.code !=1 的处理
+  Vue.prototype.reqCb = reqCb;
 
   // Vue.prototype.$loading = function (url, data, type) {
   //   let loading = Loading.service()

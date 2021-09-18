@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'Upload',
+  name: "Upload",
   props: {
     name: String,
     url: String,
@@ -18,42 +18,42 @@ export default {
     beforeFn: Function,
     accept: String
   },
-  data () {
+  data() {
     return {
       // actionUrl: this.url || '/admin/file/upload'
-      actionUrl: this.url || this.reqBasic + '/admin/file/upload',
+      actionUrl: this.url || this.reqBasic + "/admin/file/upload",
       headers: {
-        token: localStorage.MToken || ''
+        token: localStorage.MToken || ""
       },
       loading: null,
-      otherDataObj: {}
-    }
+      otherDataObj: this.otherData || {}
+    };
   },
   methods: {
-    beforeUp () {
-      this.loading = this.$loading()
+    beforeUp() {
+      this.loading = this.$loading();
       // if (this.beforeFn) {
       //   var data = this.beforeFn()
       //   if (data) {
       //     console.log(data)
-      //     // this.otherDataObj = 
+      //     // this.otherDataObj =
       //     return true
       //   }
       //   return false
       // }
-      return true
+      return true;
     },
-    handleSuccess (res, file, fileList) {
-      if (res) this.$emit('upSus', res, file, fileList)
-      this.loading.close()
+    handleSuccess(res, file, fileList) {
+      if (res) this.$emit("upSus", res, file, fileList);
+      this.loading.close();
     },
-    handleError (err) {
-      console.log(err)
-      this.loading.close()
+    handleError(err) {
+      console.log(err);
+      this.loading.close();
     },
-    handleProgress () {}
+    handleProgress() {}
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

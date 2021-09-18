@@ -54,6 +54,11 @@ export default new Router({
         },
         {
           path: "/downloads",
+          name: "downloadsV1",
+          component: () => import("./views/downloadsV1.vue")
+        },
+        {
+          path: "/downloadsV1",
           name: "downloads",
           component: () => import("./views/Downloads.vue")
         },
