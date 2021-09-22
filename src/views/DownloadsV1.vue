@@ -51,12 +51,14 @@
 import TableCp from "@/components/TableCp";
 import Upload from "@/components/Upload";
 
+import { deepFillParent } from "@/js/fn";
+
 let handleCate = {
   add: async function() {
     let type = this.newNode.type;
     if (!this.newNode.type) return tip("请选择类型");
     let opt = {
-      categoryId: (this.curHandleItem && this.curHandleItem.id) || 0
+      parentId: (this.curHandleItem && this.curHandleItem.id) || 0
     };
     if (type == 1) {
       let name = (this.newNode.categoryName || "").trim();
@@ -181,7 +183,7 @@ export default {
       if (!node.expanded) return; // 收起不请求子集文件夹列表
 
       this.curHandleItem = item;
-      this.getCdList();
+      // this.getCdList();
     },
     async getCdList() {
       let item = this.curHandleItem;
@@ -191,13 +193,16 @@ export default {
         { categoryId: itemId },
         "get",
         res => {
-          let list = (res.data || []).map(el => {
-            el.parent = item;
-            // el.parentId = itemId;
-            return el;
-          });
-          if (item) item.list = list;
-          else this.dirs = list;
+          let list = res.data || [];
+          if (item) {
+            item.children = list.map(el => {
+              el.parent = item;
+              return el;
+            });
+          } else {
+            deepFillParent(list);
+            this.dirs = list;
+          }
           this.$forceUpdate();
           this.curHandleItem = null;
         }

@@ -21,3 +21,12 @@ export function reqCb() {
     } else this._messageTip((res && res.msg) || "请求失败");
   });
 }
+
+export function deepFillParent(list, parent, pk) {
+  pk = pk || "parent";
+  parent = parent || null;
+  list.forEach(el => {
+    el[pk] = parent;
+    deepFillParent(el.children || [], el);
+  });
+}

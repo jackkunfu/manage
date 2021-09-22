@@ -51,32 +51,33 @@
 </template>
 
 <script>
-import TableCp from '@/components/TableCp'
-import Upload from '@/components/Upload'
-import echarts from 'echarts'
+import TableCp from "@/components/TableCp";
+import Upload from "@/components/Upload";
+import echarts from "echarts";
 // import Bar from 'echarts/lib/chart/bar'
 // import Pie from 'echarts/lib/chart/pie'
 // console.log(Bar)
 // console.log(Pie)
 export default {
-  name: 'Jiaoxue',
+  name: "Jiaoxue",
   components: { TableCp, Upload },
-  data () {
-    let vm = this
-    let query = this.$route.query
+  data() {
+    let vm = this;
+    let query = this.$route.query;
     return {
       csType: query.type, // 1管理  2教学
       csName: query.csname,
       tsName: query.tsname,
       tsId: query.tsid,
-      activeName: '1',
-      config1: { // 配置
+      activeName: "1",
+      config1: {
+        // 配置
         firstNoReq: true,
         apis: {
-          list: { url: '/admin/labSpotReport/list' },
-          del: { url: '/admin/labGuide/delete' },
-          add: { url: '/admin/labGuide/add' },
-          edit: { url: '/admin/labGuide/update' }
+          list: { url: "/admin/labSpotReport/list" },
+          del: { url: "/admin/labGuide/delete" },
+          add: { url: "/admin/labGuide/add" },
+          edit: { url: "/admin/labGuide/update" }
         },
         // operates: [
         //   { name: '编辑', fn: '_edit', ishow: row => row.id },
@@ -84,56 +85,106 @@ export default {
         //   // { name: '上传', fn: 'up', ishow: row => row.id }
         // ],
         tableItems: [
-          { name: '学号', prop: 'sno', handle: data => { return data.student && data.student.sno || '' } },
-          { name: '姓名', prop: 'name', handle: data => { return data.student && data.student.name || ''} },
-          { name: '提交时间', prop: 'createtime' },
-          { name: '得分', prop: 'score' }
+          {
+            name: "学号",
+            prop: "sno",
+            handle: data => {
+              return (data.student && data.student.sno) || "";
+            }
+          },
+          {
+            name: "姓名",
+            prop: "name",
+            handle: data => {
+              return (data.student && data.student.name) || "";
+            }
+          },
+          { name: "提交时间", prop: "createtime" },
+          { name: "得分", prop: "score" }
         ],
         seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
       },
-      searchClassId: '',
+      searchClassId: "",
       classList: [],
-      searchStr: '',
+      searchStr: "",
       isEditScore: false,
       editScore: {},
-      config2: { // 报告
+      config2: {
+        // 报告
         firstNoReq: true,
         apis: {
-          list: { url: '/admin/labReport/list' },
-          del: { url: '/admin/labReport/delete' },
-          add: { url: '/admin/labReport/add' },
-          edit: { url: '/admin/labReport/update' }
+          list: { url: "/admin/labReport/list" },
+          del: { url: "/admin/labReport/delete" },
+          add: { url: "/admin/labReport/add" },
+          edit: { url: "/admin/labReport/update" }
         },
         operates: [
           // { name: '编辑', fn: '_edit', ishow: row => row.id },
-          { name: '删除', fn: '_del', ishow: row => row.id },
-          { name: '打分评语', fn: 'setScore', ishow: row => row.id }
+          { name: "删除", fn: "_del", ishow: row => row.id },
+          { name: "打分评语", fn: "setScore", ishow: row => row.id }
           // { name: '上传', fn: 'up', ishow: row => row.id }
         ],
         tableItems: [
-          { name: '学号', prop: 'sno', handle: data => { return data.user && data.user.sno || '' } },
-          { name: '姓名', prop: 'name', handle: data => { return data.user && data.user.name || '' } },
-          { name: '报告', prop: 'url', html: true,
+          {
+            name: "学号",
+            prop: "sno",
             handle: data => {
-              // return data.user && data.user.name || ''
-              let file = data.content
-              let fileNameSps = file.split('/')
-              let fn = (data.user && data.user.name || '') + fileNameSps[fileNameSps.length - 1]
-              // return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;">' + fn + '</a>'
-              return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;" target="_blank">下载报告</a>'
+              return (data.user && data.user.sno) || "";
             }
           },
-          { name: '提交时间', prop: 'createtime' },
-          { name: '操作人', prop: 'score', handle: data => data.user && data.user.name || '' },
-          { name: '实验报告打分', prop: 'score', handle: data => data.result && data.result.score || '' },
-          { name: '评语', prop: 'score', handle: data => data.result && data.result.content || '' }
+          {
+            name: "姓名",
+            prop: "name",
+            handle: data => {
+              return (data.user && data.user.name) || "";
+            }
+          },
+          {
+            name: "报告",
+            prop: "url",
+            html: true,
+            handle: data => {
+              // return data.user && data.user.name || ''
+              let file = data.content;
+              let fileNameSps = file.split("/");
+              let fn =
+                ((data.user && data.user.name) || "") +
+                fileNameSps[fileNameSps.length - 1];
+              // return '<a href="' + file + '" download="' + fn + '" style="text-decoration: underline;">' + fn + '</a>'
+              return (
+                '<a href="' +
+                file +
+                '" download="' +
+                fn +
+                '" style="text-decoration: underline;" target="_blank">下载报告</a>'
+              );
+            }
+          },
+          { name: "提交时间", prop: "createtime" },
+          {
+            name: "操作人",
+            prop: "score",
+            handle: data => (data.user && data.user.name) || ""
+          },
+          {
+            name: "实验报告打分",
+            prop: "score",
+            handle: data => (data.result && data.result.score) || ""
+          },
+          {
+            name: "评语",
+            prop: "score",
+            handle: data => (data.result && data.result.content) || ""
+          }
         ],
         seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
       },
-      config3: { // 数据统计
+      config3: {
+        // 数据统计
+        noPage: true,
         firstNoReq: true,
         apis: {
-          list: { url: '/admin/lab/statistics' }
+          list: { url: "/admin/lab/statistics" }
         },
         // operates: [
         //   { name: '编辑', fn: '_edit', ishow: row => row.id },
@@ -141,50 +192,70 @@ export default {
         //   // { name: '上传', fn: 'up', ishow: row => row.id }
         // ],
         tableItems: [
-          { name: '实验采分点', prop: 'title', handle: data => (data.nodeName || '') + ' ' + data.title },
-          { name: '命令', prop: 'command' },
-          { name: '分值', prop: 'score' },
-          { name: '错误率', prop: 'errRate', handle: data => data.errRate + '%' }
+          {
+            name: "实验采分点",
+            prop: "title",
+            handle: data => (data.nodeName || "") + " " + data.title
+          },
+          { name: "命令", prop: "command" },
+          { name: "分值", prop: "score" },
+          {
+            name: "错误率",
+            prop: "errRate",
+            handle: data => data.errRate + "%"
+          }
         ],
         seachOpt: { cid: vm.searchClassId, labId: vm.tsId }
       }
-    }
+    };
   },
-  created () {
-    this.getClassList()
+  created() {
+    this.getClassList();
   },
-  mounted () {},
+  mounted() {},
   watch: {
-    async searchClassId (v) { // 班级改变，同时改变所有tab的数据
-      let query = this.$route.query
-      this.$refs.tp1.seachOpt = { cid: this.searchClassId, labId: query.tsid }
-      this.$refs.tp1._getList(1)
-      this.$refs.tp2.seachOpt = { cid: this.searchClassId, labId: query.tsid }
-      this.$refs.tp2._getList(1)
-      this.$refs.tp3.seachOpt = { cid: this.searchClassId, labId: query.tsid }
-      var data = await this.$refs.tp3._getList(1)
-      this.handleRef3Data(data)
+    async searchClassId(v) {
+      // 班级改变，同时改变所有tab的数据
+      let query = this.$route.query;
+      this.$refs.tp1.seachOpt = { cid: this.searchClassId, labId: query.tsid };
+      this.$refs.tp1._getList(1);
+      this.$refs.tp2.seachOpt = { cid: this.searchClassId, labId: query.tsid };
+      this.$refs.tp2._getList(1);
+      this.$refs.tp3.seachOpt = { cid: this.searchClassId, labId: query.tsid };
+      var data = await this.$refs.tp3._getList(1);
+      this.handleRef3Data(data);
     }
   },
   methods: {
-    handleList (list) {
-      list = list.sort((a, b) => b.errRate - a.errRate)
+    handleList(list) {
+      list = list.sort((a, b) => b.errRate - a.errRate);
       return list.map(el => {
-        el.errRate = (el.errRate || 0) % 1 > 0 ? el.errRate.toFixed(1) : el.errRate
-        return el
-      })
+        el.errRate =
+          (el.errRate || 0) % 1 > 0 ? el.errRate.toFixed(1) : el.errRate;
+        return el;
+      });
     },
-    async redo () {
-      let res = await this._fetch('/admin/labSpotReport/redo', { cid: this.searchClassId, labId: this.tsId }, 'post')
+    async redo() {
+      let res = await this._fetch(
+        "/admin/labSpotReport/redo",
+        { cid: this.searchClassId, labId: this.tsId },
+        "post"
+      );
       if (res && res.code == 1) {
-        this._messageTip(res.msg || '操作成功', 1)
-        this.$refs.tp1._getList(1)
+        this._messageTip(res.msg || "操作成功", 1);
+        this.$refs.tp1._getList(1);
       } else {
-        this._messageTip(res.msg || '操作失败')
+        this._messageTip(res.msg || "操作失败");
       }
     },
-    async etPeizhi () {
-      window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId)
+    async etPeizhi() {
+      window.open(
+        this.reqBasic +
+          "/admin/labReport/export?cid=" +
+          this.searchClassId +
+          "&labId=" +
+          this.tsId
+      );
 
       // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
 
@@ -206,80 +277,96 @@ export default {
       //   // headers: { 'content-type': 'application/x-www-form-urlencoded' }
       //   // headers: {
       //   //   'Content-Type': 'application/json;'
-          
+
       //   // }
       // })
-      return
-      console.log('res.data')
-      console.log(res.data)
+      return;
+      console.log("res.data");
+      console.log(res.data);
       if (res && res.code == 1) {
         // var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.wordprocessingml.document这里表示doc类型
         var blob = new Blob([res.data]);
-        var downloadElement = document.createElement('a');
+        var downloadElement = document.createElement("a");
         var href = window.URL.createObjectURL(blob); //创建下载的链接
-        downloadElement.style.display = 'none';
+        downloadElement.style.display = "none";
         downloadElement.href = href;
-        downloadElement.download = filename ; //下载后文件名
+        downloadElement.download = filename; //下载后文件名
         document.body.appendChild(downloadElement);
         downloadElement.click(); //点击下载
         document.body.removeChild(downloadElement); //下载完成移除元素
         window.URL.revokeObjectURL(href);
       }
     },
-    async etBaogao () {
-      window.open(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId)
+    async etBaogao() {
+      window.open(
+        this.reqBasic +
+          "/admin/labReport/export?cid=" +
+          this.searchClassId +
+          "&labId=" +
+          this.tsId
+      );
       // let res = await this._fetch('/admin/labReport/export', { cid: this.searchClassId, labId: this.tsId }, 'get')
       // let res = await axios.get(this.reqBasic + '/admin/labReport/export?cid=' + this.searchClassId + '&labId=' + this.tsId, { cid: this.searchClassId, labId: this.tsId }, { responseType: 'blob' })
       // if (res && res.code == 1) {
 
       // }
     },
-    setScore (row) {
-      this.isEditScore = true
+    setScore(row) {
+      this.isEditScore = true;
       this.editScore = {
-        resportId: row.id, score: row.result && row.result.score || 0, content: row.result && row.result.content || ''
-      }
+        resportId: row.id,
+        score: (row.result && row.result.score) || 0,
+        content: (row.result && row.result.content) || ""
+      };
     },
-    closeSetScore () {
-      this.isEditScore = false
-      this.editScore = {}
+    closeSetScore() {
+      this.isEditScore = false;
+      this.editScore = {};
     },
-    async scoreAjax () {
-      let res = await this._fetch('/admin/labReportResult', this.editScore);
+    async scoreAjax() {
+      let res = await this._fetch("/admin/labReportResult", this.editScore);
       if (res && res.code == 1) {
-        this._messageTip(res.msg || '操作成功', 1)
+        this._messageTip(res.msg || "操作成功", 1);
         this.closeSetScore();
         this.$refs.tp2._getList();
       } else {
-        this._messageTip(res.msg || '操作成功')
+        this._messageTip(res.msg || "操作成功");
       }
     },
-    chartSetData (dom, opts) {
-      dom.setOption(opts)
+    chartSetData(dom, opts) {
+      dom.setOption(opts);
     },
-    handleRef3Data (res) {
-      let data = res.data || {}
-      this.$refs.tp3.tableData = this.handleList(data.spot || [])
+    handleRef3Data(res) {
+      let data = res.data || {};
+      this.$refs.tp3.tableData = this.handleList(data.spot || []);
       this.$nextTick(() => {
-        let stat = (data.stat || [])[0] || {}
-        let xx = ['0-59', '60-69', '70-79', '80-89', '90-100']
-        let yy = [stat.lv1 || 0, stat.lv2 || 0, stat.lv3 || 0, stat.lv4 || 0, stat.lv5 || 0]
-        this.chartSetData(echarts.init(document.querySelector('.bar')), {
+        let stat = (data.stat || [])[0] || {};
+        let xx = ["0-59", "60-69", "70-79", "80-89", "90-100"];
+        let yy = [
+          stat.lv1 || 0,
+          stat.lv2 || 0,
+          stat.lv3 || 0,
+          stat.lv4 || 0,
+          stat.lv5 || 0
+        ];
+        this.chartSetData(echarts.init(document.querySelector(".bar")), {
           xAxis: {
-            type: 'category',
+            type: "category",
             axisTick: { alignWithLabel: true },
             // data: data.spot.map(el => el.title)
             data: xx
           },
-          grid: { top: '6%' },
-          yAxis: { type: 'value' },
-          series: [{
-            // data: data.spot.map(el => el.num),
-            data: yy,
-            barWidth: '40%',
-            type: 'bar'
-          }]
-        })
+          grid: { top: "6%" },
+          yAxis: { type: "value" },
+          series: [
+            {
+              // data: data.spot.map(el => el.num),
+              data: yy,
+              barWidth: "40%",
+              type: "bar"
+            }
+          ]
+        });
         // this.chartSetData(echarts.init(document.querySelector('.bar')), {
         //   xAxis: {
         //     type: 'category',
@@ -293,22 +380,22 @@ export default {
         //     type: 'bar'
         //   }]
         // })
-        this.chartSetData(echarts.init(document.querySelector('.pie')), {
+        this.chartSetData(echarts.init(document.querySelector(".pie")), {
           tooltip: {
-            trigger: 'item',
+            trigger: "item",
             // formatter: "{a} <br/>{b}: {c} ({d}%)"
             formatter: "{b} ({c}%)"
           },
           legend: {
-            orient: 'vertical',
-            x: 'left',
+            orient: "vertical",
+            x: "left"
             // data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
           },
           series: [
             {
-              name:'访问来源',
-              type:'pie',
-              radius: ['50%', '70%'],
+              name: "访问来源",
+              type: "pie",
+              radius: ["50%", "70%"],
               avoidLabelOverlap: true,
               stillShowZeroSum: true,
               // label: {
@@ -329,9 +416,14 @@ export default {
               //     show: false
               //   }
               // },
-              data: data.spot.map(el => ({ value: el.errRate, name: el.nodeName + ' ' + el.title })).filter(el => el.value != 0)
+              data: data.spot
+                .map(el => ({
+                  value: el.errRate,
+                  name: el.nodeName + " " + el.title
+                }))
+                .filter(el => el.value != 0)
               // data: data.stat && data.stat.length ? Object.keys(data.stat[0]).map(el => {
-              //   return { value: data.stat[0][el], name: el } 
+              //   return { value: data.stat[0][el], name: el }
               // }) : []
               // [
               //   {value:335, name:'直接访问'},
@@ -342,40 +434,44 @@ export default {
               // ]
             }
           ]
-        })
-      })
+        });
+      });
     },
-    async getClassList () {
-      let res = await this._fetch('/admin/classes/list', { pageNum: 1, pageSize: 100 }, 'get')
+    async getClassList() {
+      let res = await this._fetch(
+        "/admin/classes/list",
+        { pageNum: 1, pageSize: 100 },
+        "get"
+      );
       if (res && res.code == 1 && res.data) {
-        this.classList = res.data.list || []
+        this.classList = res.data.list || [];
         if (this.classList.length > 0) {
-          this.searchClassId = this.classList[0].id
+          this.searchClassId = this.classList[0].id;
         }
       }
     },
-    searchTest () {
-      this.config.seachOpt.name = this.searchStr.trim()
+    searchTest() {
+      this.config.seachOpt.name = this.searchStr.trim();
     },
-    handleTabClick (tabVm, a, b) {
+    handleTabClick(tabVm, a, b) {
       // console.log(tabVm)
       // console.log(a)
       // console.log(b)
     },
-    upSus () {
-      this.searchTp1()
+    upSus() {
+      this.searchTp1();
     },
-    searchTp1 () {
-      this.$refs.tp1._getList()
+    searchTp1() {
+      this.$refs.tp1._getList();
     },
-    searchTp2 () {
-      this.$refs.tp2._getList()
+    searchTp2() {
+      this.$refs.tp2._getList();
     },
-    searchTp3 () {
-      this.$refs.tp3._getList()
+    searchTp3() {
+      this.$refs.tp3._getList();
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
