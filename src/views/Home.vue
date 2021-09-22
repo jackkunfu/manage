@@ -18,47 +18,47 @@
 
 <script>
 export default {
-  name: 'Home',
-  components: {
-  },
-  data () {
-    let user = JSON.parse(localStorage.EVENGFRONTUSER).user
+  name: "Home",
+  components: {},
+  data() {
+    let user = JSON.parse(localStorage.EVENGFRONTUSER).user;
     return {
-      userName: user && user.auth || 'admidsdsdn',
+      userName: (user && user.auth) || "admidsdsdn",
       activeUrl: this.$route.path,
       menus: [
-        { name: '实验管理', path: '/course1' },
-        { name: '实验教学', path: '/course2' },
-        { name: '学生中心', path: '/class' },
+        { name: "实验管理", path: "/course1" },
+        { name: "实验教学", path: "/course2" },
+        { name: "学生中心", path: "/class" }
+        // { name: "关联实验", path: "/link" }
         // { name: '管理员设置', path: '/adminManage' }
       ]
-    }
+    };
   },
   methods: {
-    clickItem (item) {
-      this.activeUrl = item.path
-      this._goUrl(item.path, item.data || {})
+    clickItem(item) {
+      this.activeUrl = item.path;
+      this._goUrl(item.path, item.data || {});
     },
-    logout () {
-      this.goLogin()
+    logout() {
+      this.goLogin();
     }
   },
-  mounted () {
-    if (this.$route.path === '/') {
-      this.activeUrl = '/course1'
-      this._goUrl('/course1')
-    } else if (this.$route.path === '/testmanage') {
-      this.activeUrl = '/course1'
-    } else if (this.$route.path === '/Jiaoxue') {
-      this.activeUrl = '/course2'
+  mounted() {
+    if (this.$route.path === "/") {
+      this.activeUrl = "/course1";
+      this._goUrl("/course1");
+    } else if (this.$route.path === "/testmanage") {
+      this.activeUrl = "/course1";
+    } else if (this.$route.path === "/Jiaoxue") {
+      this.activeUrl = "/course2";
     }
     // console.log(localStorage.EVENGFRONTUSER)
-    let user = JSON.parse(localStorage.EVENGFRONTUSER).user
-    if (user && user.auth == 'admin') {
-      this.menus.push({ name: '管理员设置', path: '/adminManage' })
+    let user = JSON.parse(localStorage.EVENGFRONTUSER).user;
+    if (user && user.auth == "admin") {
+      this.menus.push({ name: "管理员设置", path: "/adminManage" });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -90,9 +90,9 @@ export default {
   }
   .el-menu {
     height: 100%;
-    background: #F5F7FA;
+    background: #f5f7fa;
     li {
-      color: #5E5E5E;
+      color: #5e5e5e;
       font-size: 16px;
       text-align: center;
       &.is-active {

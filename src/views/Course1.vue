@@ -4,18 +4,20 @@
 </template>
 
 <script>
-import TableCp from '@/components/TableCp'
+import TableCp from "@/components/TableCp";
 export default {
-  name: 'Course1',
+  props: ["isChoose"],
+  name: "Course1",
   components: { TableCp },
-  data () {
-    let vm = this
+  data() {
+    let vm = this;
     return {
       type: 1, // 1管理  2教学
       config: {
+        isChoose: this.isChoose || false,
         apis: {
           // list: { url: '/api/lab/list', isList: true }
-          list: { url: '/admin/lab/category', isList: true }
+          list: { url: "/admin/lab/category", isList: true }
         },
         seachOpt: {
           // username: localStorage.EVENGFRONTUSER
@@ -25,42 +27,49 @@ export default {
         // ],
         tableItems: [
           {
-            name: '实验', prop: 'name', html: true,
+            name: "实验",
+            prop: "name",
+            html: true,
             handle: row => {
               // console.log(vm.type)
-              var name = row.category
-              if (row.directory) return `<a href="/cslist?type=${vm.type}&csname=${ name }">${ name }</a>`
-              else return `<a href="${vm.type == 1 ? '/testmanage' : '/Jiaoxue'}?type=${vm.type}&csname=实验&tsname=${ name }&tsid=${row.path}">${ name }</a>`
+              var name = row.category;
+              if (row.directory)
+                return `<a href="/cslist?type=${vm.type}&csname=${name}">${name}</a>`;
+              else
+                return `<a href="${
+                  vm.type == 1 ? "/testmanage" : "/Jiaoxue"
+                }?type=${vm.type}&csname=实验&tsname=${name}&tsid=${
+                  row.path
+                }">${name}</a>`;
             }
           }
-        ],
+        ]
         // editKeys: [
         //   { label: '消息内容', key: 'contentDetaile' },
         //   { label: '下发进度', key: 'contentType', select: true, list: [] }
         // ]
       }
-    }
+    };
   },
-  created () {
-  },
+  created() {},
   watch: {
-    '$route.query.type' (v) {
+    "$route.query.type"(v) {
       this.$refs.tbcp._getList();
     }
   },
   methods: {
-    hadleEditItemFn (data, item) { // 需要再次处理edit请求参数的时候配置此数据
-      console.log(data) // 当前编辑的数据
-      console.log(item) // 原数据所有数据
-      return data
+    hadleEditItemFn(data, item) {
+      // 需要再次处理edit请求参数的时候配置此数据
+      console.log(data); // 当前编辑的数据
+      console.log(item); // 原数据所有数据
+      return data;
     },
-    selfEdit (item) { // 点击编辑按钮时，展示的内容可能需要再次处理下的 在此方法里再次处理下
-      console.log(item)
+    selfEdit(item) {
+      // 点击编辑按钮时，展示的内容可能需要再次处理下的 在此方法里再次处理下
+      console.log(item);
     }
   }
-}
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
