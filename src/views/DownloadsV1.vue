@@ -3,7 +3,7 @@
     el-container
       el-aside
         el-button(@click="addNode('')") 新增
-        el-tree(:data="dirs" @node-click="nodeClick")
+        el-tree(:data="dirs" @node-click="nodeClick" node-key="id" :default-expanded-keys="[0]")
           .item_node(slot-scope="{ node, data }")
             span {{ data.categoryName }}
             span
@@ -83,9 +83,15 @@ let handleCate = {
     this.isAddCd = false;
   },
   del: function(item) {
-    this.reqCb("/admin/file/category/delete", { id: item.id }, () => {
-      this.curHandleItem = item.parent || null;
-      this.getCdList();
+    this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning"
+    }).then(() => {
+      this.reqCb("/admin/file/category/delete", { id: item.id }, () => {
+        this.curHandleItem = item.parent || null;
+        this.getCdList();
+      });
     });
   }
   // list: function() {
@@ -107,7 +113,7 @@ export default {
         type: ""
       },
       isAddNew: false,
-      dirs: [],
+      dirs: [{ categoryName: "全部", id: 0, children: [] }],
       config: {
         apis: {
           list: { url: "/admin/file/list" },
@@ -201,7 +207,7 @@ export default {
             });
           } else {
             deepFillParent(list);
-            this.dirs = list;
+            this.dirs[0].children = list;
           }
           this.$forceUpdate();
           this.curHandleItem = null;
