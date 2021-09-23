@@ -16,26 +16,25 @@
 
 <script>
 export default {
-  name: 'Login',
-  components: {
-  },
-  data () {
+  name: "Login",
+  components: {},
+  data() {
     return {
-      formData: { username: '', password: '' }
-    }
+      formData: { username: "", password: "" }
+    };
   },
   methods: {
-    async fn () {
-      let res = await this._fetch('/admin/user/login', this.formData, 'post')
+    async fn() {
+      let res = await this._fetch("/admin/user/login", this.formData, "post");
       if (res && res.code === 1) {
-        localStorage.setItem('MToken', res.data.token)
+        localStorage.setItem("MToken", res.data.token);
         // localStorage.setItem('EVENGFRONTUSER', this.formData.username.trim())
-        localStorage.setItem('EVENGFRONTUSER', JSON.stringify(res.data || {}));
-        this.$store.commit('setStoreData', { key: 'isLogin', value: false })
+        localStorage.setItem("EVENGFRONTUSER", JSON.stringify(res.data || {}));
+        this.$store.commit("setStoreData", { key: "isLogin", value: false });
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

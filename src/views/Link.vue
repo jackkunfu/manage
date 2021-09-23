@@ -2,7 +2,7 @@
   .plat_desc
     .fr
       el-button(@click="$refs.tp.isAdd = true" size="mini") 新增课程
-    TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept" @sortChange="sortChange")
+    TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept" @rowLink="rowLink" @sortChange="sortChange")
 
     el-dialog(
       v-if="showLink" :visible.sync="showLink" :close-on-click-modal="false"
