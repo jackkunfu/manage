@@ -1,6 +1,6 @@
 <template lang="pug">
   .table_cp
-    el-table(:data="tableData" @row-click="(row, column, event) => { $emit('rowClick', row, column, event) }" @sort-change="sortChange")
+    el-table(:data="tableData" @row-click="(row, column, event) => { $emit('rowClick', row, column, event) }" @sort-change="sortChange" @selection-change="selectChange")
       //- slot header
       template(slot="header")
         slot(name="header")
@@ -115,10 +115,10 @@
  *}
  *------------
  */
-import Wangeditor from '@/components/Wangeditor.vue'
-import QuillEditorVue from '@/components/quillEditorVue.vue'
+import Wangeditor from "@/components/Wangeditor.vue";
+import QuillEditorVue from "@/components/quillEditorVue.vue";
 export default {
-  name: 'TableCp',
+  name: "TableCp",
   components: { Wangeditor, QuillEditorVue },
   props: {
     config: {
@@ -136,12 +136,12 @@ export default {
     editCheck: Function,
     handleList: Function
   },
-  data () {
-    let config = this._props.config || {}
+  data() {
+    let config = this._props.config || {};
     // console.log(config)
     return {
+      isChoose: !!config.isChoose,
       // props数据
-      isChoose: false,
       editKeys: [],
       seachOpt: {},
       operates: [],
@@ -154,128 +154,148 @@ export default {
       editVisible: false,
       isAdd: false, // 是否是新增， 新增和编辑走同一个逻辑， 以此区分  this.$refs.tp.isAdd = true
       upFileList: []
-    }
+    };
   },
-  created () {
-    if (!this.config.firstNoReq) this._getList()
+  created() {
+    if (!this.config.firstNoReq) this._getList();
   },
   watch: {
-    isAdd (v) {
-      if (v) this._edit() // 外部改变 isAdd 为 true 时 显示新增编辑弹窗
+    isAdd(v) {
+      if (v) this._edit(); // 外部改变 isAdd 为 true 时 显示新增编辑弹窗
     }
   },
   methods: {
-    sortChange () {
-      this.$emit('sortChange', arguments[0] || {})
+    sortChange() {
+      this.$emit("sortChange", arguments[0] || {});
     },
-    upSus (res, item) {
+    selectChange() {
+      this.$emit("selectChange", ...arguments);
+    },
+    upSus(res, item) {
       // console.log(res, item);
       if (res && res.code === 1) {
-        this.curOperateRow[item.key] = (res.data || {}).url || ''
-        this.$forceUpdate()
+        this.curOperateRow[item.key] = (res.data || {}).url || "";
+        this.$forceUpdate();
       }
     },
-    async _getList (p, otherOpts) {
-      let listApi = this.apis.list || {}
+    async _getList(p, otherOpts) {
+      let listApi = this.apis.list || {};
       if (listApi.data && listApi.data.length) {
-        this.tableData = listApi.data
-        return
+        this.tableData = listApi.data;
+        return;
       }
-      this.seachOpt = { ...this.seachOpt, ...(otherOpts || {}) }
-      if (p) this.pageInfo.cur = p
-      if (this.config.noPage) this.pageInfo.size = 1000
-      let res = await this._fetch(this.apis.list.url, {
-        pageSize: this.pageInfo.size,
-        pageNum: this.pageInfo.cur,
-        ...this.seachOpt,
-      }, this.apis.list.type || 'get')
+      this.seachOpt = { ...this.seachOpt, ...(otherOpts || {}) };
+      if (p) this.pageInfo.cur = p;
+      if (this.config.noPage) this.pageInfo.size = 1000;
+      let res = await this._fetch(
+        this.apis.list.url,
+        {
+          pageSize: this.pageInfo.size,
+          pageNum: this.pageInfo.cur,
+          ...this.seachOpt
+        },
+        this.apis.list.type || "get"
+      );
       if (res && res.code === 1 && res.data) {
-        let isDataList = Object.prototype.toString.call(res.data) === '[object Array]'
-        let list = isDataList ? (res.data || []) : (res.data.list || [])
+        let isDataList =
+          Object.prototype.toString.call(res.data) === "[object Array]";
+        let list = isDataList ? res.data || [] : res.data.list || [];
         // console.log(list);
-        this.tableData = this.handleList ? this.handleList(list) : list
-        this.pageInfo.total = res.data.total || 0
+        this.tableData = this.handleList ? this.handleList(list) : list;
+        this.pageInfo.total = res.data.total || 0;
       }
-      return res // 暴漏给外部使用
+      return res; // 暴漏给外部使用
     },
-    _handleOperate (op, row) {
-      if (!op.handleSelf && this[op.fn] && typeof this[op.fn] === 'function') {
-        this[op.fn](row, this.tableData)
-        this.$emit(op.fn, row, this.tableData)
+    _handleOperate(op, row) {
+      if (!op.handleSelf && this[op.fn] && typeof this[op.fn] === "function") {
+        this[op.fn](row, this.tableData);
+        this.$emit(op.fn, row, this.tableData);
       } else {
-        this.$emit(op.fn, row, this.tableData)
+        this.$emit(op.fn, row, this.tableData);
       }
     },
-    _edit (row, list) {
-      if (!this.isAdd) { // 编辑时可能需要走的步骤
-        this.curOperateRow = JSON.parse(JSON.stringify(row))
-        this.selfEdit && typeof this.selfEdit === 'function' && this.selfEdit(row, this.curOperateRow)
-      } else {
-        this.selfAdd && typeof this.selfAdd === 'function' && this.selfAdd(row, this.curOperateRow)
-      }
-      this.editVisible = true
-    },
-    _handleEditClose () {
-      this.curOperateRow = {}
-      this.editVisible = false
-      if (this.isAdd) this.isAdd = false
-    },
-    _getEditParam () {
-      let data = {}
-      this.editKeys.forEach(el => {
-        data[el.key] = this.curOperateRow[el.key]
-      })
+    _edit(row, list) {
       if (!this.isAdd) {
-        let key = this.apis.edit.idKey || 'id'
-        data[key] = this.curOperateRow[key]
+        // 编辑时可能需要走的步骤
+        this.curOperateRow = JSON.parse(JSON.stringify(row));
+        this.selfEdit &&
+          typeof this.selfEdit === "function" &&
+          this.selfEdit(row, this.curOperateRow);
+      } else {
+        this.selfAdd &&
+          typeof this.selfAdd === "function" &&
+          this.selfAdd(row, this.curOperateRow);
       }
-      return data
+      this.editVisible = true;
     },
-    async _editSure () {
-      if (this.editCheck) { // 输入验证提示
-        let checkData = this.editCheck()
-        if (!checkData.ok) return this._messageTip(checkData.msg)
+    _handleEditClose() {
+      this.curOperateRow = {};
+      this.editVisible = false;
+      if (this.isAdd) this.isAdd = false;
+    },
+    _getEditParam() {
+      let data = {};
+      this.editKeys.forEach(el => {
+        data[el.key] = this.curOperateRow[el.key];
+      });
+      if (!this.isAdd) {
+        let key = this.apis.edit.idKey || "id";
+        data[key] = this.curOperateRow[key];
       }
-      let params = this._getEditParam()
-      let op = this.isAdd ? 'add' : 'edit'
-      let { url, type } = this.apis[op]
-      let hadleEditItemFn = this.hadleEditItemFn
+      return data;
+    },
+    async _editSure() {
+      if (this.editCheck) {
+        // 输入验证提示
+        let checkData = this.editCheck();
+        if (!checkData.ok) return this._messageTip(checkData.msg);
+      }
+      let params = this._getEditParam();
+      let op = this.isAdd ? "add" : "edit";
+      let { url, type } = this.apis[op];
+      let hadleEditItemFn = this.hadleEditItemFn;
       let res = await this._fetch(
         url,
-        hadleEditItemFn && typeof hadleEditItemFn === 'function' ? hadleEditItemFn(params, this.curOperateRow) : params,
-        type || 'post'
-      )
+        hadleEditItemFn && typeof hadleEditItemFn === "function"
+          ? hadleEditItemFn(params, this.curOperateRow)
+          : params,
+        type || "post"
+      );
       if (res && res.code === 1) {
-        this._handleEditClose()
-        this._getList()
-        this._messageTip(res.msg || '操作成功', 1)
+        this._handleEditClose();
+        this._getList();
+        this._messageTip(res.msg || "操作成功", 1);
       } else {
-        this._messageTip((res && res.msg) || '请求失败')
+        this._messageTip((res && res.msg) || "请求失败");
       }
     },
-    _handleSizeChange (v) {
-      this.pageInfo.cur = 1
-      this.pageInfo.size = v
-      this._getList()
+    _handleSizeChange(v) {
+      this.pageInfo.cur = 1;
+      this.pageInfo.size = v;
+      this._getList();
     },
-    _handleCurrentChange (v) {
-      this.pageInfo.cur = v
-      this._getList()
+    _handleCurrentChange(v) {
+      this.pageInfo.cur = v;
+      this._getList();
     },
-    _del (row) {
-      this._confirm('确定删除?').then(async _ => {
-        let key = this.apis.del.idKey ? this.apis.del.idKey : 'id'
-        let data = {}
-        data[key] = row[key]
-        let res = await this._fetch(this.apis.del.url, data, this.apis.del.type || 'post')
+    _del(row) {
+      this._confirm("确定删除?").then(async _ => {
+        let key = this.apis.del.idKey ? this.apis.del.idKey : "id";
+        let data = {};
+        data[key] = row[key];
+        let res = await this._fetch(
+          this.apis.del.url,
+          data,
+          this.apis.del.type || "post"
+        );
         if (res && res.code === 1) {
-          this._messageTip(res.msg || '操作成功', 1)
-          this._getList()
-        } else this._messageTip(res.msg || '操作失败')
-      })
+          this._messageTip(res.msg || "操作成功", 1);
+          this._getList();
+        } else this._messageTip(res.msg || "操作失败");
+      });
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .table_cp {

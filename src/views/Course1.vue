@@ -1,6 +1,6 @@
 <template lang="pug">
   .list
-    TableCp(ref="tbcp" :config="config" :hadleEditItemFn="hadleEditItemFn" :selfEdit="selfEdit")
+    TableCp(ref="tbcp" :config="config" :hadleEditItemFn="hadleEditItemFn" :selfEdit="selfEdit" :isChoose="isChoose" @selectChange="selectChange")
 </template>
 
 <script>
@@ -58,6 +58,9 @@ export default {
     }
   },
   methods: {
+    selectChange() {
+      this.$emt("selectChange", ...arguments);
+    },
     hadleEditItemFn(data, item) {
       // 需要再次处理edit请求参数的时候配置此数据
       console.log(data); // 当前编辑的数据

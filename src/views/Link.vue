@@ -5,24 +5,26 @@
     TableCp(ref="tp" :config="config" :hadleEditItemFn="hadleEditItemFn" @ept="ept" @sortChange="sortChange")
 
     el-dialog(
-      :visible.sync="editVisible" :before-close="_handleEditClose"
-      v-if="editKeys && editKeys.length && editVisible" :close-on-click-modal="false"
+      v-if="showLink" :visible.sync="showLink" :close-on-click-modal="false"
     )
       div
-        List(:isChoose="true")
+        List(:isChoose="true" @selectChange="selectChange")
       div
-        el-button 取消
-        el-button 保存
+        el-button(@click="cancelLink") 取消
+        el-button(@click="saveLink") 保存
 </template>
 
 <script>
 import TableCp from "@/components/TableCp";
 import List from "./Course1.vue";
 export default {
-  name: "Class",
+  name: "Link",
   components: { TableCp, List },
   data() {
     return {
+      curLinkObj: unull,
+      showLink: false,
+      choose: [],
       config: {
         apis: {
           list: { url: "/admin/classes/list" },
@@ -34,7 +36,7 @@ export default {
           { name: "编辑", fn: "_edit" },
           { name: "学员", fn: "ept" },
           { name: "删除", fn: "_del" },
-          { name: "关联", fn: "_del" }
+          { name: "关联", fn: "rowLink" }
         ],
         tableItems: [
           { name: "课程", prop: "name", sortable: true },
@@ -57,6 +59,20 @@ export default {
   },
   created() {},
   methods: {
+    async saveLink() {
+      if (!this.choose.length) return this._messageTip("请选择实验", 2);
+      let res = await this._fetch("/admin/classes/labs", {
+        classId: this.curLinkObj.id,
+        labIds: this.choose.map(el => el.id).join(",")
+      });
+      if (res && res.code === 1) {
+        this._messageTip(res.msg || "关联成功", 1);
+        this.cancelLink();
+      } else this._messageTip((res && res.msg) || "操作失败，请稍微重试");
+    },
+    selectChange(data) {
+      this.choose = data;
+    },
     sortChange(data) {
       let { prop, order } = data;
       order = (order || "").replace(/ending/, "");
@@ -71,6 +87,14 @@ export default {
     },
     ept(row) {
       this._goUrl("/stu", { query: { cid: row.id, cname: row.name } });
+    },
+    rowLink(row) {
+      this.curLinkObj = row;
+      this.showLink = true;
+    },
+    cancelLink() {
+      this.showLink = false;
+      this.curLinkObj = null;
     }
   }
 };
