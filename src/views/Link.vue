@@ -22,7 +22,7 @@ export default {
   components: { TableCp, List },
   data() {
     return {
-      curLinkObj: unull,
+      curLinkObj: null,
       showLink: false,
       choose: [],
       config: {
