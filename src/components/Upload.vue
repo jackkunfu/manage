@@ -20,8 +20,8 @@ export default {
   },
   data() {
     return {
-      // actionUrl: this.url || '/admin/file/upload'
-      actionUrl: this.url || this.reqBasic + "/admin/file/upload",
+      // actionUrl: this.url || '/admin/file/upload' || '/admin/file/editor/upload'
+      actionUrl: this.url || this.reqBasic + "/admin/file/editor/upload",
       headers: {
         token: localStorage.MToken || ""
       },

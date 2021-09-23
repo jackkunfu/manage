@@ -12,7 +12,7 @@
 
       el-main
         .fr
-          //- Upload(name="上传" @upSus="upSus" :otherData="otherObj" :http-request="upFile")
+          //- Upload(name="上传" @upSus="upSus" :otherData="otherObj" :http-request="upFile" :url="reqBasic + '/admin/file/upload'")
           el-upload(action="/admin/file/upload" :http-request="upFile" :show-file-list="false")
             el-button 上传
         TableCp(:config="config" ref="TableCp" @update="updateName")
@@ -226,6 +226,10 @@ export default {
       this.newStu.id = data.id;
       this.newStu.name = data.name;
       this.newStu.display = data.display;
+
+      let item = this.curHandleItem;
+      this.newStu.categoryId = (item && item.id) || 0;
+
       this.editVisible = true;
     },
     async editOk() {

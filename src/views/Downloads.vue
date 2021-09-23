@@ -1,7 +1,7 @@
 <template lang="pug">
   .downloads
     .fr
-      Upload(name="上传" @upSus="upSus" :otherData="otherObj" :beforeFn="beforeFn")
+      Upload(name="上传" @upSus="upSus" :otherData="otherObj" :beforeFn="beforeFn" :url="reqBasic + '/admin/file/upload'")
     TableCp(:config="config" ref="TableCp" @update="updateName")
     el-dialog(:visible.sync="editVisible" :before-close="editClose" :close-on-click-modal="false")
       el-form(v-model="newStu" label-width="80px" size="mini")
