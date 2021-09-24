@@ -1,6 +1,6 @@
 <template lang="pug">
   .list
-    TableCp(ref="tbcp" :config="config" :hadleEditItemFn="hadleEditItemFn" :selfEdit="selfEdit" :isChoose="isChoose" @selectChange="selectChange")
+    TableCp(ref="tbcp" :config="config" :hadleEditItemFn="hadleEditItemFn" :selfEdit="selfEdit")
 </template>
 
 <script>
@@ -14,7 +14,6 @@ export default {
     return {
       type: 1, // 1管理  2教学
       config: {
-        isChoose: this.isChoose || false,
         apis: {
           // list: { url: '/api/lab/list', isList: true }
           list: { url: "/admin/lab/category", isList: true }
@@ -22,16 +21,12 @@ export default {
         seachOpt: {
           // username: localStorage.EVENGFRONTUSER
         },
-        // operates: [
-        //   { name: '编辑', fn: 'edit' }
-        // ],
         tableItems: [
           {
             name: "实验",
             prop: "name",
             html: true,
             handle: row => {
-              // console.log(vm.type)
               var name = row.category;
               if (row.directory)
                 return `<a href="/cslist?type=${vm.type}&csname=${name}">${name}</a>`;
@@ -44,10 +39,6 @@ export default {
             }
           }
         ]
-        // editKeys: [
-        //   { label: '消息内容', key: 'contentDetaile' },
-        //   { label: '下发进度', key: 'contentType', select: true, list: [] }
-        // ]
       }
     };
   },
@@ -58,9 +49,6 @@ export default {
     }
   },
   methods: {
-    selectChange() {
-      this.$emt("selectChange", ...arguments);
-    },
     hadleEditItemFn(data, item) {
       // 需要再次处理edit请求参数的时候配置此数据
       console.log(data); // 当前编辑的数据

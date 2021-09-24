@@ -7,9 +7,10 @@
     el-dialog(
       v-if="showLink" :visible.sync="showLink" :close-on-click-modal="false"
     )
-      div
-        List(:isChoose="true" @selectChange="selectChange")
-      div
+      .sy_ctn
+        //- List(:isChoose="true" @selectChange="selectChange")
+        TableCp(ref="tbcp" :config="configSy" @selectChange="selectChange")
+      .sy_btn
         el-button(@click="cancelLink") 取消
         el-button(@click="saveLink") 保存
 </template>
@@ -54,6 +55,14 @@ export default {
         ],
         seachOpt: {},
         editKeys: [{ label: "班级名称", key: "name" }]
+      },
+      configSy: {
+        noPage: true,
+        isChoose: true,
+        apis: {
+          list: { url: "/admin/lab/category", isList: true }
+        },
+        tableItems: [{ name: "实验", prop: "name" }]
       }
     };
   },
@@ -63,7 +72,7 @@ export default {
       if (!this.choose.length) return this._messageTip("请选择实验", 2);
       let res = await this._fetch("/admin/classes/labs", {
         classId: this.curLinkObj.id,
-        labIds: this.choose.map(el => el.id).join(",")
+        labIds: this.choose.map(el => el.labid).join(",")
       });
       if (res && res.code === 1) {
         this._messageTip(res.msg || "关联成功", 1);
@@ -95,9 +104,19 @@ export default {
     cancelLink() {
       this.showLink = false;
       this.curLinkObj = null;
+      this.choose = [];
     }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.sy_ctn {
+  max-height: 400px;
+  overflow: auto;
+}
+.sy_btn {
+  text-align: center;
+  margin-top: 30px;
+}
+</style>

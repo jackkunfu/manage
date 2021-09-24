@@ -13,7 +13,7 @@
       el-table-column(type="index" v-if="config.tbIndex")
       
       //- 多选
-      el-table-column(type="selection" width="55" v-if="isChoose")
+      el-table-column(type="selection" width="55" v-if="!!config.isChoose")
       //- 主展示区
       template(v-for="(item, i) in tableItems")
         //- img, 须配置 handle方法处理返回结果
@@ -140,7 +140,6 @@ export default {
     let config = this._props.config || {};
     // console.log(config)
     return {
-      isChoose: !!config.isChoose,
       // props数据
       editKeys: [],
       seachOpt: {},
@@ -169,7 +168,9 @@ export default {
       this.$emit("sortChange", arguments[0] || {});
     },
     selectChange() {
-      this.$emit("selectChange", ...arguments);
+      // console.log(data);
+      // this.$emit("selectChange", arguments);
+      this.$emit.apply(this, ["selectChange", ...arguments]);
     },
     upSus(res, item) {
       // console.log(res, item);

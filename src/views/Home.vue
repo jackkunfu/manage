@@ -28,7 +28,7 @@ export default {
       menus: [
         { name: "实验管理", path: "/course1" },
         { name: "实验教学", path: "/course2" },
-        { name: "学生中心", path: "/class" }
+        { name: "学生中心", path: "/link" }
         // { name: "关联实验", path: "/link" }
         // { name: '管理员设置', path: '/adminManage' }
       ]

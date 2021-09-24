@@ -9,7 +9,9 @@ export default function(Vue) {
     : `http://${location.hostname}:9000`;
   // var reqBasic = 'http://47.99.201.236:9000'
   // var reqBasic = 'http://10.100.32.9:9000'
-  Vue.prototype.reqBasic = "";
+
+  // process.env
+  Vue.prototype.reqBasic = reqBasic;
 
   Vue.prototype.goLogin = function() {
     this.$store.commit("setStoreData", { key: "isLogin", value: true });
