@@ -62,7 +62,7 @@ export default {
         apis: {
           list: { url: "/admin/lab/category", isList: true }
         },
-        tableItems: [{ name: "实验", prop: "name" }]
+        tableItems: [{ name: "实验", prop: "category" }]
       }
     };
   },
